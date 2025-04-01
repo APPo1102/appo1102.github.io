@@ -1,13 +1,287 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>拼圖</title>
-    </head>
-    <body>
-        <h2>測試</h2>
-        <h2>測試</h2>
-    </body>
-</html> 
+<html><head><script src="runtime.ba6ba03c30d4388986cf.js" async=""></script><script src="vendor.3b47236241be4bc34cff.js" async=""></script><script src="main.faf201dcf673d355c4b4.js" async=""></script><meta charset="utf-8"><style>body {
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    margin-bottom: 0;
+}
+
+#title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+}
+
+#header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#subtitle {
+    text-align: center;
+}
+
+#legionBoard {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+#legionBoard td.legionCell {
+    width: 25px;
+    height: 27px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#legion {
+    display: flex;
+    flex-direction: column;
+}
+
+#legionFooter {
+    margin-top: 10px;
+}
+
+#options {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+}
+
+#checkboxes {
+    margin-bottom: 10px;
+}
+
+#darkModeLabel {
+    padding-top: 10px;
+}
+
+#iterationTime {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#iterations, #time, #resetButton {
+  visibility: hidden;
+}
+
+#boardFilled {
+    margin-bottom: 7px;
+}
+
+#currentCaracterCount {
+    margin-bottom: 7px;
+}
+
+#middlelabels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#pieceForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 20px;
+}
+
+#pieceForm td.pieceCell {
+    width: 7px;
+    height: 9px;
+    border-style: solid;
+    border-width: 0px;
+}
+
+.piece {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+    justify-content: flex-end;
+}
+
+#resetButton {
+    margin-top: 5px;
+}
+
+#failText {
+    text-align: right;
+    visibility: hidden;
+}
+
+#bigClick, #liveSolve {
+    margin-left: 20px;
+}
+
+#pieceForm input {
+    width: 50px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.centerMiddleChild {
+    display: flex;
+}
+
+.centerMiddleChild > :nth-child(1), .centerMiddleChild > :nth-child(3) {
+    flex: 1;
+}
+
+#instructions {
+    margin-left: 30px;
+}
+
+#paragraph {
+    padding-right: 80px;
+}
+
+#currentPieces {
+    white-space: nowrap;
+}</style></head><body id="body"><div id="header"><select id="languageSelectBox"><option id="GMS" value="GMS">GMS</option><option id="KMS" value="KMS">KMS</option><option id="JMS" value="JMS">JMS</option><option id="TMS" value="TMS">TMS</option><option id="CMS" value="CMS">CMS</option></select></div><h1 id="title">聯盟戰地排序工具</h1><div id="subtitle">Made by: Xenogent of Bera</div><div id="subtitle">Donate paypal: wellifitisntmoehoward@gmail.com</div><div id="legionWrapper" class="centerMiddleChild"><div id="pieceForm"><form><div class="piece">
+        <div id="pieceDescription1" style="padding-right: 15px;">Lvl 60</div>
+        <label for="piece1">
+            <table id="pieceDisplay1" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: lightpink;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece1" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription2" style="padding-right: 15px;">Lvl 100</div>
+        <label for="piece2">
+            <table id="pieceDisplay2" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: lightcoral;"></td><td class="pieceCell" style="background: lightcoral;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece2" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription3" style="padding-right: 15px;">Lvl 140 劍士/海盜</div>
+        <label for="piece3">
+            <table id="pieceDisplay3" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: indianred;"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell" style="background: indianred;"></td><td class="pieceCell" style="background: indianred;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece3" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription4" style="padding-right: 15px;">Lvl 140 法師/盜賊/弓箭手</div>
+        <label for="piece4">
+            <table id="pieceDisplay4" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: darkseagreen;"></td><td class="pieceCell" style="background: darkseagreen;"></td><td class="pieceCell" style="background: darkseagreen;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece4" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription5" style="padding-right: 15px;">Lvl 200 劍士</div>
+        <label for="piece5">
+            <table id="pieceDisplay5" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: firebrick;"></td><td class="pieceCell" style="background: firebrick;"></td></tr><tr><td class="pieceCell" style="background: firebrick;"></td><td class="pieceCell" style="background: firebrick;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece5" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription6" style="padding-right: 15px;">Lvl 200 弓箭手</div>
+        <label for="piece6">
+            <table id="pieceDisplay6" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: mediumseagreen;"></td><td class="pieceCell" style="background: mediumseagreen;"></td><td class="pieceCell" style="background: mediumseagreen;"></td><td class="pieceCell" style="background: mediumseagreen;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece6" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription7" style="padding-right: 15px;">Lvl 200 盜賊/Lab</div>
+        <label for="piece7">
+            <table id="pieceDisplay7" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: purple;"></td><td class="pieceCell"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell" style="background: purple;"></td><td class="pieceCell" style="background: purple;"></td><td class="pieceCell" style="background: purple;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece7" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription8" style="padding-right: 15px;">Lvl 200 法師</div>
+        <label for="piece8">
+            <table id="pieceDisplay8" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell"></td><td class="pieceCell" style="background: dodgerblue;"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell" style="background: dodgerblue;"></td><td class="pieceCell" style="background: dodgerblue;"></td><td class="pieceCell" style="background: dodgerblue;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece8" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription9" style="padding-right: 15px;">Lvl 200 海盜</div>
+        <label for="piece9">
+            <table id="pieceDisplay9" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: lightsteelblue;"></td><td class="pieceCell" style="background: lightsteelblue;"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell" style="background: lightsteelblue;"></td><td class="pieceCell" style="background: lightsteelblue;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece9" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription10" style="padding-right: 15px;">Lvl 250 劍士</div>
+        <label for="piece10">
+            <table id="pieceDisplay10" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: maroon;"></td><td class="pieceCell" style="background: maroon;"></td><td class="pieceCell" style="background: maroon;"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell" style="background: maroon;"></td><td class="pieceCell" style="background: maroon;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece10" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription11" style="padding-right: 15px;">Lvl 250 弓箭手</div>
+        <label for="piece11">
+            <table id="pieceDisplay11" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: green;"></td><td class="pieceCell" style="background: green;"></td><td class="pieceCell" style="background: green;"></td><td class="pieceCell" style="background: green;"></td><td class="pieceCell" style="background: green;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece11" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription12" style="padding-right: 15px;">Lvl 250 盜賊</div>
+        <label for="piece12">
+            <table id="pieceDisplay12" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell"></td><td class="pieceCell"></td><td class="pieceCell" style="background: indigo;"></td></tr><tr><td class="pieceCell" style="background: indigo;"></td><td class="pieceCell" style="background: indigo;"></td><td class="pieceCell" style="background: indigo;"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell"></td><td class="pieceCell" style="background: indigo;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece12" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription13" style="padding-right: 15px;">Lvl 250 法師</div>
+        <label for="piece13">
+            <table id="pieceDisplay13" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell"></td><td class="pieceCell" style="background: blue;"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell" style="background: blue;"></td><td class="pieceCell" style="background: blue;"></td><td class="pieceCell" style="background: blue;"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell" style="background: blue;"></td><td class="pieceCell"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece13" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription14" style="padding-right: 15px;">Lvl 250 海盜</div>
+        <label for="piece14">
+            <table id="pieceDisplay14" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: cadetblue;"></td><td class="pieceCell" style="background: cadetblue;"></td><td class="pieceCell"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell" style="background: cadetblue;"></td><td class="pieceCell" style="background: cadetblue;"></td><td class="pieceCell" style="background: cadetblue;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece14" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription15" style="padding-right: 15px;">Lvl 250 傑諾</div>
+        <label for="piece15">
+            <table id="pieceDisplay15" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: mediumpurple;"></td><td class="pieceCell" style="background: mediumpurple;"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell" style="background: mediumpurple;"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell" style="background: mediumpurple;"></td><td class="pieceCell" style="background: mediumpurple;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece15" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription16" style="padding-right: 15px;">Lvl 200 強化型 Lab</div>
+        <label for="piece16">
+            <table id="pieceDisplay16" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell"></td><td class="pieceCell"></td><td class="pieceCell"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell" style="background: aquamarine;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece16" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription17" style="padding-right: 15px;">Lvl 250 強化型 Lab</div>
+        <label for="piece17">
+            <table id="pieceDisplay17" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell"></td><td class="pieceCell"></td><td class="pieceCell"></td><td class="pieceCell" style="background: aquamarine;"></td></tr><tr><td class="pieceCell"></td><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece17" type="number" min="0" value="0">
+    </div><div class="piece">
+        <div id="pieceDescription18" style="padding-right: 15px;">Lvl 250 Lab</div>
+        <label for="piece18">
+            <table id="pieceDisplay18" style="border-collapse: collapse; border-spacing: 0px;">
+                <tbody><tr><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell"></td><td class="pieceCell" style="background: aquamarine;"></td></tr><tr><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell" style="background: aquamarine;"></td><td class="pieceCell" style="background: aquamarine;"></td></tr></tbody>
+            </table>
+        </label>
+        <input id="piece18" type="number" min="0" value="0">
+    </div></form><button id="clearPieces">清除擁有的拼圖</button></div><div id="legion"><table id="legionBoard"><tbody><tr><td class="legionCell" style="border-width: 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: grey;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 3px 1px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 1px 1px; background: white;"></td></tr><tr><td class="legionCell" style="border-width: 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 1px 3px; background: white;"></td><td class="legionCell" style="border-width: 1px 3px 3px; background: white;"></td></tr></tbody></table><div id="legionFooter" class="centerMiddleChild"><div id="labels"><div id="currentPieces">可填入區塊數: <span id="currentPiecesValue">0</span></div><div id="boardFilled">可使用區塊數: <span id="boardFilledValue">1</span></div><div id="currentCaracterCount">當前使用的角色數量: <span id="currentCaracterCountValue">0</span></div><button id="clearBoard">清除面板</button></div><div id="middlelabels"><button id="boardButton">開始</button> <button id="resetButton">重置</button><div id="failText">找不到結果</div></div><div id="options"><div id="checkboxes"><input type="checkbox" id="bigClick"><label for="bigClick">區塊選擇</label> <input type="checkbox" id="liveSolve"><label for="liveSolve">觀看過程</label><div id="darkModeLabel"><input type="checkbox" id="darkMode"><label for="darkMode">深色模式</label></div></div><div id="iterationTime"><div id="iterations">嘗試次數: <span id="iterationsValue"></span></div><div id="time">花費時間: <span id="timeValue"></span></div></div></div></div></div><div id="instructions"><h2>說明:</h2><div id="paragraph"><p>1. 點選你所需要的格子，也可以使用區塊選擇以直接選取整個區塊。</p><p>2. 輸入你擁有的拼圖數量。</p><p>3. 確認可使用區塊數及可填入區塊數相等，否則程式將會無限循環。</p><p>4. 點擊開始程式將使用你輸入的拼圖填滿區塊，點擊觀看過程可以觀看程式計算的過程。</p></div></div></div></body></html>
