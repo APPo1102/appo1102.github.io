@@ -25,3 +25,10 @@ body {
     margin-bottom: 15px;
     justify-content: flex-end;
 }
+.content{
+    display: flex;
+    flex-direction: row;
+}
+.piece_des{
+    margin-right: 6px;
+}
