@@ -19,3 +19,9 @@ body {
     display: flex;
     flex-direction:column;
 }
+.piece {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+    justify-content: flex-end;
+}
