@@ -15,3 +15,7 @@ body {
     border-style: solid;
     border-width: 1px;
 }
+#table,#form,#instructions{
+    display: flex;
+    flex-direction:column;
+}
