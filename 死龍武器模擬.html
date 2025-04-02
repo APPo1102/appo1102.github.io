@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>死龍武器潛能模擬</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1e1e1e;
+            color: white;
+        }
+        .item-box {
+            width: 450px;
+            margin: 50px auto;
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        .item-header {
+            background: black;
+            color: cyan;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+        }
+        .item-image {
+            width: 60px;
+            height: 60px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+        }
+        .option-slot {
+            background: white;
+            color: black;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .button {
+            background: cyan;
+            color: black;
+            font-weight: bold;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background: lightblue;
+        }
+        .count-display {
+            margin-top: 10px;
+            font-weight: bold;
+            color: yellow;
+        }
+        .search-count {
+            margin-top: 10px;
+            font-weight: bold;
+            color: lightblue;
+        }
+        .ed-display {
+            margin-top: 10px;
+            font-weight: bold;
+            color: lightblue;
+            font-size: 1.2em;
+        }
+    </style>
+    <script>
+        let clickCount = 0;
+        let searchCount = 0;
+
+        const options = [
+            ["武器強化數值每 1 ， 物理/魔法攻擊力", 0.8, 1.5, true],
+            ["武器強化數值每 1 ， 物理/魔法攻擊力等級", 0.8, 1.5, true],
+            ["武器強化數值每 1 ， 致命一擊傷害", 0.8, 1.5, true],
+            ["武器強化數值每 1 ， 所有技能傷害", 0.8, 1.5, true],
+            ["武器強化數值每 1 ， 物理/魔法防禦力", 0.8, 1.5, true],
+            ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 5, 12, false],
+            ["無視敵人物理/魔法防禦力", 4.5, 8, false],
+            ["物理/魔法攻擊力", 6, 13, false],
+            ["兩極化: 攻擊/被擊傷害", 5, 12, false],
+            ["致命一擊傷害", 6, 13, false],
+            ["物理/魔法攻擊力等級", 6, 13, false],
+            ["物理/魔法防禦力", 6, 13, false],
+            ["傷害減少", 8, 15, false],
+            ["Boss所受傷害增加", 8, 15, false],
+            ["所受Boss傷害減少", 8, 15, false],
+            ["強韌的技能傷害增加", 6, 13, false],
+            ["強烈的技能傷害增加", 6, 13, false],
+            ["超越技能傷害增加", 6, 13, false],
+            ["所有技能傷害增加", 6, 13, false],
+            ["動作速度", 8, 15, false]
+        ];
+
+        const targetOptions = [
+            "武器強化數值每 1 ， 物理/魔法攻擊力",
+            "武器強化數值每 1 ， 物理/魔法攻擊力等級",
+            "根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害",
+            "兩極化: 攻擊/被擊傷害"
+        ];
+
+        function getRandomOptions() {
+            let selected = [];
+            let resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; 
+
+            while (selected.length < 4) {
+                let randomIndex = Math.floor(Math.random() * options.length);
+                if (!selected.includes(randomIndex)) {
+                    selected.push(randomIndex);
+                }
+            }
+
+            selected.forEach(index => {
+                let option = options[index];
+                let randomValue = Math.random() * (option[2] - option[1]) + option[1];
+                randomValue = option[3] ? randomValue.toFixed(1) : Math.round(randomValue);
+
+                let p = document.createElement('div');
+                p.className = "option-slot";
+                p.textContent = `${option[0]}: ${randomValue}%`;
+                resultDiv.appendChild(p);
+            });
+
+            clickCount++;
+            document.getElementById('click-count').textContent = `轉換次數: ${clickCount}次`;
+        }
+
+        function findTargetOptions() {
+            searchCount = 0;
+
+            while (true) {
+                searchCount++;
+
+                let selected = [];
+                while (selected.length < 4) {
+                    let randomIndex = Math.floor(Math.random() * options.length);
+                    if (!selected.includes(randomIndex)) {
+                        selected.push(randomIndex);
+                    }
+                }
+
+                let selectedOptions = selected.map(index => options[index][0]);
+                let allFound = targetOptions.every(option => selectedOptions.includes(option));
+
+                if (allFound) {
+                    let resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = ''; 
+
+                    selected.forEach(index => {
+                        let option = options[index];
+                        let randomValue = Math.random() * (option[2] - option[1]) + option[1];
+                        randomValue = option[3] ? randomValue.toFixed(1) : Math.round(randomValue);
+
+                        let p = document.createElement('div');
+                        p.className = "option-slot";
+                        p.textContent = `${option[0]}: ${randomValue}%`;
+                        resultDiv.appendChild(p);
+                    });
+
+                    document.getElementById('search-count').textContent = `尋找目標選項的執行次數: ${searchCount}次`;
+
+                    let edCost = searchCount * 20000000;
+                    document.getElementById('ed-cost').textContent = `使用 ED: ${edCost.toLocaleString()} ED`;
+                    break;
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="item-box">
+        <div class="item-header">+9 死龍遺言 - 滅世武器</div>
+        <img src="https://i.imgur.com/VXz8SwQ.png" class="item-image" alt="아이템 이미지">
+        <div id="result">
+            <div class="option-slot">沒有應用任何選項</div>
+            <div class="option-slot">沒有應用任何選項</div>
+            <div class="option-slot">沒有應用任何選項</div>
+            <div class="option-slot">沒有應用任何選項</div>
+        </div>
+        <button class="button" onclick="getRandomOptions()">選項轉換</button>
+        <div id="click-count" class="count-display">轉換次數: 0次</div>
+        <button class="button" onclick="findTargetOptions()">尋找目標</button>
+        <div id="search-count" class="search-count"></div>
+        <div id="ed-cost" class="ed-display"></div>
+    </div>
+</body>
+</html>
