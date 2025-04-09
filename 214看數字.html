@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>영락의 탑 로마패턴 연습</title>
+  <style>
+    body { background: #111; color: white; font-family: sans-serif; display: flex; justify-content: center; padding-top: 20px; }
+    #game { width: 1280px; text-align: center; position: relative; }
+    #modeDisplay { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+    #timer { position: absolute; top: 10px; right: 20px; font-size: 22px; color: #ff6666; }
+    .platform-group { display: flex; justify-content: center; margin: 10px; gap: 30px; flex-wrap: wrap; }
+    .pair { display: flex; gap: 10px; }
+    .platform { width: 80px; height: 80px; border: 2px solid #555; background-color: #222; display: flex; align-items: center; justify-content: center; }
+    .platform img { width: 70px; height: 70px; }
+    #chatlog { background: #222; padding: 10px; margin-top: 20px; min-height: 150px; text-align: left; }
+    input { padding: 6px; font-size: 16px; margin: 10px; width: 400px; }
+    button { padding: 8px 20px; font-size: 16px; margin: 10px; }
+    #controls, #recap { margin-top: 10px; }
+    #result { margin-top: 20px; font-size: 18px; font-weight: bold; color: yellow; }
+    .comp-view { filter: brightness(0.5); }
+    .recap-row { margin: 6px 0; }
+    .correct-tile { outline: 4px solid lime; box-shadow: 0 0 10px lime; }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div id="modeDisplay">殞落之塔R2看數字練習</div>
+    <div id="timer">⏱️ 40</div>
+    <button onclick="startGame()" id="startBtn">開始遊戲</button>
+    <div class="platform-group" id="topRow" style="display:none;"></div>
+    <div class="platform-group" id="bottomRow" style="display:none;"></div>
+    <div id="chatlog"></div>
+    <div id="controls" style="display:none;"><input id="inputBox" placeholder="輸入" /></div>
+    <div id="recap" style="display:none;"></div>
+    <div id="result"></div>
+    <button onclick="startGame()" id="retryBtn" style="display:none;">重新開始</button>
+  </div>
+<script>
+const SYMBOLS = ["Ⅰ","Ⅱ","Ⅲ","Ⅳ","Ⅴ","Ⅵ","Ⅶ","Ⅷ"];
+const SYMBOL_TO_NUM = { "Ⅰ":"1", "Ⅱ":"2", "Ⅲ":"3", "Ⅳ":"4", "Ⅴ":"5", "Ⅵ":"6", "Ⅶ":"7", "Ⅷ":"8" };
+const SYMBOL_IMG = Object.fromEntries(SYMBOLS.map((s,i)=>[s,`symbol_${i+1}.png`]));
+
+const topRow = document.getElementById("topRow");
+const bottomRow = document.getElementById("bottomRow");
+const chatlog = document.getElementById("chatlog");
+const inputBox = document.getElementById("inputBox");
+const modeDisplay = document.getElementById("modeDisplay");
+const resultBox = document.getElementById("result");
+const controls = document.getElementById("controls");
+const retryBtn = document.getElementById("retryBtn");
+const startBtn = document.getElementById("startBtn");
+const recapBox = document.getElementById("recap");
+const timerDisplay = document.getElementById("timer");
+
+let mode = "", symbols = [], step = 0;
+let playerTopBrief = "", playerBotBrief = "", summaryTop = "", summaryBot = "", finalAnswer = "";
+let playerTopIdx = [], playerBotIdx = [], compTopIdx = [], compBotIdx = [];
+let timer = null, timeLeft = 40;
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function getValidSplit() {
+  const invalid = [[0,8],[1,7],[7,1],[8,0]];
+  let t, b;
+  do {
+    t = Math.floor(Math.random() * 9);
+    b = 8 - t;
+  } while (invalid.some(p => p[0] === t && p[1] === b));
+  return [t, b];
+}
+
+function assignVisibility() {
+  const [topCount, botCount] = getValidSplit();
+  const shuffled = shuffle(Array.from({ length: 16 }, (_, i) => i));
+  playerTopIdx = shuffled.filter(i => i < 8).slice(0, topCount);
+  playerBotIdx = shuffled.filter(i => i >= 8).slice(0, botCount);
+  compTopIdx = [...Array(8).keys()].filter(i => !playerTopIdx.includes(i));
+  compBotIdx = [...Array(8).keys()].map(i => i + 8).filter(i => !playerBotIdx.includes(i));
+}
+
+function generateSymbols() {
+  const main = SYMBOLS[Math.floor(Math.random() * 8)];
+  const others = SYMBOLS.filter(s => s !== main);
+  let base;
+
+  if (mode === 'open') {
+    // 뜬눈: 같은 숫자 6개 + 다른 숫자 10개 (main 제외하고 중복 없이)
+    const different = others.slice(); // SYMBOLS - main
+    const filler = different.length >= 10
+      ? shuffle(different).slice(0, 10)
+      : shuffle([...different, ...shuffle(SYMBOLS.filter(s => s !== main))]).slice(0, 10);
+    base = Array(6).fill(main).concat(filler);
+  } else {
+    // 감은눈: 같은 숫자 10개 + 다른 6개 (main 제외하고)
+    const different = others.slice();
+    const filler = different.length >= 6
+      ? shuffle(different).slice(0, 6)
+      : shuffle([...different, ...shuffle(SYMBOLS.filter(s => s !== main))]).slice(0, 6);
+    base = Array(10).fill(main).concat(filler);
+  }
+
+  symbols = shuffle(base.slice(0, 16));
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timeLeft = 40;
+  timerDisplay.textContent = `⏱️ ${timeLeft}`;
+  timer = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = `⏱️ ${timeLeft}`;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      resultBox.innerHTML = "⏰ 시간 초과! 자동 오답 처리됨.";
+      inputBox.disabled = true;
+      retryBtn.style.display = "inline-block";
+    }
+  }, 1000);
+}
+
+function startGame() {
+  clearInterval(timer);
+  step = 0;
+  playerTopBrief = playerBotBrief = summaryTop = summaryBot = finalAnswer = "";
+  symbols = [];
+  chatlog.innerHTML = '';
+  resultBox.innerHTML = '';
+  recapBox.innerHTML = '';
+  inputBox.value = '';
+  inputBox.disabled = false;
+  recapBox.style.display = "none";
+  retryBtn.style.display = "none";
+  controls.style.display = "block";
+  startBtn.style.display = "none";
+
+  mode = Math.random() < 0.5 ? "open" : "closed";
+  modeDisplay.textContent = `👁️ 현재 모드: ${mode === 'open' ? "뜬눈" : "감은눈"}`;
+
+  generateSymbols();
+  assignVisibility();
+
+  renderRow(topRow, [...Array(8).keys()], playerTopIdx);
+  renderRow(bottomRow, [...Array(8).keys()].map(i => i + 8), playerBotIdx);
+
+  topRow.style.display = "flex";
+  bottomRow.style.display = "none";
+  updatePlaceholder();
+  startTimer();
+}
+function renderRow(row, indices, visibleSet) {
+  row.innerHTML = '';
+  for (let i = 0; i < indices.length; i += 2) {
+    const pair = document.createElement("div");
+    pair.className = "pair";
+    for (let j = 0; j < 2; j++) {
+      const idx = indices[i + j];
+      if (typeof idx !== "number" || idx >= symbols.length) continue;
+      const div = document.createElement("div");
+      div.className = "platform";
+      if (visibleSet.includes(idx)) {
+        const sym = symbols[idx];
+        if (sym && SYMBOL_IMG[sym]) {
+          const img = document.createElement("img");
+          img.src = SYMBOL_IMG[sym];
+          div.appendChild(img);
+        }
+      }
+      pair.appendChild(div);
+    }
+    row.appendChild(pair);
+  }
+}
+
+function updatePlaceholder() {
+  if (step <= 1) inputBox.placeholder = "브리핑 입력";
+  else if (step <= 3) inputBox.placeholder = "취합 입력";
+  else inputBox.placeholder = "정답 입력";
+}
+
+function formatBrief(indices, visibleSet) {
+  return indices.map((idx, i) =>
+    (visibleSet.includes(idx) ? SYMBOL_TO_NUM[symbols[idx]] : 'ㄴ') + ((i % 2 === 1) ? ' ' : '')
+  ).join('').trim();
+}
+
+function handleInput(value) {
+  if (!value.trim()) return;
+  switch(step) {
+    case 0:
+      playerTopBrief = value;
+      chatlog.innerHTML += `<div><strong>나 (위층):</strong> ${value}</div>`;
+      chatlog.innerHTML += `<div><strong>컴퓨터 (위층):</strong> ${formatBrief([...Array(8).keys()], compTopIdx)}</div>`;
+      topRow.style.display = "none"; bottomRow.style.display = "flex"; break;
+    case 1:
+      playerBotBrief = value;
+      chatlog.innerHTML += `<div><strong>나 (아래층):</strong> ${value}</div>`;
+      chatlog.innerHTML += `<div><strong>컴퓨터 (아래층):</strong> ${formatBrief([...Array(8).keys()].map(i=>i+8), compBotIdx)}</div>`;
+      break;
+    case 2: summaryTop = value; chatlog.innerHTML += `<div><strong>나 (위층 취합):</strong> ${value}</div>`; break;
+    case 3: summaryBot = value; chatlog.innerHTML += `<div><strong>나 (아래층 취합):</strong> ${value}</div>`; break;
+    case 4:
+      finalAnswer = value;
+      judge();
+      recapImages();
+      retryBtn.style.display = "inline-block";
+      clearInterval(timer); inputBox.disabled = true; break;
+  }
+  step++; inputBox.value = ''; updatePlaceholder();
+}
+
+function judge() {
+  const counts = {};
+  for (let i = 0; i < 16; i++) {
+    const num = SYMBOL_TO_NUM[symbols[i]];
+    counts[num] = (counts[num] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  const [correct, count] = sorted[0];
+
+  if (mode === 'open') {
+    if (count !== 6) {
+      resultBox.innerHTML = `❌ 오답! (같은 숫자 6개가 아닙니다)`;
+      return;
+    }
+    resultBox.innerHTML = finalAnswer === correct
+      ? `✅ 정답! ${correct}`
+      : `❌ 오답! 정답은 ${correct}`;
+  } else {
+    if (count !== 10) {
+      resultBox.innerHTML = `❌ 오답! (같은 숫자 10개가 아닙니다)`;
+      return;
+    }
+    resultBox.innerHTML = finalAnswer === correct
+      ? `✅ 정답(감은눈)! ${correct}`
+      : `❌ 오답! 정답은 ${correct}`;
+  }
+}
+
+function recapImages() {
+  recapBox.style.display = 'block';
+  recapBox.innerHTML = "<h3>🔁 정답 확인: 내가 본 발판 / 컴퓨터 발판</h3>";
+
+  const counts = {};
+  for (let i = 0; i < 16; i++) {
+    const num = SYMBOL_TO_NUM[symbols[i]];
+    counts[num] = (counts[num] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  const [correct] = sorted[0];
+
+  const correctIndices = mode === "open"
+    ? symbols.map((s, i) => SYMBOL_TO_NUM[s] === correct ? i : null).filter(i => i !== null)
+    : symbols.map((s, i) => SYMBOL_TO_NUM[s] !== correct ? i : null).filter(i => i !== null);
+
+  const isCorrect = (idx) => correctIndices.includes(idx);
+
+  const showRow = (title, indices, seen) => {
+    const row = document.createElement("div");
+    row.className = "recap-row";
+    row.innerHTML = `<strong>${title}:</strong> `;
+    indices.forEach(idx => {
+      const sym = symbols[idx];
+      const img = document.createElement("img");
+      img.src = SYMBOL_IMG[sym];
+      img.style.width = "60px";
+      img.style.margin = "4px";
+      if (!seen.includes(idx)) img.classList.add("comp-view");
+      if (isCorrect(idx)) img.classList.add("correct-tile");
+      row.appendChild(img);
+    });
+    recapBox.appendChild(row);
+  };
+
+  showRow("위층", [...Array(8).keys()], playerTopIdx);
+  showRow("아래층", [...Array(8).keys()].map(i => i + 8), playerBotIdx);
+}
+
+inputBox.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") handleInput(inputBox.value);
+});
+</script>
+</body>
+</html>
