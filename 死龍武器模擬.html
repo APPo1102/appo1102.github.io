@@ -336,33 +336,62 @@
             total = 0;
             let resultDiv = document.getElementById('result');
             searchCount = 0;
-            while (parseInt(total) <= parseInt(document.getElementById('total-upper').value)) {
-                total = 0;
-                let selected = [];
-                resultDiv.innerHTML = '';
+            if (parseInt(document.getElementById('total-upper').value) < 0) {
+                while (parseInt(total) <= parseInt(document.getElementById('total-upper').value) && parseInt(total) < 0) {
+                    total = 0;
+                    let selected = [];
+                    resultDiv.innerHTML = '';
 
-                while (selected.length < 4) {
-                    let randomIndex = Math.floor(Math.random() * options.length);
-                    if (!selected.includes(randomIndex)) {
-                        selected.push(randomIndex);
+                    while (selected.length < 4) {
+                        let randomIndex = Math.floor(Math.random() * options.length);
+                        if (!selected.includes(randomIndex)) {
+                            selected.push(randomIndex);
+                        }
                     }
+
+                    selected.forEach(index => {
+                        let option = options[index];
+                        let randomOptionIndex = Math.floor(Math.random() * option.length);
+                        let p = document.createElement('div');
+                        if (randomOptionIndex == option.length - 1) {
+                            p.className = "option-slot top";
+                        } else {
+                            p.className = "option-slot";
+                        }
+                        p.textContent = `${option[randomOptionIndex][0]}`;
+                        total += option[randomOptionIndex][1];
+                        resultDiv.appendChild(p);
+                    });
+                    searchCount++;
                 }
+            } else {
+                while (parseInt(total) <= parseInt(document.getElementById('total-upper').value)) {
+                    total = 0;
+                    let selected = [];
+                    resultDiv.innerHTML = '';
 
-                selected.forEach(index => {
-                    let option = options[index];
-                    let randomOptionIndex = Math.floor(Math.random() * option.length);
-                    let p = document.createElement('div');
-                    if (randomOptionIndex == option.length - 1) {
-                        p.className = "option-slot top";
-                    } else {
-                        p.className = "option-slot";
+                    while (selected.length < 4) {
+                        let randomIndex = Math.floor(Math.random() * options.length);
+                        if (!selected.includes(randomIndex)) {
+                            selected.push(randomIndex);
+                        }
                     }
-                    p.textContent = `${option[randomOptionIndex][0]}`;
-                    total += option[randomOptionIndex][1];
-                    resultDiv.appendChild(p);
-                });
 
-                searchCount++;
+                    selected.forEach(index => {
+                        let option = options[index];
+                        let randomOptionIndex = Math.floor(Math.random() * option.length);
+                        let p = document.createElement('div');
+                        if (randomOptionIndex == option.length - 1) {
+                            p.className = "option-slot top";
+                        } else {
+                            p.className = "option-slot";
+                        }
+                        p.textContent = `${option[randomOptionIndex][0]}`;
+                        total += option[randomOptionIndex][1];
+                        resultDiv.appendChild(p);
+                    });
+                    searchCount++;
+                }
             }
             let ed_not_thousandth = searchCount * 20000000;
             let ed = String(ed_not_thousandth).replace(/(\d)(?=(\d{3})+$)/g, "$1,");
@@ -387,6 +416,7 @@
         <div id="total-count" class="count-display">總分: 0分</div>
         <div id="click-count" class="count-display">轉換次數: 0次</div>
         <select id="total-upper">
+            <option value="-20">武器分解</option>
             <option value="0">滾</option>
             <option value="19">暫用</option>
             <option value="22">小畢業(能用)</option>
