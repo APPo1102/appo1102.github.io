@@ -325,11 +325,11 @@
         }
         function getTotalRandomOptions() {
             total = 0;
-            let selected = [];
             let resultDiv = document.getElementById('result');
             searchCount = 0;            
             while (parseInt(total) <= parseInt(document.getElementById('total-upper').value)) {
                 total = 0;
+                let selected = [];
                 resultDiv.innerHTML = '';
 
                 while (selected.length < 4) {
