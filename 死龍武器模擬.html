@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
             background-color: #1e1e1e;
             color: white;
         }
+
         .item-box {
             width: 450px;
             margin: 50px auto;
@@ -19,6 +21,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
+
         .item-header {
             background: black;
             color: cyan;
@@ -26,6 +29,7 @@
             padding: 10px;
             border-radius: 10px 10px 0 0;
         }
+
         .item-image {
             width: 60px;
             height: 60px;
@@ -34,6 +38,7 @@
             border-radius: 8px;
             border: 2px solid #ccc;
         }
+
         .option-slot {
             background: white;
             color: black;
@@ -41,6 +46,7 @@
             margin: 5px;
             border-radius: 5px;
         }
+
         .button {
             background: cyan;
             color: black;
@@ -51,19 +57,23 @@
             margin-top: 10px;
             border-radius: 5px;
         }
+
         .button:hover {
             background: lightblue;
         }
+
         .count-display {
             margin-top: 10px;
             font-weight: bold;
             color: yellow;
         }
+
         .search-count {
             margin-top: 10px;
             font-weight: bold;
             color: lightblue;
         }
+
         .ed-display {
             margin-top: 10px;
             font-weight: bold;
@@ -74,7 +84,7 @@
     <script>
         let clickCount = 0;
         let searchCount = 0;
-
+        let total = 0;
         const options = [
             [
                 ["武器強化數值每 1 ， 物理/魔法攻擊力增加0.8%", 5, true],
@@ -156,7 +166,7 @@
                 ["物理/魔法攻擊力增加12%", 6.5, true],
                 ["物理/魔法攻擊力增加13%", 7, true],
             ],
-            [                
+            [
                 ["兩極化: 攻擊/被擊傷害增加5%", 3.5, true],
                 ["兩極化: 攻擊/被擊傷害增加6%", 4, true],
                 ["兩極化: 攻擊/被擊傷害增加7%", 4.5, true],
@@ -226,7 +236,7 @@
                 ["受到BOSS傷害減少增加14%", 0, true],
                 ["受到BOSS傷害減少增加15%", 0, true],
             ],
-            [               
+            [
                 ["強韌的技能傷害增加6%", 0, true],
                 ["強韌的技能傷害增加7%", 0, true],
                 ["強韌的技能傷害增加8%", 0, true],
@@ -236,7 +246,7 @@
                 ["強韌的技能傷害增加12%", 0, true],
                 ["強韌的技能傷害增加13%", 0, true],
             ],
-            [                
+            [
                 ["強烈的技能傷害增加6%", 2, true],
                 ["強烈的技能傷害增加7%", 2.5, true],
                 ["強烈的技能傷害增加8%", 3, true],
@@ -246,7 +256,7 @@
                 ["強烈的技能傷害增加12%", 5, true],
                 ["強烈的技能傷害增加13%", 5.5, true],
             ],
-            [                
+            [
                 ["超越的技能傷害增加6%", 2, true],
                 ["超越的技能傷害增加7%", 2.5, true],
                 ["超越的技能傷害增加8%", 3, true],
@@ -256,7 +266,7 @@
                 ["超越的技能傷害增加12%", 5, true],
                 ["超越的技能傷害增加13%", 5.5, true],
             ],
-            [                
+            [
                 ["所有技能傷害增加6%", 3, true],
                 ["所有技能傷害增加7%", 3.5, true],
                 ["所有技能傷害增加8%", 4, true],
@@ -281,8 +291,8 @@
         function getRandomOptions() {
             let selected = [];
             let resultDiv = document.getElementById('result');
-            let total = 0;
-            resultDiv.innerHTML = ''; 
+            total = 0;
+            resultDiv.innerHTML = '';
 
             while (selected.length < 4) {
                 let randomIndex = Math.floor(Math.random() * options.length);
@@ -304,9 +314,41 @@
             clickCount++;
             document.getElementById('click-count').textContent = `轉換次數: ${clickCount}次`;
             document.getElementById('total-count').textContent = `總分: ${total}分`;
+        }
+        function getTotalRandomOptions() {
+            let selected = [];
+            let resultDiv = document.getElementById('result');
+            searchCount = 0;
+            while (total < document.getElementById('result').value) {
+                total = 0;
+                resultDiv.innerHTML = '';
+
+                while (selected.length < 4) {
+                    let randomIndex = Math.floor(Math.random() * options.length);
+                    if (!selected.includes(randomIndex)) {
+                        selected.push(randomIndex);
+                    }
+                }
+
+                selected.forEach(index => {
+                    let option = options[index];
+                    let randomOptionIndex = Math.floor(Math.random() * option.length);
+                    let p = document.createElement('div');
+                    p.className = "option-slot";
+                    p.textContent = `${option[randomOptionIndex][0]}`;
+                    total += option[randomOptionIndex][1];
+                    resultDiv.appendChild(p);
+                });
+
+                searchCount++;
+            }
+            document.getElementById('search-count').textContent = `搜尋次數: ${searchCount}次`;          
+            document.getElementById('total-count').textContent = `總分: ${total}分`;
+            document.getElementById('ed-cost').textContent = `消耗ED: ${total}分`;
         }        
     </script>
 </head>
+
 <body>
     <div class="item-box">
         <div class="item-header">+13 死龍遺言 - 滅世武器</div>
@@ -320,10 +362,19 @@
         <button class="button" onclick="getRandomOptions()">選項轉換</button>
         <div id="total-count" class="count-display">總分: 0分</div>
         <div id="click-count" class="count-display">轉換次數: 0次</div>
-        <div id="search-count" class="search-count"></div>
+        <select id="total-upper">
+            <option value="0">滾</option>
+            <option value="19">暫用</option>
+            <option value="22">小畢業(能用)</option>
+            <option value="25">畢業(核心模塊時間)</option>
+            <option value="30">大畢業</option>
+        </select>
+        <button class="button" onclick="getTotalRandomOptions()">分數測試</button>
         <div id="ed-cost" class="ed-display"></div>
+        <div id="search-count" class="search-count"></div>
         <img src="來源.png" style="width:100%">
         <img src="分數表.png" style="width:100%">
     </div>
 </body>
+
 </html>
