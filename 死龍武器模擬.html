@@ -76,38 +76,212 @@
         let searchCount = 0;
 
         const options = [
-            ["武器強化數值每 1 ， 物理/魔法攻擊力", 0.8, 1.5, true],
-            ["武器強化數值每 1 ， 物理/魔法攻擊力等級", 0.8, 1.5, true],
-            ["武器強化數值每 1 ， 致命一擊傷害", 0.8, 1.5, true],
-            ["武器強化數值每 1 ， 所有技能傷害", 0.8, 1.5, true],
-            ["武器強化數值每 1 ， 物理/魔法防禦力", 0.8, 1.5, true],
-            ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 5, 12, false],
-            ["無視敵人物理/魔法防禦力", 4.5, 8, false],
-            ["物理/魔法攻擊力", 6, 13, false],
-            ["兩極化: 攻擊/被擊傷害", 5, 12, false],
-            ["致命一擊傷害", 6, 13, false],
-            ["物理/魔法攻擊力等級", 6, 13, false],
-            ["物理/魔法防禦力", 6, 13, false],
-            ["傷害減少", 8, 15, false],
-            ["Boss所受傷害增加", 8, 15, false],
-            ["所受Boss傷害減少", 8, 15, false],
-            ["強韌的技能傷害增加", 6, 13, false],
-            ["強烈的技能傷害增加", 6, 13, false],
-            ["超越技能傷害增加", 6, 13, false],
-            ["所有技能傷害增加", 6, 13, false],
-            ["動作速度", 8, 15, false]
-        ];
-
-        const targetOptions = [
-            "武器強化數值每 1 ， 物理/魔法攻擊力",
-            "武器強化數值每 1 ， 物理/魔法攻擊力等級",
-            "根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害",
-            "兩極化: 攻擊/被擊傷害"
+            [
+                ["武器強化數值每 1 ， 物理/魔法攻擊力增加0.8%", 5, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力增加0.9%", 6, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力增加1.0%", 6.5, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力增加1.1%", 7, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力增加1.2%", 7.5, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力增加1.3%", 8, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力增加1.4%", 9, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力增加1.5%", 9.5, true],
+            ],
+            [
+                ["武器強化數值每 1 ， 物理/魔法攻擊力等級增加0.8", 4, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力等級增加0.9", 4.5, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力等級增加1.0", 5, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力等級增加1.1", 5.5, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力等級增加1.2", 6, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力等級增加1.3", 6.5, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力等級增加1.4", 7, true],
+                ["武器強化數值每 1 ， 物理/魔法攻擊力等級增加1.5", 7.5, true],
+            ],
+            [
+                ["武器強化數值每 1 ， 致命一擊傷害增加0.8%", 4, true],
+                ["武器強化數值每 1 ， 致命一擊傷害增加0.9%", 4.5, true],
+                ["武器強化數值每 1 ， 致命一擊傷害增加1.0%", 5, true],
+                ["武器強化數值每 1 ， 致命一擊傷害增加1.1%", 5.5, true],
+                ["武器強化數值每 1 ， 致命一擊傷害增加1.2%", 6, true],
+                ["武器強化數值每 1 ， 致命一擊傷害增加1.3%", 6.5, true],
+                ["武器強化數值每 1 ， 致命一擊傷害增加1.4%", 7, true],
+                ["武器強化數值每 1 ， 致命一擊傷害增加1.5%", 7.5, true],
+            ],
+            [
+                ["武器強化數值每 1 ， 所有技能傷害增加0.8%", 4.5, true],
+                ["武器強化數值每 1 ， 所有技能傷害增加0.9%", 5, true],
+                ["武器強化數值每 1 ， 所有技能傷害增加1.0%", 5.5, true],
+                ["武器強化數值每 1 ， 所有技能傷害增加1.1%", 6.5, true],
+                ["武器強化數值每 1 ， 所有技能傷害增加1.2%", 7, true],
+                ["武器強化數值每 1 ， 所有技能傷害增加1.3%", 7.5, true],
+                ["武器強化數值每 1 ， 所有技能傷害增加1.4%", 8, true],
+                ["武器強化數值每 1 ， 所有技能傷害增加1.5%", 8.5, true],
+            ],
+            [
+                ["武器強化數值每 1 ， 物理/魔法防禦力增加0.8%", 0, true],
+                ["武器強化數值每 1 ， 物理/魔法防禦力增加0.9%", 0, true],
+                ["武器強化數值每 1 ， 物理/魔法防禦力增加1.0%", 0, true],
+                ["武器強化數值每 1 ， 物理/魔法防禦力增加1.1%", 0, true],
+                ["武器強化數值每 1 ， 物理/魔法防禦力增加1.2%", 0, true],
+                ["武器強化數值每 1 ， 物理/魔法防禦力增加1.3%", 0, true],
+                ["武器強化數值每 1 ， 物理/魔法防禦力增加1.4%", 0, true],
+                ["武器強化數值每 1 ， 物理/魔法防禦力增加1.5%", 0, true],
+            ],
+            [
+                ["根據攻擊時給予的傷害量的5%，在3秒內給予持續傷害", 3.5, true],
+                ["根據攻擊時給予的傷害量的6%，在3秒內給予持續傷害", 4, true],
+                ["根據攻擊時給予的傷害量的7%，在3秒內給予持續傷害", 4.5, true],
+                ["根據攻擊時給予的傷害量的8%，在3秒內給予持續傷害", 5, true],
+                ["根據攻擊時給予的傷害量的9%，在3秒內給予持續傷害", 6, true],
+                ["根據攻擊時給予的傷害量的10%，在3秒內給予持續傷害", 6.5, true],
+                ["根據攻擊時給予的傷害量的11%，在3秒內給予持續傷害", 7, true],
+                ["根據攻擊時給予的傷害量的12%，在3秒內給予持續傷害", 8, true],
+            ],
+            [
+                ["無視敵人物理/魔法防禦力增加4.5%", 0, true],
+                ["無視敵人物理/魔法防禦力增加5%", 0, true],
+                ["無視敵人物理/魔法防禦力增加5.5%", 0, true],
+                ["無視敵人物理/魔法防禦力增加6%", 0, true],
+                ["無視敵人物理/魔法防禦力增加6.5%", 0, true],
+                ["無視敵人物理/魔法防禦力增加7%", 0, true],
+                ["無視敵人物理/魔法防禦力增加7.5%", 0, true],
+                ["無視敵人物理/魔法防禦力增加8%", 0, true],
+            ],
+            [
+                ["物理/魔法攻擊力增加6%", 3, true],
+                ["物理/魔法攻擊力增加7%", 3.5, true],
+                ["物理/魔法攻擊力增加8%", 4, true],
+                ["物理/魔法攻擊力增加9%", 4.5, true],
+                ["物理/魔法攻擊力增加10%", 5.5, true],
+                ["物理/魔法攻擊力增加11%", 6, true],
+                ["物理/魔法攻擊力增加12%", 6.5, true],
+                ["物理/魔法攻擊力增加13%", 7, true],
+            ],
+            [                
+                ["兩極化: 攻擊/被擊傷害增加5%", 3.5, true],
+                ["兩極化: 攻擊/被擊傷害增加6%", 4, true],
+                ["兩極化: 攻擊/被擊傷害增加7%", 4.5, true],
+                ["兩極化: 攻擊/被擊傷害增加8%", 5, true],
+                ["兩極化: 攻擊/被擊傷害增加9%", 6, true],
+                ["兩極化: 攻擊/被擊傷害增加10%", 6.5, true],
+                ["兩極化: 攻擊/被擊傷害增加11%", 7, true],
+                ["兩極化: 攻擊/被擊傷害增加12%", 8, true],
+            ],
+            [
+                ["致命一擊傷害增加6%", 2.5, true],
+                ["致命一擊傷害增加7%", 3, true],
+                ["致命一擊傷害增加8%", 3.5, true],
+                ["致命一擊傷害增加9%", 3.5, true],
+                ["致命一擊傷害增加10%", 4, true],
+                ["致命一擊傷害增加11%", 4.5, true],
+                ["致命一擊傷害增加12%", 5, true],
+                ["致命一擊傷害增加13%", 5.5, true],
+            ],
+            [
+                ["物理/魔法攻擊力等級 +6", 2, true],
+                ["物理/魔法攻擊力等級 +7", 2.5, true],
+                ["物理/魔法攻擊力等級 +8", 3, true],
+                ["物理/魔法攻擊力等級 +9", 3.5, true],
+                ["物理/魔法攻擊力等級 +10", 4, true],
+                ["物理/魔法攻擊力等級 +11", 4.5, true],
+                ["物理/魔法攻擊力等級 +12", 5, true],
+                ["物理/魔法攻擊力等級 +13", 5.5, true],
+            ],
+            [
+                ["物理/魔法防禦力增加6%", 0, true],
+                ["物理/魔法防禦力增加7%", 0, true],
+                ["物理/魔法防禦力增加8%", 0, true],
+                ["物理/魔法防禦力增加9%", 0, true],
+                ["物理/魔法防禦力增加10%", 0, true],
+                ["物理/魔法防禦力增加11%", 0, true],
+                ["物理/魔法防禦力增加12%", 0, true],
+                ["物理/魔法防禦力增加13%", 0, true],
+            ],
+            [
+                ["傷害減少增加6%", 0, true],
+                ["傷害減少增加7%", 0, true],
+                ["傷害減少增加8%", 0, true],
+                ["傷害減少增加9%", 0, true],
+                ["傷害減少增加10%", 0, true],
+                ["傷害減少增加11%", 0, true],
+                ["傷害減少增加12%", 0, true],
+                ["傷害減少增加13%", 0, true],
+            ],
+            [
+                ["Boss所受傷害增加8%", 2.5, true],
+                ["Boss所受傷害增加9%", 3, true],
+                ["Boss所受傷害增加10%", 3.5, true],
+                ["Boss所受傷害增加11%", 4, true],
+                ["Boss所受傷害增加12%", 4, true],
+                ["Boss所受傷害增加13%", 4.5, true],
+                ["Boss所受傷害增加14%", 4.5, true],
+                ["Boss所受傷害增加15%", 5, true],
+            ],
+            [
+                ["受到BOSS傷害減少增加8%", 0, true],
+                ["受到BOSS傷害減少增加9%", 0, true],
+                ["受到BOSS傷害減少增加10%", 0, true],
+                ["受到BOSS傷害減少增加11%", 0, true],
+                ["受到BOSS傷害減少增加12%", 0, true],
+                ["受到BOSS傷害減少增加13%", 0, true],
+                ["受到BOSS傷害減少增加14%", 0, true],
+                ["受到BOSS傷害減少增加15%", 0, true],
+            ],
+            [               
+                ["強韌的技能傷害增加6%", 0, true],
+                ["強韌的技能傷害增加7%", 0, true],
+                ["強韌的技能傷害增加8%", 0, true],
+                ["強韌的技能傷害增加9%", 0, true],
+                ["強韌的技能傷害增加10%", 0, true],
+                ["強韌的技能傷害增加11%", 0, true],
+                ["強韌的技能傷害增加12%", 0, true],
+                ["強韌的技能傷害增加13%", 0, true],
+            ],
+            [                
+                ["強烈的技能傷害增加6%", 2, true],
+                ["強烈的技能傷害增加7%", 2.5, true],
+                ["強烈的技能傷害增加8%", 3, true],
+                ["強烈的技能傷害增加9%", 3.5, true],
+                ["強烈的技能傷害增加10%", 4, true],
+                ["強烈的技能傷害增加11%", 4.5, true],
+                ["強烈的技能傷害增加12%", 5, true],
+                ["強烈的技能傷害增加13%", 5.5, true],
+            ],
+            [                
+                ["超越的技能傷害增加6%", 2, true],
+                ["超越的技能傷害增加7%", 2.5, true],
+                ["超越的技能傷害增加8%", 3, true],
+                ["超越的技能傷害增加9%", 3.5, true],
+                ["超越的技能傷害增加10%", 4, true],
+                ["超越的技能傷害增加11%", 4.5, true],
+                ["超越的技能傷害增加12%", 5, true],
+                ["超越的技能傷害增加13%", 5.5, true],
+            ],
+            [                
+                ["所有技能傷害增加6%", 3, true],
+                ["所有技能傷害增加7%", 3.5, true],
+                ["所有技能傷害增加8%", 4, true],
+                ["所有技能傷害增加9%", 4.5, true],
+                ["所有技能傷害增加10%", 5, true],
+                ["所有技能傷害增加11%", 5.5, true],
+                ["所有技能傷害增加12%", 6, true],
+                ["所有技能傷害增加13%", 6.5, true],
+            ],
+            [
+                ["動作速度增加8%", 0, true],
+                ["動作速度增加9%", 0, true],
+                ["動作速度增加10%", 0, true],
+                ["動作速度增加11%", 0, true],
+                ["動作速度增加12%", 0, true],
+                ["動作速度增加13%", 0, true],
+                ["動作速度增加14%", 0, true],
+                ["動作速度增加15%", 0, true],
+            ],
         ];
 
         function getRandomOptions() {
             let selected = [];
             let resultDiv = document.getElementById('result');
+            let total = 0;
             resultDiv.innerHTML = ''; 
 
             while (selected.length < 4) {
@@ -119,64 +293,23 @@
 
             selected.forEach(index => {
                 let option = options[index];
-                let randomValue = Math.random() * (option[2] - option[1]) + option[1];
-                randomValue = option[3] ? randomValue.toFixed(1) : Math.round(randomValue);
-
+                let randomOptionIndex = Math.floor(Math.random() * option.length);
                 let p = document.createElement('div');
                 p.className = "option-slot";
-                p.textContent = `${option[0]}: ${randomValue}%`;
+                p.textContent = `${option[randomValue][0]}`;
+                total += option[randomValue][1];
                 resultDiv.appendChild(p);
             });
 
             clickCount++;
             document.getElementById('click-count').textContent = `轉換次數: ${clickCount}次`;
-        }
-
-        function findTargetOptions() {
-            searchCount = 0;
-
-            while (true) {
-                searchCount++;
-
-                let selected = [];
-                while (selected.length < 4) {
-                    let randomIndex = Math.floor(Math.random() * options.length);
-                    if (!selected.includes(randomIndex)) {
-                        selected.push(randomIndex);
-                    }
-                }
-
-                let selectedOptions = selected.map(index => options[index][0]);
-                let allFound = targetOptions.every(option => selectedOptions.includes(option));
-
-                if (allFound) {
-                    let resultDiv = document.getElementById('result');
-                    resultDiv.innerHTML = ''; 
-
-                    selected.forEach(index => {
-                        let option = options[index];
-                        let randomValue = Math.random() * (option[2] - option[1]) + option[1];
-                        randomValue = option[3] ? randomValue.toFixed(1) : Math.round(randomValue);
-
-                        let p = document.createElement('div');
-                        p.className = "option-slot";
-                        p.textContent = `${option[0]}: ${randomValue}%`;
-                        resultDiv.appendChild(p);
-                    });
-
-                    document.getElementById('search-count').textContent = `尋找目標選項的執行次數: ${searchCount}次`;
-
-                    let edCost = searchCount * 20000000;
-                    document.getElementById('ed-cost').textContent = `使用 ED: ${edCost.toLocaleString()} ED`;
-                    break;
-                }
-            }
-        }
+            document.getElementById('total-count').textContent = `總分: ${total}分`;
+        }        
     </script>
 </head>
 <body>
     <div class="item-box">
-        <div class="item-header">+9 死龍遺言 - 滅世武器</div>
+        <div class="item-header">+13 死龍遺言 - 滅世武器</div>
         <img src="https://i.imgur.com/VXz8SwQ.png" class="item-image" alt="아이템 이미지">
         <div id="result">
             <div class="option-slot">沒有應用任何選項</div>
@@ -185,8 +318,8 @@
             <div class="option-slot">沒有應用任何選項</div>
         </div>
         <button class="button" onclick="getRandomOptions()">選項轉換</button>
+        <div id="total-count" class="count-display">總分: 0分</div>
         <div id="click-count" class="count-display">轉換次數: 0次</div>
-        <button class="button" onclick="findTargetOptions()">尋找目標</button>
         <div id="search-count" class="search-count"></div>
         <div id="ed-cost" class="ed-display"></div>
         <img src="來源.png" style="width:100%">
