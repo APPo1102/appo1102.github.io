@@ -328,7 +328,7 @@
             let selected = [];
             let resultDiv = document.getElementById('result');
             searchCount = 0;            
-            while (parseInt(total) < parseInt(document.getElementById('total-upper').value)) {
+            while (parseInt(total) <= parseInt(document.getElementById('total-upper').value)) {
                 total = 0;
                 resultDiv.innerHTML = '';
 
@@ -350,6 +350,7 @@
                 });
 
                 searchCount++;
+                console.log(total);
             }
             let ed = searchCount * 20000000;
             document.getElementById('search-count').textContent = `搜尋次數: ${searchCount}次`;
