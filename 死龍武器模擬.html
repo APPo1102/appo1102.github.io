@@ -326,10 +326,8 @@
         function getTotalRandomOptions() {
             let selected = [];
             let resultDiv = document.getElementById('result');
-            searchCount = 0;
-            console.log(total);
-            console.log(document.getElementById('total-upper').value);
-            while (total > document.getElementById('total-upper').value) {
+            searchCount = 0;            
+            while (parseInt(total) < parseInt(document.getElementById('total-upper').value)) {
                 total = 0;
                 resultDiv.innerHTML = '';
 
