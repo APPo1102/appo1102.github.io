@@ -338,7 +338,7 @@
             searchCount = 0;
             console.log(parseInt(document.getElementById('total-upper').value));
             if (parseInt(document.getElementById('total-upper').value) < 0) {
-                while (parseInt(total) >= 0) {
+                while (parseInt(total) != -20) {
                     total = 0;
                     let selected = [];
                     resultDiv.innerHTML = '';
