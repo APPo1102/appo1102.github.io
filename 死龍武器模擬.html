@@ -319,7 +319,7 @@
             let selected = [];
             let resultDiv = document.getElementById('result');
             searchCount = 0;
-            while (total < document.getElementById('result').value) {
+            while (total > document.getElementById('result').value) {
                 total = 0;
                 resultDiv.innerHTML = '';
 
@@ -342,9 +342,10 @@
 
                 searchCount++;
             }
+            let ed = searchCount*20000000;
             document.getElementById('search-count').textContent = `搜尋次數: ${searchCount}次`;          
             document.getElementById('total-count').textContent = `總分: ${total}分`;
-            document.getElementById('ed-cost').textContent = `消耗ED: ${total}分`;
+            document.getElementById('ed-cost').textContent = `消耗ED: ${ed}`;
         }        
     </script>
 </head>
