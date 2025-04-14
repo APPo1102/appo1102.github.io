@@ -363,7 +363,8 @@
 
                 searchCount++;
             }
-            let ed = searchCount * 20000000;
+            let ed_not_thousandth = searchCount * 20000000;
+            let ed = String(ed_not_thousandth).replace(/(\d)(?=(\d{3})+$)/g, "$1,");
             document.getElementById('search-count').textContent = `搜尋次數: ${searchCount}次`;
             document.getElementById('total-count').textContent = `總分: ${total}分`;
             document.getElementById('ed-cost').textContent = `消耗ED: ${ed}`;
