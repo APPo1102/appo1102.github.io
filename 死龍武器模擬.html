@@ -80,6 +80,14 @@
             color: lightblue;
             font-size: 1.2em;
         }
+
+        #total-upper {
+            background: white;
+            color: black;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
     </style>
     <script>
         let clickCount = 0;
@@ -342,8 +350,8 @@
 
                 searchCount++;
             }
-            let ed = searchCount*20000000;
-            document.getElementById('search-count').textContent = `搜尋次數: ${searchCount}次`;          
+            let ed = searchCount * 20000000;
+            document.getElementById('search-count').textContent = `搜尋次數: ${searchCount}次`;
             document.getElementById('total-count').textContent = `總分: ${total}分`;
             document.getElementById('ed-cost').textContent = `消耗ED: ${ed}`;
         }        
