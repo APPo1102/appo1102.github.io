@@ -296,8 +296,8 @@
                 let randomOptionIndex = Math.floor(Math.random() * option.length);
                 let p = document.createElement('div');
                 p.className = "option-slot";
-                p.textContent = `${option[randomValue][0]}`;
-                total += option[randomValue][1];
+                p.textContent = `${option[randomOptionIndex][0]}`;
+                total += option[randomOptionIndex][1];
                 resultDiv.appendChild(p);
             });
 
