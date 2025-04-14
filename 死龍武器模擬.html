@@ -89,8 +89,9 @@
             margin: 5px;
             border-radius: 5px;
         }
-        .top{
-            color:#007bff !important;
+
+        .top {
+            color: #007bff !important;
         }
     </style>
     <script>
@@ -317,9 +318,9 @@
                 let option = options[index];
                 let randomOptionIndex = Math.floor(Math.random() * option.length);
                 let p = document.createElement('div');
-                if(randomOptionIndex == option.length-1){
+                if (randomOptionIndex == option.length - 1) {
                     p.className = "option-slot top";
-                }else{
+                } else {
                     p.className = "option-slot";
                 }
                 p.textContent = `${option[randomOptionIndex][0]}`;
@@ -334,7 +335,7 @@
         function getTotalRandomOptions() {
             total = 0;
             let resultDiv = document.getElementById('result');
-            searchCount = 0;            
+            searchCount = 0;
             while (parseInt(total) <= parseInt(document.getElementById('total-upper').value)) {
                 total = 0;
                 let selected = [];
@@ -351,11 +352,11 @@
                     let option = options[index];
                     let randomOptionIndex = Math.floor(Math.random() * option.length);
                     let p = document.createElement('div');
-                    if(randomOptionIndex == option.length-1){
-                    p.className = "option-slot top";
-                }else{
-                    p.className = "option-slot";
-                }
+                    if (randomOptionIndex == option.length - 1) {
+                        p.className = "option-slot top";
+                    } else {
+                        p.className = "option-slot";
+                    }
                     p.textContent = `${option[randomOptionIndex][0]}`;
                     total += option[randomOptionIndex][1];
                     resultDiv.appendChild(p);
@@ -397,10 +398,12 @@
         <div id="search-count" class="search-count"></div>
         <br>
         <a href="來源.png" data-lightbox="pic-1">
-            <img src="來源.png" style="width:100%" >
+            <img src="來源.png" style="width:100%">
         </a>
-        <a href="來源.png" data-lightbox="pic-2"><img src="分數表.png" style="width:100%"></a>
-        
+        <a href="分數表.png" data-lightbox="pic-2">
+            <img src="分數表.png" style="width:100%">
+        </a>
+
     </div>
     <script src="lightbox.js"></script>
 </body>
