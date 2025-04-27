@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>영락의 탑 로마패턴 연습</title>
+  <title>214數字練習</title>
   <style>
     body { background: #111; color: white; font-family: sans-serif; display: flex; justify-content: center; padding-top: 20px; }
     #game { width: 1280px; text-align: center; position: relative; }
@@ -113,7 +113,7 @@ function startTimer() {
     timerDisplay.textContent = `⏱️ ${timeLeft}`;
     if (timeLeft <= 0) {
       clearInterval(timer);
-      resultBox.innerHTML = "⏰ 시간 초과! 자동 오답 처리됨.";
+      resultBox.innerHTML = "⏰ 暫停！自動處理為錯誤答案！";
       inputBox.disabled = true;
       retryBtn.style.display = "inline-block";
     }
@@ -136,7 +136,7 @@ function startGame() {
   startBtn.style.display = "none";
 
   mode = Math.random() < 0.5 ? "open" : "closed";
-  modeDisplay.textContent = `👁️ 현재 모드: ${mode === 'open' ? "뜬눈" : "감은눈"}`;
+  modeDisplay.textContent = `👁️ 目前模式: ${mode === 'open' ? "睜眼" : "閉眼"}`;
 
   generateSymbols();
   assignVisibility();
@@ -174,14 +174,14 @@ function renderRow(row, indices, visibleSet) {
 }
 
 function updatePlaceholder() {
-  if (step <= 1) inputBox.placeholder = "브리핑 입력";
-  else if (step <= 3) inputBox.placeholder = "취합 입력";
-  else inputBox.placeholder = "정답 입력";
+  if (step <= 1) inputBox.placeholder = "開始機制";
+  else if (step <= 3) inputBox.placeholder = "請輸入看到的數字";
+  else inputBox.placeholder = "輸入正確答案";
 }
 
 function formatBrief(indices, visibleSet) {
   return indices.map((idx, i) =>
-    (visibleSet.includes(idx) ? SYMBOL_TO_NUM[symbols[idx]] : 'ㄴ') + ((i % 2 === 1) ? ' ' : '')
+    (visibleSet.includes(idx) ? SYMBOL_TO_NUM[symbols[idx]] : '-') + ((i % 2 === 1) ? ' ' : '')
   ).join('').trim();
 }
 
@@ -190,16 +190,16 @@ function handleInput(value) {
   switch(step) {
     case 0:
       playerTopBrief = value;
-      chatlog.innerHTML += `<div><strong>나 (위층):</strong> ${value}</div>`;
-      chatlog.innerHTML += `<div><strong>컴퓨터 (위층):</strong> ${formatBrief([...Array(8).keys()], compTopIdx)}</div>`;
+      chatlog.innerHTML += `<div><strong>我（樓上）:</strong> ${value}</div>`;
+      chatlog.innerHTML += `<div><strong>電腦（樓上）:</strong> ${formatBrief([...Array(8).keys()], compTopIdx)}</div>`;
       topRow.style.display = "none"; bottomRow.style.display = "flex"; break;
     case 1:
       playerBotBrief = value;
-      chatlog.innerHTML += `<div><strong>나 (아래층):</strong> ${value}</div>`;
-      chatlog.innerHTML += `<div><strong>컴퓨터 (아래층):</strong> ${formatBrief([...Array(8).keys()].map(i=>i+8), compBotIdx)}</div>`;
+      chatlog.innerHTML += `<div><strong>我（樓下）:</strong> ${value}</div>`;
+      chatlog.innerHTML += `<div><strong>電腦（樓下）:</strong> ${formatBrief([...Array(8).keys()].map(i=>i+8), compBotIdx)}</div>`;
       break;
-    case 2: summaryTop = value; chatlog.innerHTML += `<div><strong>나 (위층 취합):</strong> ${value}</div>`; break;
-    case 3: summaryBot = value; chatlog.innerHTML += `<div><strong>나 (아래층 취합):</strong> ${value}</div>`; break;
+    case 2: summaryTop = value; chatlog.innerHTML += `<div><strong>我（樓上整理）:</strong> ${value}</div>`; break;
+    case 3: summaryBot = value; chatlog.innerHTML += `<div><strong>我（樓下收集）:</strong> ${value}</div>`; break;
     case 4:
       finalAnswer = value;
       judge();
@@ -221,26 +221,26 @@ function judge() {
 
   if (mode === 'open') {
     if (count !== 6) {
-      resultBox.innerHTML = `❌ 오답! (같은 숫자 6개가 아닙니다)`;
+      resultBox.innerHTML = `❌ 答錯了！ （不是6個同樣的數字）`;
       return;
     }
     resultBox.innerHTML = finalAnswer === correct
-      ? `✅ 정답! ${correct}`
-      : `❌ 오답! 정답은 ${correct}`;
+      ? `✅ 正確答案（睜眼）! ${correct}`
+      : `❌ 答錯了！正確答案是 ${correct}`;
   } else {
     if (count !== 10) {
-      resultBox.innerHTML = `❌ 오답! (같은 숫자 10개가 아닙니다)`;
+      resultBox.innerHTML = `❌ 答錯了！ （不是6個不同的數字）`;
       return;
     }
     resultBox.innerHTML = finalAnswer === correct
-      ? `✅ 정답(감은눈)! ${correct}`
-      : `❌ 오답! 정답은 ${correct}`;
+      ? `✅ 正確答案（閉眼）! ${correct}`
+      : `❌ 答錯了！正確答案是 ${correct}`;
   }
 }
 
 function recapImages() {
   recapBox.style.display = 'block';
-  recapBox.innerHTML = "<h3>🔁 정답 확인: 내가 본 발판 / 컴퓨터 발판</h3>";
+  recapBox.innerHTML = "<h3>🔁 檢查答案：我看到的數字/電腦數字</h3>";
 
   const counts = {};
   for (let i = 0; i < 16; i++) {
@@ -273,8 +273,8 @@ function recapImages() {
     recapBox.appendChild(row);
   };
 
-  showRow("위층", [...Array(8).keys()], playerTopIdx);
-  showRow("아래층", [...Array(8).keys()].map(i => i + 8), playerBotIdx);
+  showRow("樓上", [...Array(8).keys()], playerTopIdx);
+  showRow("樓下", [...Array(8).keys()].map(i => i + 8), playerBotIdx);
 }
 
 inputBox.addEventListener("keydown", (e) => {
