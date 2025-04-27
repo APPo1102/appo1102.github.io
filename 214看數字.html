@@ -35,6 +35,13 @@
     <div id="result"></div>
     <button onclick="startGame()" id="retryBtn" style="display:none;">重新開始</button>
   </div>
+  <ul style="list-style: none;padding: 0;">
+    <li>練習說明：</li>
+    <li>開始之後用自己習慣的方式記錄看到的數字</li>
+    <li>輸入後電腦會自動給其他看不見的數字，並跳轉到下排數字</li>
+    <li>兩排數字都出來之後，分成樓上與樓下整理</li>
+    <li>整理完成後，輸入"六個相同"或"十個相同"的數字，即可得到結果</li>
+  </ul>
 <script>
 const SYMBOLS = ["Ⅰ","Ⅱ","Ⅲ","Ⅳ","Ⅴ","Ⅵ","Ⅶ","Ⅷ"];
 const SYMBOL_TO_NUM = { "Ⅰ":"1", "Ⅱ":"2", "Ⅲ":"3", "Ⅳ":"4", "Ⅴ":"5", "Ⅵ":"6", "Ⅶ":"7", "Ⅷ":"8" };
@@ -113,7 +120,7 @@ function startTimer() {
     timerDisplay.textContent = `⏱️ ${timeLeft}`;
     if (timeLeft <= 0) {
       clearInterval(timer);
-      resultBox.innerHTML = "⏰ 暫停！自動處理為錯誤答案！";
+      resultBox.innerHTML = "⏰ 時間超過！機制失敗！";
       inputBox.disabled = true;
       retryBtn.style.display = "inline-block";
     }
@@ -199,7 +206,7 @@ function handleInput(value) {
       chatlog.innerHTML += `<div><strong>電腦（樓下）:</strong> ${formatBrief([...Array(8).keys()].map(i=>i+8), compBotIdx)}</div>`;
       break;
     case 2: summaryTop = value; chatlog.innerHTML += `<div><strong>我（樓上整理）:</strong> ${value}</div>`; break;
-    case 3: summaryBot = value; chatlog.innerHTML += `<div><strong>我（樓下收集）:</strong> ${value}</div>`; break;
+    case 3: summaryBot = value; chatlog.innerHTML += `<div><strong>我（樓下整理）:</strong> ${value}</div>`; break;
     case 4:
       finalAnswer = value;
       judge();
@@ -221,7 +228,7 @@ function judge() {
 
   if (mode === 'open') {
     if (count !== 6) {
-      resultBox.innerHTML = `❌ 答錯了！ （不是6個同樣的數字）`;
+      resultBox.innerHTML = `❌ 答錯了！ （不是6個相同的數字）`;
       return;
     }
     resultBox.innerHTML = finalAnswer === correct
@@ -229,7 +236,7 @@ function judge() {
       : `❌ 答錯了！正確答案是 ${correct}`;
   } else {
     if (count !== 10) {
-      resultBox.innerHTML = `❌ 答錯了！ （不是6個不同的數字）`;
+      resultBox.innerHTML = `❌ 答錯了！ （不是10個相同的數字）`;
       return;
     }
     resultBox.innerHTML = finalAnswer === correct
