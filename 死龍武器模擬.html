@@ -301,11 +301,8 @@
             ],
         ];
 
-        function getRandomOptions() {
+        function processResultItem() {
             let selected = [];
-            let resultDiv = document.getElementById('result');
-            total = 0;
-            resultDiv.innerHTML = '';
 
             while (selected.length < 4) {
                 let randomIndex = Math.floor(Math.random() * options.length);
@@ -314,6 +311,18 @@
                 }
             }
 
+            return selected;
+        }
+
+        function processResultContent(searchCount) {
+            let ed_not_thousandth = searchCount * 20000000;
+            let ed = String(ed_not_thousandth).replace(/(\d)(?=(\d{3})+$)/g, "$1,");
+            document.getElementById('search-count').textContent = `搜尋次數: ${searchCount}次`;
+            document.getElementById('total-count').textContent = `總分: ${total}分`;
+            document.getElementById('ed-cost').textContent = `消耗ED: ${ed}`;
+        }
+
+        function processResultItemValue(resultDiv, selected) {
             selected.forEach(index => {
                 let option = options[index];
                 let randomOptionIndex = Math.floor(Math.random() * option.length);
@@ -327,79 +336,58 @@
                 total += option[randomOptionIndex][1];
                 resultDiv.appendChild(p);
             });
+        }
+
+        function getRandomOptions() {
+            let selected = processResultItem();
+            let resultDiv = document.getElementById('result');
+            total = 0;
+            resultDiv.innerHTML = '';
+
+            processResultItemValue(resultDiv, selected);
 
             clickCount++;
             document.getElementById('click-count').textContent = `轉換次數: ${clickCount}次`;
             document.getElementById('total-count').textContent = `總分: ${total}分`;
         }
+
         function getTotalRandomOptions() {
             total = 0;
             let resultDiv = document.getElementById('result');
+            const upperLimit = parseFloat(document.getElementById('total-upper').value);
             searchCount = 0;
-            console.log(parseInt(document.getElementById('total-upper').value));
-            if (parseInt(document.getElementById('total-upper').value) < 0) {
-                while (parseInt(total) != -20) {
+            console.log(upperLimit);
+            if (upperLimit < 0) {
+                while (parseFloat(total) != -20) {
                     total = 0;
-                    let selected = [];
+                    let selected = processResultItem();
                     resultDiv.innerHTML = '';
 
-                    while (selected.length < 4) {
-                        let randomIndex = Math.floor(Math.random() * options.length);
-                        if (!selected.includes(randomIndex)) {
-                            selected.push(randomIndex);
-                        }
-                    }
-
-                    selected.forEach(index => {
-                        let option = options[index];
-                        let randomOptionIndex = Math.floor(Math.random() * option.length);
-                        let p = document.createElement('div');
-                        if (randomOptionIndex == option.length - 1) {
-                            p.className = "option-slot top";
-                        } else {
-                            p.className = "option-slot";
-                        }
-                        p.textContent = `${option[randomOptionIndex][0]}`;
-                        total += option[randomOptionIndex][1];
-                        resultDiv.appendChild(p);
-                    });
+                    processResultItemValue(resultDiv, selected);
                     searchCount++;
                 }
             } else {
-                while (parseInt(total) <= parseInt(document.getElementById('total-upper').value)) {
-                    total = 0;
-                    let selected = [];
-                    resultDiv.innerHTML = '';
+                processSelected(resultDiv, upperLimit);
+            }
+            processResultContent(searchCount);
+        }
 
-                    while (selected.length < 4) {
-                        let randomIndex = Math.floor(Math.random() * options.length);
-                        if (!selected.includes(randomIndex)) {
-                            selected.push(randomIndex);
-                        }
-                    }
+        async function processSelected(resultDiv, upperLimit) {
+            while (parseFloat(total) <= upperLimit) {
+                total = 0;
+                let selected = processResultItem();
+                resultDiv.innerHTML = '';
 
-                    selected.forEach(index => {
-                        let option = options[index];
-                        let randomOptionIndex = Math.floor(Math.random() * option.length);
-                        let p = document.createElement('div');
-                        if (randomOptionIndex == option.length - 1) {
-                            p.className = "option-slot top";
-                        } else {
-                            p.className = "option-slot";
-                        }
-                        p.textContent = `${option[randomOptionIndex][0]}`;
-                        total += option[randomOptionIndex][1];
-                        resultDiv.appendChild(p);
-                    });
-                    searchCount++;
+                processResultItemValue(resultDiv, selected);
+                searchCount++;
+
+                processResultContent(searchCount);
+
+                if (searchCount % Math.floor(Math.random() * 1000 + 500) == 0) {
+                    await new Promise(resolve => setTimeout(resolve, 0));
                 }
             }
-            let ed_not_thousandth = searchCount * 20000000;
-            let ed = String(ed_not_thousandth).replace(/(\d)(?=(\d{3})+$)/g, "$1,");
-            document.getElementById('search-count').textContent = `搜尋次數: ${searchCount}次`;
-            document.getElementById('total-count').textContent = `總分: ${total}分`;
-            document.getElementById('ed-cost').textContent = `消耗ED: ${ed}`;
-        }        
+        }
     </script>
 </head>
 
