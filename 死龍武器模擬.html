@@ -333,12 +333,15 @@
             document.getElementById('total-count').textContent = `總分: ${total}分`;
         }
         function getTotalRandomOptions() {
+            let upperLimitList = document.getElementById('total-upper').value.split(",").map(item => item.trim());
+            const minUpperLimit = parseFloat(upperLimitList[0])
+            const maxUpperLimit = parseFloat(upperLimitList[1]);
             total = 0;
             let resultDiv = document.getElementById('result');
             searchCount = 0;
-            console.log(parseInt(document.getElementById('total-upper').value));
-            if (parseInt(document.getElementById('total-upper').value) < 0) {
-                while (parseInt(total) != -20) {
+            console.log(upperLimitList);
+            if (minUpperLimit < 0) {
+                while (parseFloat(total) != -20) {
                     total = 0;
                     let selected = [];
                     resultDiv.innerHTML = '';
@@ -366,7 +369,7 @@
                     searchCount++;
                 }
             } else {
-                while (parseInt(total) <= parseInt(document.getElementById('total-upper').value)) {
+                while (parseFloat(total) < minUpperLimit || parseFloat(total) > maxUpperLimit) {
                     total = 0;
                     let selected = [];
                     resultDiv.innerHTML = '';
@@ -417,13 +420,13 @@
         <div id="total-count" class="count-display">總分: 0分</div>
         <div id="click-count" class="count-display">轉換次數: 0次</div>
         <select id="total-upper">
-            <option value="-20">武器分解</option>
-            <option value="0">滾</option>
-            <option value="19">暫用</option>
-            <option value="22">小畢業(能用)</option>
-            <option value="25">畢業(核心模塊時間)</option>
-            <option value="30">大畢業</option>
-            <option value="33">陽壽人</option>
+            <option value="-20, 0">武器分解</option>
+            <option value="1, 18">滾</option>
+            <option value="19, 21">暫用</option>
+            <option value="22, 24">小畢業(能用)</option>
+            <option value="25, 29">畢業(核心模塊時間)</option>
+            <option value="30, 32">大畢業</option>
+            <option value="33, 33.5">陽壽人</option>
         </select>
         <button class="button" onclick="getTotalRandomOptions()">分數測試</button>
         <div id="ed-cost" class="ed-display"></div>
