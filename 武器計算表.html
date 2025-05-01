@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>死龍武器計算表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1e1e1e;
+            color: white;
+        }
+
+        .item-box {
+            width: 450px;
+            margin: 50px auto;
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        @media(min-width:1024px) {
+            .item-box {
+                width: 1024px;
+            }
+        }
+
+        select {
+            background: lightgray;
+            color: black;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        input {
+            background: lightgray;
+            color: black;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: medium;
+        }
+
+        .stone {
+            flex: 0 33%;
+            margin: auto;
+        }
+
+        div {
+            margin: 10px 0;
+        }
+
+        .flex {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stone span,
+        .stone input {
+            flex: 0 50%;
+        }
+
+        .tooltip {
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            margin-left: 9px;
+            width: 320px;
+            visibility: hidden;
+            background-color: lightgray;
+            border-radius: 4px;
+            border: 1px solid #aeaeae;
+            position: absolute;
+            z-index: 1;
+            padding: 5px;
+            margin-top: -15px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: " ";
+            position: absolute;
+            top: 5%;
+            right: 100%;
+            margin-top: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent #aeaeae transparent transparent;
+        }
+
+
+        .tooltip:hover .tooltiptext {
+            color:black;
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+    <script src="jquery.min.js"></script>
+    <script>
+        const job = [
+            "KE", "RM", "IM", "GE",
+            "AS", "OZ", "MM", "LA",
+            "AN", "DAB", "TW", "PR",
+            "FB", "RH", "NI", "RE",
+            "CU", "CE", "CS", "CA",
+            "CC", "FP", "CET", "DIA",
+            "VI", "BR", "SH", "SU",
+            "ES", "FL", "BQ", "AD",
+            "DB", "DN", "MP", "OM",
+            "CT", "IN", "DA", "DE",
+            "TB", "BMA", "MN", "PO",
+            "RI", "BL", "HE", "BI",
+            "EW", "RS", "NL", "TP",
+            "LI", "CEL", "NP", "MO",
+            "GB", "AV", "AC", "MI"
+        ];
+        const job_58 = [
+            "KE", "AS", "LA", "DAB",
+            "PR", "RH", "RE", "CC",
+            "FP", "CET", "DIA", "VI",
+            "SU", "ES", "OM", "CT",
+            "IN", "DE", "TB", "BMA",
+            "MN", "PO", "BL", "BI",
+            "RS", "NP", "AV"
+        ];
+        function weapon_attack_base_1(job) {
+            // formula => ( 0.85 * 580/590 ) - 0.7775 * 400 
+            if (job_58.includes(job)) {
+                return 182;
+            } else {
+                return 190.5;
+            }
+        }
+        function weapon_attack_base_2(job) {
+            // formula =>  (( 0.15 * 580/590 ) - 0.0225 * 400 )
+            if (job_58.includes(job)) {
+                return 78;
+            } else {
+                return 79.5;
+            }
+        }
+        function abyss_weapon_level() {
+            var level = 0;
+            if ($("#enhanced").val() > 11) {
+                level += 12;
+            }
+            if ($("#growth").val() == 2) {
+                level += 10;
+            } else if ($("#growth").val() == 3) {
+                level += 10;
+            } else if ($("#growth").val() == 4) {
+                level += 15;
+            } else if ($("#growth").val() == 5) {
+                level += 20;
+            }
+            return level + stone_level() + parseFloat($("#identification").val());
+        }
+        function dead_dragon_weapon_level() {
+            var level = 0;
+            if ($("#growth").val() == 2) {
+                level += 15;
+            } else if ($("#growth").val() == 3) {
+                level += 20;
+            } else if ($("#growth").val() == 4) {
+                level += 20;
+            } else if ($("#growth").val() == 5) {
+                level += 25;
+            }else if ($("#growth").val() == 6) {
+                level += 25;
+            }
+            return level + stone_level() + parseFloat($("#identification").val());
+        }
+        function weapon_percent() {
+            switch ($("#enhanced").val()) {
+                case "10": return 2.15; break;
+                case "11": return 2.55; break;
+                case "12": return 2.95; break;
+                case "13": return 3.35; break;
+            }
+        }
+        function stone_percent() {
+            var percent = 0;
+            for (var i = 1; i <= 9; i++) {
+                percent += parseFloat($("[name='red_percent_" + i + "']").val()) || 0;
+                percent += parseFloat($("[name='blue_percent_" + i + "']").val()) || 0;
+                percent += parseFloat($("[name='yellow_percent_" + i + "']").val()) || 0;
+            }
+            for (var i = 1; i <= 3; i++) {
+                percent += parseFloat($("[name='big_percent_" + i + "']").val()) || 0;
+            }
+            return percent;
+        }
+        function stone_level() {
+            var level = 0;
+            for (var i = 1; i <= 9; i++) {
+                level += parseFloat($("[name='red_level_" + i + "']").val()) || 0;
+                level += parseFloat($("[name='blue_level_" + i + "']").val()) || 0;
+                level += parseFloat($("[name='yellow_level_" + i + "']").val()) || 0;
+            }
+            for (var i = 1; i <= 3; i++) {
+                level += parseFloat($("[name='big_level_" + i + "']").val()) || 0;
+            }
+            return level;
+        }
+        function abyss_weapon_attack() {
+            var job = $("#job").val();
+            return parseInt((weapon_attack_base_1(job) + weapon_attack_base_2(job) * (134 + abyss_weapon_level()) + 0.5) * weapon_percent());
+        }
+        function dead_dragon_weapon_attack() {
+            var job = $("#job").val();
+            return parseInt((weapon_attack_base_1(job) + weapon_attack_base_2(job) * (149 + dead_dragon_weapon_level()) + 0.5) * weapon_percent());
+        }
+        function abyss_panel_atk(){            
+            return (( abyss_weapon_attack() + parseFloat($("#another_atk").val()) + 1202 ) * ( (100 + parseFloat($("#equipment_atk").val()) + stone_percent()) / 100 )) * ( (100 + parseFloat($("#passive_atk").val())) / 100);
+        }
+        function dead_dragon_panel_atk(){            
+            return (( dead_dragon_weapon_attack() + parseFloat($("#another_atk").val()) + 1202 ) * ( (100 + parseFloat($("#equipment_atk").val()) + stone_percent()) / 100 )) * ( (100 + parseFloat($("#passive_atk").val())) / 100);
+        }
+        $(document).ready(function () {
+            job.forEach(function (name) {
+                $("#job").append('<option value="' + name + '">' + name + '</option>');
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="item-box">
+        <div>
+            <span>填寫暗鬼武器轉換成死龍武器資料</span>
+        </div>
+        <div>
+            <label for="job">職業</label>
+            <select id="job">
+            </select>
+
+            <label for="enhanced">強化</label>
+            <select id="enhanced">
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+            </select>
+
+            <label for="growth">成長</label>
+            <select id="growth">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <button onclick="alert(abyss_panel_atk())">計算暗鬼面板攻擊力</button>
+            <button onclick="alert(dead_dragon_panel_atk())">計算死龍面板攻擊力</button>
+        </div>
+        <div>            
+            <div class="tooltip">
+                <label for="identification">鑑定攻等</label>
+                <input type="number" id="identification" name="identification">                
+            </div>
+        <div class="tooltip">
+            <label for="another_atk">其他攻擊力</label>
+            <input type="number" id="another_atk" name="another_atk">
+            <span class="tooltiptext">
+                需自行計算除武器外的所有攻擊力數字總和
+                包含：共鳴度、左四、賦靈錄、冰裝左五+武器、冰裝飾品+飾品
+            </span>
+        </div>        
+        </div>
+        <div>
+            <div class="tooltip">
+                <label for="equipment_atk">裝備攻擊力%</label>
+                <input type="number" id="equipment_atk" name="equipment_atk">
+                <span class="tooltiptext">
+                    需自行計算角色全部的攻擊力%數總和
+                    魔力石不用算！魔力石不用算！
+                    包含：
+                    武器、裝備、飾品、時裝
+                    鍛造、強化、麻木、大師
+                    賦靈、寵物、噴泉、季票……
+                </span>
+            </div>
+        <div class="tooltip">
+            <label for="passive_atk">被動攻擊力%</label>
+            <input type="number" id="passive_atk" name="passive_atk">
+            <span class="tooltiptext">
+                職業被動15%
+                專精化10%
+                公會技能1.5%
+                如果帶骨斷要-24%
+            </span>
+        </div>        
+        </div>
+        <div class="flex" style="flex-direction: row;flex-wrap: wrap;">
+            <div class="stone">
+                <label>紅色魔力石</label>
+                <table>
+                    <tr>
+                        <th>攻擊力%</th>
+                        <th>攻擊力等級</th>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_1"></td>
+                        <td><input name="red_level_1" value="2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_2"></td>
+                        <td><input name="red_level_2" value="2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_3"></td>
+                        <td><input name="red_level_3" value="2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_4"></td>
+                        <td><input name="red_level_4" value="2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_5"></td>
+                        <td><input name="red_level_5" value="2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_6"></td>
+                        <td><input name="red_level_6" value="2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_7"></td>
+                        <td><input name="red_level_7" value="2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_8"></td>
+                        <td><input name="red_level_8" value="2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="red_percent_9"></td>
+                        <td><input name="red_level_9" value="2"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="stone">
+                <label>藍色魔力石</label>
+                <table>
+                    <tr>
+                        <th>攻擊力%</th>
+                        <th>攻擊力等級</th>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_1" value="2"></td>
+                        <td><input name="blue_level_1"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_2" value="2"></td>
+                        <td><input name="blue_level_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_3" value="2"></td>
+                        <td><input name="blue_level_3"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_4" value="2"></td>
+                        <td><input name="blue_level_4"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_5" value="2"></td>
+                        <td><input name="blue_level_5"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_6" value="2"></td>
+                        <td><input name="blue_level_6"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_7" value="2"></td>
+                        <td><input name="blue_level_7"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_8" value="2"></td>
+                        <td><input name="blue_level_8"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="blue_percent_9" value="2"></td>
+                        <td><input name="blue_level_9"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="stone">
+                <label>黃色魔力石</label>
+                <table>
+                    <tr>
+                        <th>攻擊力%</th>
+                        <th>攻擊力等級</th>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_1" value="1.5"></td>
+                        <td><input name="yellow_level_1"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_2" value="1.5"></td>
+                        <td><input name="yellow_level_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_3" value="1.5"></td>
+                        <td><input name="yellow_level_3"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_4" value="1.5"></td>
+                        <td><input name="yellow_level_4"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_5" value="1.5"></td>
+                        <td><input name="yellow_level_5"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_6" value="1.5"></td>
+                        <td><input name="yellow_level_6"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_7" value="1.5"></td>
+                        <td><input name="yellow_level_7"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_8" value="1.5"></td>
+                        <td><input name="yellow_level_8"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="yellow_percent_9" value="1.5"></td>
+                        <td><input name="yellow_level_9"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="stone">
+                <label>巨型魔力石</label>
+                <table>
+                    <tr>
+                        <th>攻擊力%</th>
+                        <th>攻擊力等級</th>
+                    </tr>
+                    <tr>
+                        <td><input name="big_percent_1" value="6"></td>
+                        <td><input name="big_level_1"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="big_percent_2" value="6"></td>
+                        <td><input name="big_level_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="big_percent_3"></td>
+                        <td><input name="big_level_3" value="8"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>        
+    </div>
+</body>
+
+</html>
