@@ -219,10 +219,10 @@
             return Math.round((weapon_attack_base_1(job) + weapon_attack_base_2(job) * (149 + dead_dragon_weapon_level()) + 0.5) * weapon_percent());
         }
         function abyss_panel_atk(){                 // 深淵武器面板攻擊力          
-            return (( abyss_weapon_attack() + parseFloat($("#another_atk").val()) + 1202 ) * ( (100 + parseFloat($("#equipment_atk").val()) + stone_percent()) / 100 )) * ( (100 + parseFloat($("#passive_atk").val())) / 100);
+            return Math.round((( abyss_weapon_attack() + parseFloat($("#another_atk").val()) + 1202 ) * ( (100 + parseFloat($("#equipment_atk").val()) + stone_percent()) / 100 )) * ( (100 + parseFloat($("#passive_atk").val())) / 100));
         }
         function dead_dragon_panel_atk(){           // 死龍武器面板攻擊力 
-            return (( dead_dragon_weapon_attack() + parseFloat($("#another_atk").val()) + 1202 ) * ( (100 + parseFloat($("#equipment_atk").val()) + stone_percent()) / 100 )) * ( (100 + parseFloat($("#passive_atk").val())) / 100);
+            return Math.round((( dead_dragon_weapon_attack() + parseFloat($("#another_atk").val()) + 1202 ) * ( (100 + parseFloat($("#equipment_atk").val()) + stone_percent()) / 100 )) * ( (100 + parseFloat($("#passive_atk").val())) / 100));
         }
         $(document).ready(function () {
             job.forEach(function (name) {
