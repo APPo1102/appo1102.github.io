@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>死龍武器計算表</title>
     <style>
+        /* 樣式表 */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -104,7 +105,7 @@
     </style>
     <script src="jquery.min.js"></script>
     <script>
-        const job = [
+        const job = [                   //所有職業
             "KE", "RM", "IM", "GE",
             "AS", "OZ", "MM", "LA",
             "AN", "DAB", "TW", "PR",
@@ -120,8 +121,8 @@
             "EW", "RS", "NL", "TP",
             "LI", "CEL", "NP", "MO",
             "GB", "AV", "AC", "MI"
-        ];
-        const job_58 = [
+        ];  
+        const job_58 = [                //基礎580的職業
             "KE", "AS", "LA", "DAB",
             "PR", "RH", "RE", "CC",
             "FP", "CET", "DIA", "VI",
@@ -133,51 +134,51 @@
         function weapon_attack_base_1(job) {
             // formula => ( 0.85 * 580/590 ) - 0.7775 * 400 
             if (job_58.includes(job)) {
-                return 182;
+                return 182;             // base for 580 atk
             } else {
-                return 190.5;
+                return 190.5;           // base for 590 atk
             }
         }
         function weapon_attack_base_2(job) {
             // formula =>  (( 0.15 * 580/590 ) - 0.0225 * 400 )
             if (job_58.includes(job)) {
-                return 78;
+                return 78;              // base for 580 atk
             } else {
-                return 79.5;
+                return 79.5;            // base for 590 atk
             }
         }
-        function abyss_weapon_level() {
+        function abyss_weapon_level() {             // 深淵武器攻等計算
             var level = 0;
             if ($("#enhanced").val() > 11) {
-                level += 12;
+                level += 12;                        // 強化超過11的話 攻等+12
             }
-            if ($("#growth").val() == 2) {
+            if ($("#growth").val() == 2) {          // 成長階段2
                 level += 10;
-            } else if ($("#growth").val() == 3) {
+            } else if ($("#growth").val() == 3) {   // 成長階段3
                 level += 10;
-            } else if ($("#growth").val() == 4) {
+            } else if ($("#growth").val() == 4) {   // 成長階段4
                 level += 15;
-            } else if ($("#growth").val() == 5) {
+            } else if ($("#growth").val() == 5) {   // 成長階段5
                 level += 20;
             }
             return level + stone_level() + parseFloat($("#identification").val());
         }
-        function dead_dragon_weapon_level() {
+        function dead_dragon_weapon_level() {       // 死龍武器攻等計算
             var level = 0;
-            if ($("#growth").val() == 2) {
+            if ($("#growth").val() == 2) {          // 成長階段2
                 level += 15;
-            } else if ($("#growth").val() == 3) {
+            } else if ($("#growth").val() == 3) {   // 成長階段3
                 level += 20;
-            } else if ($("#growth").val() == 4) {
+            } else if ($("#growth").val() == 4) {   // 成長階段4
                 level += 20;
-            } else if ($("#growth").val() == 5) {
+            } else if ($("#growth").val() == 5) {   // 成長階段5
                 level += 25;
-            }else if ($("#growth").val() == 6) {
+            }else if ($("#growth").val() == 6) {    // 成長階段6
                 level += 25;
             }
             return level + stone_level() + parseFloat($("#identification").val());
         }
-        function weapon_percent() {
+        function weapon_percent() {                 // 武器攻擊力%係數
             switch ($("#enhanced").val()) {
                 case "10": return 2.15; break;
                 case "11": return 2.55; break;
@@ -185,7 +186,7 @@
                 case "13": return 3.35; break;
             }
         }
-        function stone_percent() {
+        function stone_percent() {                  // 魔力石攻擊力%
             var percent = 0;
             for (var i = 1; i <= 9; i++) {
                 percent += parseFloat($("[name='red_percent_" + i + "']").val()) || 0;
@@ -197,7 +198,7 @@
             }
             return percent;
         }
-        function stone_level() {
+        function stone_level() {                    // 魔力石攻等
             var level = 0;
             for (var i = 1; i <= 9; i++) {
                 level += parseFloat($("[name='red_level_" + i + "']").val()) || 0;
@@ -209,18 +210,18 @@
             }
             return level;
         }
-        function abyss_weapon_attack() {
+        function abyss_weapon_attack() {            // 深淵武器攻擊力
             var job = $("#job").val();
-            return parseInt((weapon_attack_base_1(job) + weapon_attack_base_2(job) * (134 + abyss_weapon_level()) + 0.5) * weapon_percent());
+            return Math.round((weapon_attack_base_1(job) + weapon_attack_base_2(job) * (134 + abyss_weapon_level()) + 0.5) * weapon_percent());
         }
-        function dead_dragon_weapon_attack() {
+        function dead_dragon_weapon_attack() {      // 死龍武器攻擊力
             var job = $("#job").val();
-            return parseInt((weapon_attack_base_1(job) + weapon_attack_base_2(job) * (149 + dead_dragon_weapon_level()) + 0.5) * weapon_percent());
+            return Math.round((weapon_attack_base_1(job) + weapon_attack_base_2(job) * (149 + dead_dragon_weapon_level()) + 0.5) * weapon_percent());
         }
-        function abyss_panel_atk(){            
+        function abyss_panel_atk(){                 // 深淵武器面板攻擊力          
             return (( abyss_weapon_attack() + parseFloat($("#another_atk").val()) + 1202 ) * ( (100 + parseFloat($("#equipment_atk").val()) + stone_percent()) / 100 )) * ( (100 + parseFloat($("#passive_atk").val())) / 100);
         }
-        function dead_dragon_panel_atk(){            
+        function dead_dragon_panel_atk(){           // 死龍武器面板攻擊力 
             return (( dead_dragon_weapon_attack() + parseFloat($("#another_atk").val()) + 1202 ) * ( (100 + parseFloat($("#equipment_atk").val()) + stone_percent()) / 100 )) * ( (100 + parseFloat($("#passive_atk").val())) / 100);
         }
         $(document).ready(function () {
