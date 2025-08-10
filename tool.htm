@@ -116,8 +116,8 @@
 
     async function fetchData(){
       const [cRes, kRes] = await Promise.all([
-        fetch('./challenge.json'),
-        fetch('./coefficients.json')
+        fetch('challenge.json'),
+        fetch('coefficients.json')
       ]);
       challengeData = await cRes.json();
       coeffData = await kRes.json();
@@ -128,11 +128,11 @@
       }
 
       headers = Object.keys(challengeData[0]);
-      // 假設職業名稱在 C 欄 (第 3 欄)，如果有需要可在 mapping 編輯器更改
-      professionCol = headers[2];
+      // 假設職業名稱在 B 欄 (第 2 欄)，如果有需要可在 mapping 編輯器更改
+      professionCol = headers[1];
 
       // 建構職業 map（用 C21~C61）
-      const start = 20; const end = 61; // slice indices (21~61 rows)
+      const start = 0; const end = 40; // slice indices (0~40 rows)
       const sliceRows = challengeData.slice(start, end);
       sliceRows.forEach(r => { const name = r[professionCol]; if(name) professionRows[name]=r; });
 
