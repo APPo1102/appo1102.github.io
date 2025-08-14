@@ -1,3 +1,155 @@
-.main{
-    background:url("./image/banner");
+.banner{
+    background: url(../image/banner.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 500px;
+    background-position: center;
+    height:50vw;
+}
+
+.menu{
+    background:rgba(255, 255, 255, 0.7);
+}
+
+.nav{
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.nav-link{
+    color:rgba(55, 50, 47, 1);
+}
+
+.position-fixed{
+    position:fixed;
+    min-height: 500px;
+    height: 50vw;
+}
+
+.slide-in {
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.align-left.slide-in {
+  transform: translateX(-30%) scale(0.95);
+}
+.align-right.slide-in {
+  transform: translateX(30%) scale(0.95);
+}
+
+.slide-in.active {
+  opacity: 1;
+  transform: translateX(0%) scale(1);
+}
+
+.about-us h3{
+    font-family: Instrument Sans;
+    font-weight: 500;
+    font-size: 150px;
+    color:rgba(84, 58, 47, 0.5);
+}
+
+.product h3{
+    font-family: Instrument Sans;
+    font-weight: 500;
+    font-size: 150px;
+    color:rgba(84, 58, 47, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.left-line{
+    border-left:3px solid black;
+    padding-left:4vw;
+}
+
+.title{
+    border-left:3px solid transparent;
+    padding-left:4vw;
+    padding-bottom:2em;
+}
+
+.title h4{
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 28px;
+    color:rgba(55, 50, 47, 1);
+}
+
+.section {
+	width: 100%;
+	margin: auto;
+}
+.container {
+	width: 1200px;
+	margin: auto;
+	display: flex;
+	padding-top: 100px;
+	justify-content: space-between;
+}
+.item {
+	position: relative;
+	width: 320px;
+}
+.item a {
+	display: block;
+	color: #ffffff;
+}
+.item:hover a::after {
+	content: '';
+    width: 100%;
+    height: 100%;
+	background-color: rgba(111, 111, 111, 0.4);
+	position: absolute;
+	top: 0;
+	transition: .3s;
+}
+.item .text {
+	position: absolute;
+	top: 10px;    
+	z-index: 1;
+    text-align: right;
+}
+.item .pic {
+	width: 320px;
+}
+.item img {
+	width: 100%;
+	vertical-align: bottom;
+}
+.item h3 {
+    top: 20px;
+    right: 20px;
+	position: relative;	
+}
+.item p {
+	position: relative;
+	top: -60px;
+	opacity: 0;
+}
+.item:hover h3 {	
+	transition: .5s;
+}
+.item:hover p {
+	top: 0;
+	opacity: 1;
+	transition: .5s;
+}
+.circle_arrow {
+	width: 320px;	
+	position: relative;
+	border-radius: 30px;
+    opacity: 0;
+    
+}
+
+.item:hover .circle_arrow {
+	transform: scale(1.1);
+	transition: 0.5s;
+	background-color: #ffffff00;
+    opacity: 1;
 }
