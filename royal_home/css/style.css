@@ -65,7 +65,7 @@
     min-height: 500px;
     height: 50vw;
     z-index: 5;
-    box-shadow: 5px 3px 3px rgb(0 0 0 / 70%);;
+    box-shadow: 5px 3px 3px rgb(0 0 0 / 40%);
 }
 .about-us h3{    
     font-size: 8em;
