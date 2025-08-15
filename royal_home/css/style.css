@@ -42,39 +42,148 @@
   opacity: 1;
   transform: translateX(0%) scale(1);
 }
-
-@media(min-width:1024px) {
-    .position-fixed{
-    position:fixed;
-    min-height: 500px;
-    height: 50vw;
-}
 .about-us h3{
     font-family: Instrument Sans;
     font-weight: 500;
-    font-size: 150px;
     color:rgba(84, 58, 47, 0.5);
 }
 
 .product h3{
     font-family: Instrument Sans;
     font-weight: 500;
-    font-size: 150px;
     color:rgba(84, 58, 47, 0.5);
 }
 
 .product h5{
     font-family: Inter;
     font-weight: 500;
-    font-size: 28px;
     color:rgba(55, 50, 47, 1);
+}
+@media(min-width:1024px) {
+    .position-fixed{
+    position:fixed;
+    min-height: 500px;
+    height: 50vw;
+}
+.about-us h3{    
+    font-size: 150px;
+}
+
+.product h3{
+    font-size: 150px;
+}
+
+.product h5{
+    font-size: 28px;
 }
 
 .custom-card{
 	width: 1200px;
 
 }
+.mobile{
+    display:none !important;
 }
+
+}
+@media(max-width:1024px) {
+    .position-fixed{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        align-items: center;
+    }
+    .pc{
+        display: none;
+    }
+    .custom-card{
+        flex-direction: column;
+    }
+    .item{
+        width: 100% !important;
+        height: 150px;
+    }
+    .item .pic{
+        height:150px;
+    }
+    .item img{
+        height:150px;
+        object-fit: cover;
+    }
+    .item .text{
+        top: 40% !important;
+        right: 40% !important;
+    }
+    .about-us h3{    
+    font-size: 40px;
+    text-align: left;
+    margin:0;
+}
+.title{
+    padding:0 !important;
+}
+.about-us{
+    padding: 0;
+    
+}
+
+.product h3{
+    font-size: 40px;
+    margin:0;
+}
+
+.product h5{
+    font-size: 28px;
+}
+.row{
+    padding:5px 30px !important;
+}
+
+/* 隱藏 checkbox */
+input {
+  display: none;
+}
+
+/* 漢堡按鈕 */
+label {
+  float: right;
+  line-height: 50px;
+}
+  label img {
+    width: 30px;   
+    vertical-align: middle;
+  }
+}
+input:checked ~ .custom-menu {
+  max-height: 300px;
+}
+.custom-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: .5s; /* 動畫秒數 */
+}
+/* 選單列 */
+.custom-menu {
+  clear: both;
+  background: #fff;
+}
+.custom-menu li {
+    text-align: center;
+    border-bottom: 1px solid #efefef;
+}
+.custom-menu li a {
+      display: block;
+      padding: 10px 0;
+      font-size: 18px;
+      color: #5d5d5d;
+}
+.custom-menu li a:hover{
+        background: #5d5d5d;
+        color: #fff;
+      }
+    
+
 html {
   scroll-behavior: smooth;
 }
@@ -126,8 +235,13 @@ html {
 .item .text {
 	position: absolute;
 	top: 20px;        
-    right: 20px;
+    right: 20px;    
 	z-index: 1;
+}
+.item .text h3{
+    font-weight: 800;
+    font-family: Inter;
+    letter-spacing: 5px;
 }
 .item .pic {
 	width: 100%;
