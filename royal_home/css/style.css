@@ -32,10 +32,10 @@
   transform: translateX(30%) scale(0.95);
 }
 .align-bottom.slide-in {
-  transform: translateY(-30%) scale(0.95);
+  transform: translateY(30%) scale(0.95);
 }
 .align-top.slide-in {
-  transform: translateY(30%) scale(0.95);
+  transform: translateY(-30%) scale(0.95);
 }
 
 .slide-in.active {
@@ -64,13 +64,15 @@
     position:fixed;
     min-height: 500px;
     height: 50vw;
+    z-index: 5;
+    box-shadow: 5px 3px 3px rgb(0 0 0 / 70%);;
 }
 .about-us h3{    
-    font-size: 150px;
+    font-size: 8em;
 }
 
 .product h3{
-    font-size: 150px;
+    font-size: 8em;
 }
 
 .product h5{
@@ -93,6 +95,8 @@
         left:0;
         width:100%;
         align-items: center;
+        z-index: 5;        
+        flex-wrap: wrap;
     }
     .pc{
         display: none;
@@ -154,6 +158,9 @@ label {
     width: 30px;   
     vertical-align: middle;
   }
+  .pd-mobile{
+    padding: 0 !important;
+  }
 }
 input:checked ~ .custom-menu {
   max-height: 300px;
@@ -188,9 +195,48 @@ html {
   scroll-behavior: smooth;
 }
 
-.left-line{
+.left-line.active{
     border-left:3px solid black;
     padding-left:4vw;
+    animation: changeBorders 3s linear;
+}
+@keyframes changeBorders {
+  0% {
+    border: solid 3px transparent;
+    border-left: solid 3px black;
+  }
+  100% {
+    border: solid 3px transparent;
+    border-left: solid 3px black;
+  }
+}
+.left-line.active::after {
+  width: 3px;
+  background-color: white;
+  height: 0px;
+  position: absolute;
+  bottom: 0;
+  left: -3px;
+  z-index: 1;
+  animation: movedown 3s linear;
+  animation-fill-mode: forwards;
+  content: '';
+  display: inline-block;
+}
+
+@keyframes movedown {
+  0% {
+    height: calc(100% + 10px);
+    width: 3px;
+    bottom: -3px;
+    left: -3px;
+  }
+  100% {
+    height: 3px;
+    width: 3px;
+    bottom: -3px;
+    left: -3px;
+  }  
 }
 
 .title{
@@ -305,4 +351,19 @@ html {
 }
 .white-space{
     padding:10% !important;
+}
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 60px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */  
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+  background:transparent;
 }

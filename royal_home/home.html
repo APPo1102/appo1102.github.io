@@ -38,12 +38,12 @@
 	</div>
 	<div class="mobile">
 		<div class="menu d-flex position-fixed">
-			<a href="#" style="padding-left: 10px;">
+			<a href="#" style="padding-left: 10px;width:30%;">
 				<img width="100" height="50" src="image/icon.png"/>
 			</a>
-			<label for="switch"><img src="image/burger.png"></label><!--漢堡按鈕圖示-->
+			<label for="switch" style="width:70%;padding-right: 15px;text-align: right;"><img src="image/burger.png"></label><!--漢堡按鈕圖示-->
   			<input type="checkbox" id="switch">
-			<ul class="nav flex-column custom-menu">
+			<ul class="nav flex-column custom-menu" style="width:100%">
 				<li class="nav-item">
 					<a class="nav-link" href="#about">關於我們</a>
 				</li>
@@ -77,22 +77,22 @@
 	<div class="row align-bottom slide-in">
 		<div class="col-md-7">
 		</div>
-		<div class="col-md-4 left-line pc">			
+		<div class="col-md-4 line pc">			
 			<p>御櫥名品專注於打造高品質的浴櫃與廚具櫥櫃，所有產品堅持全程台灣製造，從板材貼合到細節加工，皆由在地專業團隊用心完成。</p>
 			<p>我們選用零甲醛、防水、可再生的發泡板作為櫥櫃主體，搭配防刮、防污的美耐皿飾面，不僅耐用好清潔，更兼顧環保與居家安全。</p>
 			<p>每一件產品，都是對生活品質的承諾；每一道工序，都是對職人工藝的堅持。御櫥名品相信，好的設計不只是外觀，更是貼近日常、經得起時間考驗的使用體驗。</p>
 			<p class="m-0">我們不只是製作櫥櫃，更致力於打造一個安心、美感與機能兼具的家居空間。選擇御櫥名品，就是選擇信賴與品質。</p>
 		</div>
-		<div class="col-md-4 mobile">			
+		<div class="col-md-4 mobile p-0">			
 			<p>御櫥名品專注於打造高品質的浴櫃與廚具櫥櫃，所有產品堅持全程台灣製造，從板材貼合到細節加工，皆由在地專業團隊用心完成。</p>
 			<p>我們選用零甲醛、防水、可再生的發泡板作為櫥櫃主體，搭配防刮、防污的美耐皿飾面，不僅耐用好清潔，更兼顧環保與居家安全。</p>
 			<p>每一件產品，都是對生活品質的承諾；每一道工序，都是對職人工藝的堅持。御櫥名品相信，好的設計不只是外觀，更是貼近日常、經得起時間考驗的使用體驗。</p>
 			<p class="m-0">我們不只是製作櫥櫃，更致力於打造一個安心、美感與機能兼具的家居空間。選擇御櫥名品，就是選擇信賴與品質。</p>
 		</div>
 		<div class="col-md-1"></div>
-		<div class="col-md-1 left-line min-height mobile"></div>
+		<div class="col-md-1 line min-height mobile"></div>
 	</div>
-	<div class="row align-bottom slide-in p-5">
+	<div id="product" class="row align-bottom slide-in p-5">
 		<div class="col-md-5">
 		</div>
 		<div class="col-md-7 product">
@@ -104,12 +104,12 @@
 			</h5>
 		</div>
 	</div>	
-	<div class="row align-bottom slide-in">
+	<div class="row align-bottom slide-in pd-mobile">
 		<div class="col-md-4">
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-7 pd-mobile">
 			<section>
-    <div class="container custom-card">
+    <div class="container custom-card pd-mobile">
         <div class="item">
             <a href="#">
                 <div class="pic">
@@ -151,7 +151,7 @@
 	</div>
 	<div class="row align-bottom slide-in pc">
 		<div class="col-md-4"></div>
-		<div class="col-md-8 left-line min-height"></div>
+		<div class="col-md-8 line min-height"></div>
 	</div>
 	<div id="contact" class="row align-bottom slide-in">
 		<div class="col-md-3"></div>
@@ -175,6 +175,7 @@
 		</div>
 	</div>
 </div>    
+<button onclick="topFunction()" id="myBtn" title="Go to top"><img width="30px" src="image/top.png"></button>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
