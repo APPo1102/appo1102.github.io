@@ -20,7 +20,7 @@ function scrollHandler() {
  * debounce function
  * 讓某函式在一定時間內只能觸發一次，目的是提升效能
  **/
-function debounce(func, wait = 1, immediate = true) {
+function debounce(func, wait = 0, immediate = true) {
   var timeout;
   return function () {
     var context = this,

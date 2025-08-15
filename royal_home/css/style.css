@@ -20,16 +20,9 @@
 .nav-link{
     color:rgba(55, 50, 47, 1);
 }
-
-.position-fixed{
-    position:fixed;
-    min-height: 500px;
-    height: 50vw;
-}
-
 .slide-in {
   opacity: 0;
-  transition: all 0.5s;
+  transition: all 2s;
 }
 
 .align-left.slide-in {
@@ -38,12 +31,24 @@
 .align-right.slide-in {
   transform: translateX(30%) scale(0.95);
 }
+.align-bottom.slide-in {
+  transform: translateY(-30%) scale(0.95);
+}
+.align-top.slide-in {
+  transform: translateY(30%) scale(0.95);
+}
 
 .slide-in.active {
   opacity: 1;
   transform: translateX(0%) scale(1);
 }
 
+@media(min-width:1024px) {
+    .position-fixed{
+    position:fixed;
+    min-height: 500px;
+    height: 50vw;
+}
 .about-us h3{
     font-family: Instrument Sans;
     font-weight: 500;
@@ -58,6 +63,18 @@
     color:rgba(84, 58, 47, 0.5);
 }
 
+.product h5{
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 28px;
+    color:rgba(55, 50, 47, 1);
+}
+
+.custom-card{
+	width: 1200px;
+
+}
+}
 html {
   scroll-behavior: smooth;
 }
@@ -70,7 +87,7 @@ html {
 .title{
     border-left:3px solid transparent;
     padding-left:4vw;
-    padding-bottom:2em;
+    /*padding-bottom:2em;*/
 }
 
 .title h4{
@@ -84,16 +101,14 @@ html {
 	width: 100%;
 	margin: auto;
 }
-.container {
-	width: 1200px;
+.custom-card{
 	margin: auto;
 	display: flex;
-	padding-top: 100px;
 	justify-content: space-between;
 }
 .item {
 	position: relative;
-	width: 320px;
+	width: 30%;
 }
 .item a {
 	display: block;
@@ -110,20 +125,18 @@ html {
 }
 .item .text {
 	position: absolute;
-	top: 10px;    
+	top: 20px;        
+    right: 20px;
 	z-index: 1;
-    text-align: right;
 }
 .item .pic {
-	width: 320px;
+	width: 100%;
 }
 .item img {
 	width: 100%;
 	vertical-align: bottom;
 }
-.item h3 {
-    top: 20px;
-    right: 20px;
+.item h3 {   
 	position: relative;	
 }
 .item p {
@@ -140,16 +153,42 @@ html {
 	transition: .5s;
 }
 .circle_arrow {
-	width: 320px;	
-	position: relative;
+	width: 80%;
+    height: 5%;
+	position: absolute;
+    display: flex;
 	border-radius: 30px;
+    bottom:20px;
     opacity: 0;
-    
+    text-align: center;
+    left:10%;
 }
 
 .item:hover .circle_arrow {
 	transform: scale(1.1);
 	transition: 0.5s;
-	background-color: #ffffff00;
+	border: 1px solid white;
     opacity: 1;
+    z-index: 1;
+}
+.item:hover .circle_arrow span{
+    margin:auto;
+}
+
+
+.min-height{
+    min-height:360px;
+}
+.address{
+    padding-right:5%;
+}
+.footer{
+    background: rgba(182, 173, 157, 1);
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 18px;
+    color:rgba(255, 255, 255, 1);
+}
+.white-space{
+    padding:10% !important;
 }
