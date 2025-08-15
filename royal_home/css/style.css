@@ -368,3 +368,11 @@ html {
   font-size: 18px; /* Increase font size */
   background:transparent;
 }
+
+.col-md-2_5{
+    -webkit-box-flex: 0;
+        -webkit-flex: 0 0 20%;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+}
