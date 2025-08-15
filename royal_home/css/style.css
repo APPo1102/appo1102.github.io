@@ -64,7 +64,7 @@
     .position-fixed{
     position:fixed;
     min-height: 500px;
-    height: 50vw;
+    height: 100vh;
     z-index: 5;
     box-shadow: 5px 3px 3px rgb(0 0 0 / 40%);
 }
@@ -349,6 +349,7 @@ html {
     font-weight: 500;
     font-size: 18px;
     color:rgba(255, 255, 255, 1);
+    z-index: 8;
 }
 .white-space{
     padding:10% !important;
