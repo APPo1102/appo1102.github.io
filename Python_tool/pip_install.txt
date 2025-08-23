@@ -1,2 +1,6 @@
 1. pytube
 pip install pytube
+pip install pytubefix
+2.translate
+pip install translate
+pip install --upgrade translators

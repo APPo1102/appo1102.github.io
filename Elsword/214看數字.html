@@ -8,7 +8,7 @@
     #game { width: 1280px; margin: auto; text-align: center; position: relative; }
     #modeDisplay { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
     #timer { position: absolute; top: 10px; right: 20px; font-size: 22px; color: #ff6666; }
-    .platform-group { display: flex; justify-content: center; margin: 10px; gap: 30px; flex-wrap: wrap; }
+    .platform-group { display: flex; justify-content: center; margin: 10px; gap: 70px; flex-wrap: wrap; }
     .pair { display: flex; gap: 10px; }
     .platform { width: 80px; height: 80px; border: 2px solid #555; background-color: #222; display: flex; align-items: center; justify-content: center; }
     .platform img { width: 70px; height: 70px; }
@@ -41,7 +41,7 @@
     <li>開始之後用自己習慣的方式記錄看到的數字</li>
     <li>輸入後電腦會自動給其他看不見的數字，並跳轉到下排數字</li>
     <li>兩排數字都出來之後，分成樓上與樓下整理</li>
-    <li>整理完成後，輸入"六個相同"或"十個相同"的數字，即可得到結果</li>
+    <li>整理完成後，輸入"六個相同"的數字，即可得到結果</li>
   </ul>
   </div>
 <script>
@@ -71,46 +71,36 @@ function shuffle(array) {
 }
 
 function getValidSplit() {
-  const invalid = [[0,8],[1,7],[7,1],[8,0]];
+  const invalid = [[0,6],[1,5],[5,1],[6,0]];
   let t, b;
   do {
-    t = Math.floor(Math.random() * 9);
-    b = 8 - t;
+    t = Math.floor(Math.random() * 6);
+    b = 6 - t;
   } while (invalid.some(p => p[0] === t && p[1] === b));
   return [t, b];
 }
 
 function assignVisibility() {
   const [topCount, botCount] = getValidSplit();
-  const shuffled = shuffle(Array.from({ length: 16 }, (_, i) => i));
-  playerTopIdx = shuffled.filter(i => i < 8).slice(0, topCount);
-  playerBotIdx = shuffled.filter(i => i >= 8).slice(0, botCount);
-  compTopIdx = [...Array(8).keys()].filter(i => !playerTopIdx.includes(i));
-  compBotIdx = [...Array(8).keys()].map(i => i + 8).filter(i => !playerBotIdx.includes(i));
+  const shuffled = shuffle(Array.from({ length: 12 }, (_, i) => i));
+  playerTopIdx = shuffled.filter(i => i < 6).slice(0, topCount);
+  playerBotIdx = shuffled.filter(i => i >= 6).slice(0, botCount);
+  compTopIdx = [...Array(6).keys()].filter(i => !playerTopIdx.includes(i));
+  compBotIdx = [...Array(6).keys()].map(i => i + 6).filter(i => !playerBotIdx.includes(i));
 }
 
 function generateSymbols() {
-  const main = SYMBOLS[Math.floor(Math.random() * 8)];
+  const main = SYMBOLS[Math.floor(Math.random() * 6)];
   const others = SYMBOLS.filter(s => s !== main);
   let base;
+  
+  const different = others.slice();
+  const filler = different.length >= 6
+    ? shuffle(different).slice(0, 6)
+    : shuffle([...different, ...shuffle(SYMBOLS.filter(s => s !== main))]).slice(0, 6);
+    base = Array(6).fill(main).concat(filler);  
 
-  if (mode === 'open') {
-    // 뜬눈: 같은 숫자 6개 + 다른 숫자 10개 (main 제외하고 중복 없이)
-    const different = others.slice(); // SYMBOLS - main
-    const filler = different.length >= 10
-      ? shuffle(different).slice(0, 10)
-      : shuffle([...different, ...shuffle(SYMBOLS.filter(s => s !== main))]).slice(0, 10);
-    base = Array(6).fill(main).concat(filler);
-  } else {
-    // 감은눈: 같은 숫자 10개 + 다른 6개 (main 제외하고)
-    const different = others.slice();
-    const filler = different.length >= 6
-      ? shuffle(different).slice(0, 6)
-      : shuffle([...different, ...shuffle(SYMBOLS.filter(s => s !== main))]).slice(0, 6);
-    base = Array(10).fill(main).concat(filler);
-  }
-
-  symbols = shuffle(base.slice(0, 16));
+  symbols = shuffle(base.slice(0, 12));
 }
 
 function startTimer() {
@@ -150,8 +140,8 @@ function startGame() {
   generateSymbols();
   assignVisibility();
 
-  renderRow(topRow, [...Array(8).keys()], playerTopIdx);
-  renderRow(bottomRow, [...Array(8).keys()].map(i => i + 8), playerBotIdx);
+  renderRow(topRow, [...Array(6).keys()], playerTopIdx,[2,1,1,2]);
+  renderRow(bottomRow, [...Array(6).keys()].map(i => i + 6), playerBotIdx,[1,2,2,1]);
 
   topRow.style.display = "flex";
   bottomRow.style.display = "none";
@@ -159,11 +149,11 @@ function startGame() {
   startTimer();
 }
 function renderRow(row, indices, visibleSet) {
-  row.innerHTML = '';
-  for (let i = 0; i < indices.length; i += 2) {
+  row.innerHTML = ''; 
+  for (let i = 0; i < indices.length; i+=3 ) {
     const pair = document.createElement("div");
     pair.className = "pair";
-    for (let j = 0; j < 2; j++) {
+    for (let j = 0; j < 3; j++) {
       const idx = indices[i + j];
       if (typeof idx !== "number" || idx >= symbols.length) continue;
       const div = document.createElement("div");
@@ -190,7 +180,7 @@ function updatePlaceholder() {
 
 function formatBrief(indices, visibleSet) {
   return indices.map((idx, i) =>
-    (visibleSet.includes(idx) ? SYMBOL_TO_NUM[symbols[idx]] : '-') + ((i % 2 === 1) ? ' ' : '')
+    (visibleSet.includes(idx) ? SYMBOL_TO_NUM[symbols[idx]] : '-') + ((i === 2) ? ' ' : '')
   ).join('').trim();
 }
 
@@ -200,12 +190,12 @@ function handleInput(value) {
     case 0:
       playerTopBrief = value;
       chatlog.innerHTML += `<div><strong>我（樓上）:</strong> ${value}</div>`;
-      chatlog.innerHTML += `<div><strong>電腦（樓上）:</strong> ${formatBrief([...Array(8).keys()], compTopIdx)}</div>`;
+      chatlog.innerHTML += `<div><strong>電腦（樓上）:</strong> ${formatBrief([...Array(6).keys()], compTopIdx)}</div>`;
       topRow.style.display = "none"; bottomRow.style.display = "flex"; break;
     case 1:
       playerBotBrief = value;
       chatlog.innerHTML += `<div><strong>我（樓下）:</strong> ${value}</div>`;
-      chatlog.innerHTML += `<div><strong>電腦（樓下）:</strong> ${formatBrief([...Array(8).keys()].map(i=>i+8), compBotIdx)}</div>`;
+      chatlog.innerHTML += `<div><strong>電腦（樓下）:</strong> ${formatBrief([...Array(6).keys()].map(i=>i+6), compBotIdx)}</div>`;
       break;
     case 2: summaryTop = value; chatlog.innerHTML += `<div><strong>我（樓上整理）:</strong> ${value}</div>`; break;
     case 3: summaryBot = value; chatlog.innerHTML += `<div><strong>我（樓下整理）:</strong> ${value}</div>`; break;
@@ -221,7 +211,7 @@ function handleInput(value) {
 
 function judge() {
   const counts = {};
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < 12; i++) {
     const num = SYMBOL_TO_NUM[symbols[i]];
     counts[num] = (counts[num] || 0) + 1;
   }
@@ -237,7 +227,7 @@ function judge() {
       ? `✅ 正確答案（睜眼）! ${correct}`
       : `❌ 答錯了！正確答案是 ${correct}`;
   } else {
-    if (count !== 10) {
+    if (count !== 6) {
       resultBox.innerHTML = `❌ 答錯了！ （不是10個相同的數字）`;
       return;
     }
@@ -252,7 +242,7 @@ function recapImages() {
   recapBox.innerHTML = "<h3>🔁 檢查答案：我看到的數字/電腦數字</h3>";
 
   const counts = {};
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < 12; i++) {
     const num = SYMBOL_TO_NUM[symbols[i]];
     counts[num] = (counts[num] || 0) + 1;
   }
@@ -282,8 +272,8 @@ function recapImages() {
     recapBox.appendChild(row);
   };
 
-  showRow("樓上", [...Array(8).keys()], playerTopIdx);
-  showRow("樓下", [...Array(8).keys()].map(i => i + 8), playerBotIdx);
+  showRow("樓上", [...Array(6).keys()], playerTopIdx);
+  showRow("樓下", [...Array(6).keys()].map(i => i + 6), playerBotIdx);
 }
 
 inputBox.addEventListener("keydown", (e) => {
