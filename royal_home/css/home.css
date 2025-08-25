@@ -6,17 +6,14 @@
     background-position: center;
     height:50vw;
 }
-
 .menu{
     background:rgba(237, 234, 230, 0.7);
 }
-
 .nav{
     font-family: Inter;
     font-weight: 500;
     font-size: 24px;
 }
-
 .nav-link{
     color:rgba(55, 50, 47, 1);
     font-size: 20px;
@@ -25,7 +22,6 @@
   opacity: 0;
   transition: all 2s;
 }
-
 .align-left.slide-in {
   transform: translateX(-30%) scale(0.95);
 }
@@ -38,7 +34,6 @@
 .align-top.slide-in {
   transform: translateY(-30%) scale(0.95);
 }
-
 .slide-in.active {
   opacity: 1;
   transform: translateX(0%) scale(1);
@@ -48,48 +43,48 @@
     font-weight: 500;
     color:rgba(84, 58, 47, 0.5);
 }
-
 .product h3{
     font-family: Instrument Sans;
     font-weight: 500;
     color:rgba(84, 58, 47, 0.5);
 }
-
 .product h5{
     font-family: Inter;
     font-weight: 500;
     color:rgba(55, 50, 47, 1);
 }
 @media(min-width:1024px) {
-    .position-fixed{
+  .position-fixed{
     position:fixed;
     min-height: 500px;
     height: 100vh;
     z-index: 5;
     box-shadow: 5px 3px 3px rgb(0 0 0 / 40%);
-}
-.about-us h3{    
+  }
+  .about-us h3{    
     font-size: 8em;
-}
-
-.product h3{
+  }
+  .product h3{
     font-size: 8em;
-}
-
-.product h5{
-    font-size: 28px;
-}
-
-.custom-card{
-	width: 1200px;
-
-}
-.mobile{
+  }
+  .product h5{
+    font-size: 24px;
+    letter-spacing: 5px;
+  }
+  .custom-card{
+	  width: 1200px;
+  }
+  .mobile{
     display:none !important;
-}
+  }
 
 }
 @media(max-width:1024px) {
+    .footer .d-flex{
+      flex-direction: column;
+      white-space: nowrap;
+      padding: 0;
+    }
     .position-fixed{
         position:fixed;
         top:0;
@@ -183,7 +178,8 @@ input:checked ~ .custom-menu {
 .custom-menu li a {
       display: block;
       padding: 10px 0;
-      font-size: 18px;
+      font-size: 14px;
+      letter-spacing: 5px;
       color: #5d5d5d;
 }
 .custom-menu li a:hover{
@@ -347,7 +343,7 @@ html {
     background: rgba(182, 173, 157, 1);
     font-family: Inter;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 16px;
     color:rgba(255, 255, 255, 1);
     z-index: 8;
     position: relative;

@@ -109,6 +109,11 @@
 
 }
 @media(max-width:1024px) {
+  .footer .d-flex{
+      flex-direction: column;
+      white-space: nowrap;
+      padding: 0;
+    }
     .position-fixed{
         position:fixed;
         top:0;
@@ -202,7 +207,8 @@ input:checked ~ .custom-menu {
 .custom-menu li a {
       display: block;
       padding: 10px 0;
-      font-size: 18px;
+      font-size: 14px;
+      letter-spacing: 5px;
       color: #5d5d5d;
 }
 .custom-menu li a:hover{
