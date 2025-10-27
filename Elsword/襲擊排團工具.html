@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隊伍配置分析工具</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/select2.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">隊伍配置分析工具</h1>
+        
+        <div class="team-section">
+            <h2 class="team-title">A隊伍</h2>
+            
+            <div class="team-config">
+                <div class="stats-header">                    
+                    <div class="team-members" id="teamA"></div>
+                    <div id="tabs-A">
+                    <ul>
+                        <li><a href="#tabs-A-1">物理</a></li>
+                        <li><a href="#tabs-A-2">魔法</a></li>
+                        <li><a href="#tabs-A-3">全部</a></li>
+                    </ul>
+                        <div id="tabs-A-1" class="stats-labels-A">                        
+                            <span class="physics">物理Buff</span>
+                            <span class="physics">物理DeBuff</span>
+                            <span class="physics">物理破防</span>
+                            <span class="physics">物理總增益</span>
+                            <span class="hidden">魔法Buff</span>
+                            <span class="hidden">魔法DeBuff</span>
+                            <span class="hidden">魔法破防</span>
+                            <span class="hidden">魔法總增益</span>
+                            <span>護盾</span>
+                            <span>降攻</span>
+                            <span>冷卻加速(秒)</span>
+                            <span>減少冷卻(秒)</span>
+                            <span class="hidden">降抗</span>
+                            <span class="hidden">每秒回魔</span>
+                            <span>乘算動速</span>
+                            <span>加算動速</span>
+                            <span class="hidden">扛吼/擋傷</span>
+                            <span class="hidden">消火/解DeBuff</span>
+                            <span class="hidden">霸體</span>                                               
+                        </div>
+                        <div id="tabs-A-2" class="stats-labels-A">                        
+                            <span class="hidden">物理Buff</span>
+                            <span class="hidden">物理DeBuff</span>
+                            <span class="hidden">物理破防</span>
+                            <span class="hidden">物理總增益</span>
+                            <span class="magical">魔法Buff</span>
+                            <span class="magical">魔法DeBuff</span>
+                            <span class="magical">魔法破防</span>
+                            <span class="magical">魔法總增益</span>
+                            <span>護盾</span>
+                            <span>降攻</span>
+                            <span>冷卻加速(秒)</span>
+                            <span>減少冷卻(秒)</span>
+                            <span class="hidden">降抗</span>
+                            <span class="hidden">每秒回魔</span>
+                            <span>乘算動速</span>
+                            <span>加算動速</span>
+                            <span class="hidden">扛吼/擋傷</span>
+                            <span class="hidden">消火/解DeBuff</span>
+                            <span class="hidden">霸體</span>                        
+                        </div>
+                        <div id="tabs-A-3" class="stats-labels-A">                        
+                            <span class="physics">物理Buff</span>
+                            <span class="physics">物理DeBuff</span>
+                            <span class="physics">物理破防</span>
+                            <span class="physics">物理總增益</span>
+                            <span class="magical">魔法Buff</span>
+                            <span class="magical">魔法DeBuff</span>
+                            <span class="magical">魔法破防</span>
+                            <span class="magical">魔法總增益</span>
+                            <span>護盾</span>
+                            <span>降攻</span>
+                            <span>冷卻加速(秒)</span>
+                            <span>減少冷卻(秒)</span>
+                            <span class="detail">降抗</span>
+                            <span class="detail">每秒回魔</span>
+                            <span>乘算動速</span>
+                            <span>加算動速</span>
+                            <span class="detail">扛吼/擋傷</span>
+                            <span class="detail">消火/解DeBuff</span>
+                            <span class="detail">霸體</span>                        
+                        </div>                    
+                </div>
+                </div>
+            </div>
+            
+            <div class="team-settings">
+                <h3>額外設定</h3>
+                <div class="settings-container">
+                    <div class="settings-row-1">
+                        <div class="setting-item">
+                            <label>動速褲/鞋:</label>
+                            <input type="number" id="speed-gear-A" placeholder="0" step="0.1" min="0" value="7.5">
+                            <span class="unit">%</span>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label>技傷/暴傷:</label>
+                            <select id="damage-type-A">
+                                <option value="" disabled>選擇</option>
+                                <option value="A" selected="selected">百億綠+百億紅</option>
+                                <option value="B">百億綠</option>
+                                <option value="C">百億紅</option>
+                                <option value="D">四綠/手</option>
+                                <option value="E">二綠/手</option>
+                                <option value="F">綠上</option>
+                                <option value="G">無</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>百億綠手數值（總和*0.8後）:</label>
+                            <input type="number" id="essascor-A" placeholder="0" step="0.01" min="0" value="8.4">
+                            <span class="unit">%</span>
+                        </div>
+                        <div class="setting-item">
+                            <input type="checkbox" id="green-beast-A" checked>
+                            <label for="green-beast-A">聖獸-綠</label>
+                        </div>
+
+                        <div class="setting-item">
+                            <input type="checkbox" id="title-19-4-A" checked>
+                            <label for="title-19-4-A">19-4稱號</label>
+                        </div>
+
+                        <div class="setting-item">
+                            <input type="checkbox" id="dream-incense-A" checked>
+                            <label for="dream-incense-A">夢緣香爐/命運的預言書</label>
+                        </div>
+
+                        <div class="setting-item">
+                            <input type="checkbox" id="dark-badge-A" checked>
+                            <label for="dark-badge-A">暗鬼徽章/Type-Q女王的勳章</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="ice-crystal-A" checked>
+                            <label for="ice-crystal-A">冰晶露</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="wind-ball-A" checked>
+                            <label for="wind-ball-A">風球</label>
+                        </div>
+
+                        <div class="setting-item">
+                            <input type="checkbox" id="armor-pen-shoes-A" disabled>
+                            <label for="armor-pen-shoes-A">2+破防鞋:</label>
+                            <span class="prefix">+</span>
+                            <input type="number" id="armor-pen-value-A" placeholder="0" step="1" min="0" disabled>
+                        </div>     
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="death-title-A" disabled>
+                            <label for="death-title-A">死神稱號</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="armor-pen-shoes-percent-A" disabled>
+                            <label for="armor-pen-shoes-percent-A">2.5%破防鞋</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="dark-shadow-A" disabled>
+                            <label for="dark-shadow-A">侵暗之影</label>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-summary">
+                <h3>A隊伍總計</h3>
+                <div id="teamA-summary" class="summary-stats"></div>
+            </div>
+        </div>
+        
+        <div class="team-section">
+            <h2 class="team-title">B隊伍</h2>
+            
+            <div class="team-config">
+                <div class="stats-header">                    
+                    <div class="team-members" id="teamB"></div>
+                    <div id="tabs-B">
+                    <ul>
+                        <li><a href="#tabs-B-1">物理</a></li>
+                        <li><a href="#tabs-B-2">魔法</a></li>
+                        <li><a href="#tabs-B-3">全部</a></li>
+                    </ul>
+                        <div id="tabs-B-1" class="stats-labels-B">                        
+                            <span class="physics">物理Buff</span>
+                            <span class="physics">物理DeBuff</span>
+                            <span class="physics">物理破防</span>
+                            <span class="physics">物理總增益</span>
+                            <span class="hidden">魔法Buff</span>
+                            <span class="hidden">魔法DeBuff</span>
+                            <span class="hidden">魔法破防</span>
+                            <span class="hidden">魔法總增益</span>
+                            <span>護盾</span>
+                            <span>降攻</span>
+                            <span>冷卻加速(秒)</span>
+                            <span>減少冷卻(秒)</span>
+                            <span class="hidden">降抗</span>
+                            <span class="hidden">每秒回魔</span>
+                            <span>乘算動速</span>
+                            <span>加算動速</span>
+                            <span class="hidden">扛吼/擋傷</span>
+                            <span class="hidden">消火/解DeBuff</span>
+                            <span class="hidden">霸體</span>                                               
+                        </div>
+                        <div id="tabs-B-2" class="stats-labels-B">                        
+                            <span class="hidden">物理Buff</span>
+                            <span class="hidden">物理DeBuff</span>
+                            <span class="hidden">物理破防</span>
+                            <span class="hidden">物理總增益</span>
+                            <span class="magical">魔法Buff</span>
+                            <span class="magical">魔法DeBuff</span>
+                            <span class="magical">魔法破防</span>
+                            <span class="magical">魔法總增益</span>
+                            <span>護盾</span>
+                            <span>降攻</span>
+                            <span>冷卻加速(秒)</span>
+                            <span>減少冷卻(秒)</span>
+                            <span class="hidden">降抗</span>
+                            <span class="hidden">每秒回魔</span>
+                            <span>乘算動速</span>
+                            <span>加算動速</span>
+                            <span class="hidden">扛吼/擋傷</span>
+                            <span class="hidden">消火/解DeBuff</span>
+                            <span class="hidden">霸體</span>                        
+                        </div>
+                        <div id="tabs-B-3" class="stats-labels-B">                        
+                            <span class="physics">物理Buff</span>
+                            <span class="physics">物理DeBuff</span>
+                            <span class="physics">物理破防</span>
+                            <span class="physics">物理總增益</span>
+                            <span class="magical">魔法Buff</span>
+                            <span class="magical">魔法DeBuff</span>
+                            <span class="magical">魔法破防</span>
+                            <span class="magical">魔法總增益</span>
+                            <span>護盾</span>
+                            <span>降攻</span>
+                            <span>冷卻加速(秒)</span>
+                            <span>減少冷卻(秒)</span>
+                            <span class="detail">降抗</span>
+                            <span class="detail">每秒回魔</span>
+                            <span>乘算動速</span>
+                            <span>加算動速</span>
+                            <span class="detail">扛吼/擋傷</span>
+                            <span class="detail">消火/解DeBuff</span>
+                            <span class="detail">霸體</span>                        
+                        </div>                    
+                </div>
+                </div>
+            </div>
+            
+            <div class="team-settings">
+                <h3>額外設定</h3>
+                <div class="settings-container">
+                    <div class="settings-row-1">
+                        <div class="setting-item">
+                            <label>動速褲/鞋:</label>
+                            <input type="number" id="speed-gear-B" placeholder="0" step="0.1" min="0" value="7.5">
+                            <span class="unit">%</span>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label>技傷/暴傷:</label>
+                            <select id="damage-type-B">
+                                <option value="" disabled>選擇</option>
+                                <option value="A" selected="selected">百億綠+百億紅</option>
+                                <option value="B">百億綠</option>
+                                <option value="C">百億紅</option>
+                                <option value="D">四綠/手</option>
+                                <option value="E">二綠/手</option>
+                                <option value="F">綠上</option>
+                                <option value="G">無</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>百億綠手數值（總和*0.8後）:</label>
+                            <input type="number" id="essascor-B" placeholder="0" step="0.01" min="0" value="8.4">
+                            <span class="unit">%</span>
+                        </div>
+                        <div class="setting-item">
+                            <input type="checkbox" id="green-beast-B" checked>
+                            <label for="green-beast-B">聖獸-綠</label>
+                        </div>
+
+                        <div class="setting-item">
+                            <input type="checkbox" id="title-19-4-B" checked>
+                            <label for="title-19-4-B">19-4稱號</label>
+                        </div>
+
+                        <div class="setting-item">
+                            <input type="checkbox" id="dream-incense-B" checked>
+                            <label for="dream-incense-B">夢緣香爐/命運的預言書</label>
+                        </div>
+
+                        <div class="setting-item">
+                            <input type="checkbox" id="dark-badge-B" checked>
+                            <label for="dark-badge-B">暗鬼徽章/Type-Q女王的勳章</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="ice-crystal-B" checked>
+                            <label for="ice-crystal-B">冰晶露</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="wind-ball-B" checked>
+                            <label for="wind-ball-B">風球</label>
+                        </div>
+
+                        <div class="setting-item">
+                            <input type="checkbox" id="armor-pen-shoes-B" disabled>
+                            <label for="armor-pen-shoes-B">2+破防鞋:</label>
+                            <span class="prefix">+</span>
+                            <input type="number" id="armor-pen-value-B" placeholder="0" step="1" min="0" disabled>
+                        </div>     
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="death-title-B" disabled>
+                            <label for="death-title-B">死神稱號</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="armor-pen-shoes-percent-B" disabled>
+                            <label for="armor-pen-shoes-percent-B">2.5%破防鞋</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="dark-shadow-B" disabled>
+                            <label for="dark-shadow-B">侵暗之影</label>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-summary">
+                <h3>B隊伍總計</h3>
+                <div id="teamB-summary" class="summary-stats"></div>
+            </div>
+        </div>
+        
+        <div class="total-section">
+            <h2 class="total-title">兩隊總和數據</h2>
+            <div id="total-summary" class="total-stats"></div>
+        </div>
+
+         <div class="team-settings">
+                <h3>係數設定</h3>
+                <div class="settings-container">
+                    <div class="settings-row-1">
+
+                        <div class="setting-item">
+                            <label>預計可DeBuff時間佔關卡總時長 (預設20襲擊):</label>
+                            <input type="number" id="debuff-time" placeholder="0" step="1" min="0" value="90">
+                            <span class="unit">%</span>
+                        </div>                        
+                        
+                        <div class="setting-item">
+                            <label>護盾評分係數(預設20%):</label>
+                            <input type="number" id="shield" placeholder="0" step="0.01" min="0" value="20">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>降攻評分係數(預設5%):</label>
+                            <input type="number" id="reduce-attack" placeholder="0" step="0.01" min="0" value="5">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>每秒-CD乘算評分(預設10%):</label>
+                            <input type="number" id="cd-multiplication" placeholder="0" step="0.01" min="0" value="10">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>每秒-CD加算評分(預設10%):</label>
+                            <input type="number" id="cd-addition" placeholder="0" step="0.01" min="0" value="10">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>降抗評分(預設0.02%):</label>
+                            <input type="number" id="reduce-resistance" placeholder="0" step="0.01" min="0" value="0.02">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>每秒回魔(預設10%):</label>
+                            <input type="number" id="mana-regeneration" placeholder="0" step="0.01" min="0" value="10.00">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>乘算動速評分(預設40%):</label>
+                            <input type="number" id="speed-multiplication" placeholder="0" step="0.01" min="0" value="40">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>遞減動速評分(預設1%):</label>
+                            <input type="number" id="speed-addition" placeholder="0" step="0.01" min="0" value="1">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>扛吼/解狀態評分(預設30%):</label>
+                            <input type="number" id="debuff-release" placeholder="0" step="0.01" min="0" value="30">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>霸體評分(預設0%):</label>
+                            <input type="number" id="domination" placeholder="0" step="0.01" min="0" value="0">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>聖獸綠玩家戰力:</label>
+                            <input type="number" id="sacred-beast-combat" placeholder="0" step="1" min="0" value="4000000">
+                        </div>
+
+                        <div class="setting-item">
+                            <label>泰納物/魔上玩家戰力:</label>
+                            <input type="number" id="Tyner-combat" placeholder="0" step="1" min="0" value="5000000">
+                        </div>
+
+                        <div class="setting-item">
+                            <label>輸出者面板致命一擊傷害(%) (預設235%):</label>
+                            <input type="number" id="critical-hit-damage" placeholder="0" step="0.01" min="0" value="235">
+                            <span class="unit">%</span>
+                        </div>
+
+                        <div class="setting-item">
+                            <label>關卡Boss防禦力 (預設為20襲擊防禦):</label>
+                            <input type="number" id="defense-combat" placeholder="0" step="0.01" min="0" value="83.92">
+                            <span class="unit">%</span>
+                        </div>
+                        
+                    </div>
+                </div>
+        </div>
+    </div>    
+    <script src="assets/js/jquery-3.7.1.js"></script> 
+    <script src="assets/js/jquery-ui.js"></script>
+    <script src="assets/js/select2.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
