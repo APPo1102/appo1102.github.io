@@ -8,7 +8,9 @@
             '護盾', '降攻', '冷卻加速(秒)', '減少冷卻(秒)',
             '降抗', '每秒回魔', '乘算動速', '加算動速',
             '扛吼/擋傷', '消火/解DeBuff', '霸體'
-        ];           
+        ]; 
+        var member_A = [];
+        var member_B = [];         
         //宣告一個 async function 同步函數 名稱為loadData 讀取資料 同步函數可以避免資料讀取時網頁/程式卡住
         async function loadData() {
             //嘗試抓取資料challenge.json
@@ -126,7 +128,7 @@
                 //執行updateMemberStats的函數
                 updateMemberStats(team, index, e.target.value);
                 //執行updateAllSummaries的函數
-                updateAllSummaries();
+                //updateAllSummaries();
             //結束設定
             });
             
@@ -321,12 +323,15 @@
                 }
             //結束遍歷
             });
+            var members_exist = []; 
             //遍歷selects並設定內容為select
             selects.forEach(select => {
                 //宣告一個變數jobId 設定為select的value屬性
-                const jobId = select.value;
+                const jobId = select.value;               
                 //如果jobId存在（內容不為空
-                if (jobId) {
+                if (jobId && !members_exist.includes(jobId)) {                 
+                    members_exist.push(jobId);
+                    document.getElementById(`team-members-${team}`).value = JSON.stringify(members_exist);
                     //宣告一個變數jobData 內容為challenge中job["編號"]等於jobId
                     const jobData = challengeData.find(job => job['編號'] === jobId);
                     //如果jobData存在
@@ -348,11 +353,13 @@
                                 case "物理總增益":teamStats[key] = teamStats["物理Buff"]*teamStats["物理DeBuff"]*(1/(1-(((1-teamStats["物理破防"]))*1/(1+(258.6435937+39.35255313*99)/(0.9601*(258.6435937+39.35255313*99)/(1-0.9601))))))/100;break;
                                 case "魔法總增益":teamStats[key] = teamStats["魔法Buff"]*teamStats["魔法DeBuff"]*(1/(1-(((1-teamStats["魔法破防"]))*1/(1+(258.6435937+39.35255313*99)/(0.9601*(258.6435937+39.35255313*99)/(1-0.9601))))))/100;break;
 
-                                case "降抗":teamStats[key] *= defaultcalculate(value);break;
-                                case "每秒回魔":teamStats[key] *= defaultcalculate(value);break;
-                                case "扛吼/擋傷":teamStats[key] *= defaultcalculate(value);break;
-                                case "消火/解DeBuff":teamStats[key] *= defaultcalculate(value);break;
-                                case "霸體":teamStats[key] *= defaultcalculate(value);break;
+                                case "冷卻加速(秒)":teamStats[key] += parseFloat(value);break;
+                                case "減少冷卻(秒)":teamStats[key] += parseFloat(value);break;
+                                case "降抗":teamStats[key] += parseFloat(value);break;
+                                case "每秒回魔":teamStats[key] += defaultcalculate(value);break;
+                                case "扛吼/擋傷":teamStats[key] += defaultcalculate(value);break;
+                                case "消火/解DeBuff":teamStats[key] += parseFloat(value);break;
+                                case "霸體":teamStats[key] += defaultcalculate(value);break;
                                 default:
                                     break;
                             }                            
@@ -381,7 +388,7 @@
                     return (100+parseInt(value))/100;
                 }
             }
-            return 1;
+            return 0;
         }
         function defensecalculate(value){
             if (value && value !== '') {
@@ -396,7 +403,7 @@
                     return (100-parseInt(value).toFixed(3))/100;
                 }
             }
-            return 1;
+            return 0;
         }
         //宣告一個function 名稱為updateAllSummaries
         function updateAllSummaries() {
@@ -409,7 +416,89 @@
             //遍歷statKeys
             statKeys.forEach(key => {
                 //設定totalStats的key為teamAStats[key]或0(避免無資料)+teamBStats[key]或0
-                totalStats[key] = (teamAStats[key] || 0) + (teamBStats[key] || 0);
+                switch(key){
+                    case "物理Buff":
+                    case "魔法Buff":
+                        totalStats[key] = teamAStats[key]*teamBStats[key]/100;
+                        if((document.getElementById("sacred-beast-combat").value / 500000 * 0.5) > 4){
+                            totalStats[key] /= 1.04;
+                        }else{
+                            totalStats[key] /= (100+(Math.ceil(document.getElementById("sacred-beast-combat").value / 500000) * 0.5))/100;
+                        }
+                        const cri = parseInt(document.getElementById("critical-hit-damage").value);
+                        switch(document.getElementById(`damage-type-B`).value){
+                            case "A":                               
+                                //技傷                                           
+                                totalStats[key] /= (100+parseFloat(document.getElementById(`essascor-B`).value.replace('%', '')))/100;    
+                                //物理/魔法
+                                totalStats[key] /= (100+10)/100;                      
+                                //爆傷
+                                totalStats[key] /= (cri+15)/cri;
+                                break;
+                            case "B":
+                                //技傷                                           
+                                totalStats[key] /= (100+parseFloat(document.getElementById(`essascor-B`).value.replace('%', '')))/100;    
+                                //物理/魔法
+                                totalStats[key] /= (100+10)/100; 
+                                break;                            
+                            case "C":
+                                 //爆傷
+                                totalStats[key] /= (cri+15)/cri;
+                                break;
+                            case "D":                                 
+                                //物理/魔法
+                                totalStats[key] /= (100+10)/100;                      
+                                //爆傷+技傷
+                                totalStats[key] /= (cri+15)/cri*1.1;
+                                break;
+                            case "E":
+                                //爆傷
+                                totalStats[key] /= 1.1;
+                                break;
+                            case "F":
+                                //爆傷+技傷
+                                totalStats[key] /= (cri+15)/cri;
+                                break;
+                            case "G":
+                                break;
+                        }
+                        break;
+                    case "物理DeBuff":
+                    case "魔法DeBuff":
+                        totalStats[key] = teamAStats[key]*teamBStats[key]/100;
+                        break;
+                    case "物理破防": 
+                    case "魔法破防":
+                        totalStats[key] = teamAStats[key]*teamBStats[key];
+                        if($(`#title-19-4-B`).prop('checked')){
+                            totalStats[key] /= 0.52;
+                        }
+                        if(!$(`#title-19-4-B`).prop('checked') && $(`#death-title-B`).prop('checked')){
+                            totalStats[key] /= 0.8;
+                        }
+                        if(!$(`#title-19-4-B`).prop('checked') && $(`#armor-pen-shoes-B`).prop('checked')){
+                            totalStats[key] /= (100 - 2.5 * ($(`#armor-pen-value-B`).val() + 1)) / 100;
+                        }
+                        if(!$(`#title-19-4-B`).prop('checked') && $(`#armor-pen-shoes-percent-B`).prop('checked')){
+                            totalStats[key] /= 0.75;
+                        }
+                        if($(`#dream-incense-B`).prop('checked')){
+                            totalStats[key] /= 0.85;
+                        }   
+                        if($(`#wind-ball-B`).prop('checked')){
+                            totalStats[key] /= 0.5;
+                        }
+                        break;
+                    case "物理總增益":
+                        totalStats[key] = totalStats["物理Buff"]*totalStats["物理DeBuff"]*(1/(1-0.9601*(1-totalStats["物理破防"])))/100;
+                        break;
+                    case "魔法總增益":
+                        totalStats[key] = totalStats["魔法Buff"]*totalStats["魔法DeBuff"]*(1/(1-0.9601*totalStats["魔法破防"]))/100;
+                        break;
+                    default:
+                        totalStats[key] = 0;
+                        break;
+                }
             //結束遍歷
             });
             //執行updateSummaryDisplay的函數
@@ -432,10 +521,15 @@
                 const value = stats[key] || 0;
                 //宣告一個變數displayValue 設定為'-'
                 let displayValue = '-';
-                //如果value不為0
+                //如果value不為0              
                 if (value !== 0) {
+                    if (key.includes('霸體') || key.includes('扛吼') || key.includes('消火')) {     
+                        //變數displayValue設定為value四捨五入
+                        displayValue = value;
+                    //以上條件都不符合時 執行以下程式碼
+                    
                     //如果key的文字包含Buff "或" 增益...etc
-                    if (key.includes('Buff') || key.includes('增益') || 
+                    }else if (key.includes('Buff') || key.includes('增益') || 
                         key.includes('護盾') || key.includes('降攻') || 
                         key.includes('回魔') || key.includes('動速')) {
                         //變數displayValue設定為value的小數點後1位加上'%'的字元
@@ -445,15 +539,15 @@
                         displayValue = ((1 - value.toFixed(4))*100).toFixed(2) + '%';
                     } else if (key.includes('秒')) {
                         //變數displayValue設定為value的小數點後2位加上'%'的字元
-                        displayValue = value.toFixed(2);
+                        displayValue = value;
                     //如果key的文字包含降抗
                     } else if (key.includes('降抗')) {
                         //變數displayValue設定為value四捨五入
-                        displayValue = Math.round(value);
+                        displayValue = value;
                     //如果key的文字包含霸體,扛吼,消火
                     } else if (key.includes('霸體') || key.includes('扛吼') || key.includes('消火')) {
                         //變數displayValue設定為value四捨五入
-                        displayValue = Math.round(value);
+                        displayValue = value;
                     //以上條件都不符合時 執行以下程式碼
                     } else {
                         //變數displayValue設定為value的小數點後1位加上'%'的字元
