@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全人健康綜覽 — 封面</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#eef1ef}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;color:#212529}
+.lr-stage{width:min(100%,800px);margin:0 auto;container-type:inline-size;background:#fff}
+.lr-page{position:relative;width:100%;height:141.44cqw;overflow:hidden;background:#fff;box-shadow:0 0 0 1px #e9eeeb inset}
+.lr-page *{box-sizing:border-box}
+
+.lr-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+
+.lr-topbar{position:absolute;left:.5cqw;top:.22cqw;width:99cqw;height:6.62cqw;background:#4b9a7b;color:#fff;display:flex;align-items:center;padding:0 3.55cqw;font-size:1.16cqw;letter-spacing:.03em;z-index:5}
+.lr-topbar__left{display:flex;align-items:center;gap:1.08cqw;font-weight:700;white-space:nowrap}
+.lr-topbar__dot{width:.82cqw;height:.82cqw;border-radius:50%;background:#fff;display:block;opacity:.95}
+.lr-topbar__right{margin-left:auto;opacity:.72;font-size:1.1cqw;white-space:nowrap}
+
+.lr-logo{position:absolute;left:2.27cqw;top:8.82cqw;width:10.33cqw;height:10.33cqw;border-radius:50%;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3cqw;font-weight:700;letter-spacing:.05em;z-index:5}
+
+.lr-edition-badge{position:absolute;left:85cqw;top:10.08cqw;width:12.97cqw;height:5.67cqw;border:1px solid rgba(255,255,255,.75);border-radius:999px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.15cqw;font-weight:600;letter-spacing:.04em;z-index:5;background:rgba(0,0,0,.05)}
+
+.lr-cover-title{position:absolute;left:.6cqw;top:40.5cqw;width:98cqw;margin:0;z-index:5}
+.lr-cover-title h1{margin:0;font-size:12.8cqw;line-height:.96;font-weight:800;letter-spacing:-.03em;text-transform:uppercase;color:rgba(255,255,255,.62);text-shadow:0 1px 2px rgba(0,0,0,.15)}
+
+.lr-cover-caption{position:absolute;left:.6cqw;top:62.2cqw;width:70cqw;font-size:1.85cqw;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.85);z-index:5;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+
+.lr-client-block{position:absolute;left:3.02cqw;top:121cqw;width:70cqw;z-index:5;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.25)}
+.lr-client-block__label{font-size:1.55cqw;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.92;margin-bottom:.8cqw}
+.lr-client-block__name{font-size:5.5cqw;font-weight:800;letter-spacing:.02em;margin:0 0 2.4cqw}
+.lr-client-block__dates{display:flex;gap:20cqw}
+.lr-client-block__date-label{font-size:1.3cqw;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.85;margin-bottom:.4cqw}
+.lr-client-block__date-value{font-size:2.2cqw;font-weight:700}
+
+@media (max-width:520px){.lr-stage{width:100%}}
+@media print{html,body{background:#fff}.lr-stage{width:210mm;max-width:none}.lr-page{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="lr-stage">
+  <div class="lr-page">
+    <img class="lr-bg" src="p1-bg.jpg" alt="">
+
+    <div class="lr-topbar">
+      <div class="lr-topbar__left">
+        <span class="lr-topbar__dot"></span>
+        <span>簡介 INTRODUCTION</span>
+      </div>
+      <div class="lr-topbar__right">報告編號　LR-2026-0210</div>
+    </div>
+
+    <div class="lr-logo">LOGO</div>
+    <div class="lr-edition-badge">客戶版</div>
+
+    <div class="lr-cover-title">
+      <h1>Longevity<br>Progarm</h1>
+    </div>
+
+    <div class="lr-client-block">
+      <div class="lr-client-block__label">專屬客戶．CLIENT PREPARED FOR</div>
+      <div class="lr-client-block__name item_1001"></div>
+      <div class="lr-client-block__dates">
+        <div>
+          <div class="lr-client-block__date-label">報告日期．REPORT DATE</div>
+          <div class="lr-client-block__date-value item_1003">2026/02/10</div>
+        </div>
+        <div>
+          <div class="lr-client-block__date-label">檢驗日期．LAB DATE</div>
+          <div class="lr-client-block__date-value item_1004">2026/02/10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+    window.parent.postMessage({ type: "setHeight", height: height }, "*");
+}
+window.addEventListener("load", sendHeight);
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+$( document ).ready(function(){
+	$.each(window.parent.userdata, function(idx,val){
+		$("." + idx).text(val.value);
+	} );
+});
+
+</script>
+</body>
+</html>

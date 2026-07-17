@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>90天行動計劃｜九十天運動計劃建議</title>
+  <style>
+    :root{
+      --brand:#582DBE;
+      --brand-2:#6B32D5;
+      --brand-soft:rgba(88,45,190,.08);
+      --page:#FFFFFF;
+      --screen:#ECEFF1;
+      --text:#151922;
+      --text-2:#59606A;
+      --muted:#97A0AA;
+      --line:#E6E8ED;
+      --dot:#E9DDFB;
+      --panel:#FAFBFD;
+      --orange:#F28B25;
+      --orange-soft:#FBF2E8;
+      --purple:#8B61E8;
+      --purple-soft:#F3EEFE;
+      --teal:#5B8BFF;
+      --teal-soft:#EEF3FF;
+      --note:#B889FF;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      background:#eef1ef;
+      color:var(--text);
+      font-family:Arial,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      padding:22px;
+    }
+
+    .report-page{
+      width:210mm;
+      min-height:297mm;
+      margin:0 auto;
+      background:var(--page);
+      box-shadow:0 18px 48px rgba(18,24,32,.12);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .topbar{
+      height:15mm;
+      padding:0 12mm;
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      color:rgba(255,255,255,.92);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .topbar-left,.topbar-right{
+      font-size:8.4px;
+      font-weight:700;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      white-space:nowrap;
+      line-height:1;
+    }
+    .topbar-left{display:flex;align-items:center;gap:10px}
+    .topbar-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.92);flex:0 0 auto}
+
+    .page-body{padding:8mm 11.5mm 10mm}
+
+    .title-row{
+      display:block;
+      margin-bottom:5mm;
+    }
+    .title-accent{display:none;}
+    .page-title{
+      margin:0 0 7px;
+      color:#0B0D11;
+      font-size:27px;
+      line-height:1.04;
+      font-weight:900;
+      letter-spacing:-.035em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .page-subtitle{
+      color:#7B8189;
+      font-size:14px;
+      line-height:1.15;
+      font-weight:800;
+      letter-spacing:.01em;
+      margin:0;
+    }
+
+    .intro-box{
+      position:relative;
+      background:#fff;
+      border:1px solid #DDE1E6;
+      border-radius:16px;
+      padding:14px 16px;
+      margin-bottom:5mm;
+      box-shadow:0 2px 10px rgba(20,24,32,.025);
+    }
+    .intro-box::before{display:none;}
+    .intro-box p{
+      margin:0;
+      color:#525A65;
+      font-size:8.6px;
+      line-height:1.65;
+      font-weight:700;
+    }
+
+    .main-grid{
+      display:grid;
+      grid-template-columns:31% 69%;
+      gap:5mm;
+      align-items:start;
+    }
+
+    .sidebar-card{
+      border:1px solid rgba(20,24,32,.10);
+      border-radius:16px;
+      background:#FAFBFD;
+      overflow:hidden;
+      box-shadow:0 3px 14px rgba(20,24,32,.035);
+    }
+    .sidebar-inner{padding:7mm 6.5mm}
+    .sidebar-kicker{
+      color:#B3BAC3;
+      font-size:8px;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    .sidebar-section + .sidebar-section{
+      margin-top:5mm;
+      padding-top:4mm;
+      border-top:1px solid var(--line);
+    }
+    .sidebar-label{
+      color:var(--brand);
+      font-size:8.4px;
+      line-height:1.25;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+    .sidebar-text{
+      color:#444B56;
+      font-size:8.15px;
+      line-height:1.6;
+      font-weight:700;
+      margin:0;
+    }
+    .sidebar-list{
+      margin:0;
+      padding-left:14px;
+      color:#606874;
+      font-size:8px;
+      line-height:1.7;
+      font-weight:700;
+    }
+    .sidebar-list li{margin:0 0 1px}
+
+    .content-stack{display:flex;flex-direction:column;gap:4.5mm}
+
+    .module-card{
+      border:1px solid rgba(20,24,32,.10);
+      border-radius:16px;
+      background:#fff;
+      overflow:hidden;
+      box-shadow:0 3px 14px rgba(20,24,32,.035);
+    }
+    .module-head{
+      min-height:11mm;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:0 6mm;
+      border-bottom:1px solid rgba(20,24,32,.06);
+    }
+    .module-head strong{
+      font-size:8.6px;
+      line-height:1;
+      letter-spacing:.02em;
+    }
+    .module-head span{
+      color:#9BA4AE;
+      font-size:7.8px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .head-1{background:var(--orange-soft)}
+    .head-1 strong{color:var(--orange)}
+    .head-2{background:var(--purple-soft)}
+    .head-2 strong{color:#7C57D8}
+    .head-3{background:#EEF7FF}
+    .head-3 strong{color:#4D78F0}
+
+    .module-body{
+      display:grid;
+      grid-template-columns:35% 65%;
+      min-height:57mm;
+    }
+    .module-left{
+      padding:5mm 5mm 5mm 5.5mm;
+      border-right:1px solid var(--line);
+      display:flex;
+      flex-direction:column;
+      gap:3.5mm;
+    }
+    .module-tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      align-self:flex-start;
+      min-height:22px;
+      padding:0 11px;
+      border-radius:999px;
+      font-size:7.5px;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .tag-1{background:#F3E8FF;color:#8C3DFF}
+    .tag-2{background:#F7E7FF;color:#B533CC}
+    .tag-3{background:#E7ECFF;color:#4A68F5}
+    .module-title{margin:0;color:#171B23;font-size:13px;line-height:1.2;font-weight:900;letter-spacing:-.02em}
+    .goal-box,.mets-box{
+      border-radius:12px;
+      background:var(--panel);
+      border:1px solid rgba(20,24,32,.05);
+      padding:10px 11px;
+    }
+    .box-label{
+      display:flex;align-items:center;gap:6px;
+      color:#8F98A2;
+      font-size:7.6px;
+      font-weight:900;
+      margin-bottom:5px;
+    }
+    .box-label::before{content:"◎";font-size:8px;color:#AF79FF;line-height:1}
+    .box-copy{
+      margin:0;
+      color:#59616B;
+      font-size:7.8px;
+      line-height:1.55;
+      font-weight:700;
+    }
+    .mets-box{
+      background:linear-gradient(180deg,#B43BFF,#8F2CFF);
+      border-color:transparent;
+      color:#fff;
+      padding:9px 12px 10px;
+    }
+    .mets-box .box-label{color:rgba(255,255,255,.85);margin-bottom:4px}
+    .mets-box .box-label::before{content:"";display:none}
+    .mets-value{font-size:14px;line-height:1.05;font-weight:900;letter-spacing:-.02em}
+    .mets-unit{font-size:7.4px;font-weight:800;opacity:.86}
+
+    .module-right{
+      padding:5mm 5.5mm 5mm 5.5mm;
+      display:flex;
+      flex-direction:column;
+      gap:3mm;
+    }
+    .fitt-box,.why-box{
+      border-radius:12px;
+      border:1px solid rgba(20,24,32,.06);
+      padding:10px 12px;
+    }
+    .fitt-box{background:#FBF8FF}
+    .why-box{background:#FBFCFE}
+    .fitt-title,.why-title{
+      margin:0 0 6px;
+      font-size:8.2px;
+      line-height:1.2;
+      font-weight:900;
+      letter-spacing:.01em;
+    }
+    .fitt-title{color:#8E43FF}
+    .why-title{color:#7F8C9A}
+    .fitt-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+    .fitt-list li{
+      color:#505965;
+      font-size:7.7px;
+      line-height:1.5;
+      font-weight:700;
+    }
+    .fitt-list b{color:#6D38D7}
+    .why-copy{
+      margin:0;
+      color:#5C6570;
+      font-size:7.75px;
+      line-height:1.55;
+      font-weight:700;
+    }
+
+    .footnote{
+      margin-top:4.5mm;
+      padding:9px 10px 0;
+      border-top:1px solid rgba(88,45,190,.12);
+      color:#B2B7BF;
+      font-size:7.2px;
+      line-height:1.55;
+      font-weight:800;
+    }
+
+    @media print{
+      @page{size:A4 portrait; margin:0}
+      body{padding:0;background:#fff}
+      .report-page{margin:0;box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="report-page">
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="topbar-dot"></span>
+        <span>90-DAY ACTION PLAN</span>
+        <span>•</span>
+        <span>90-DAY PROTOCOL</span>
+      </div>
+      <div class="topbar-right">REPORT ID: LR-2026-0210</div>
+    </div>
+
+    <div class="page-body">
+      <div class="title-row">
+        <div class="title-accent"></div>
+        <h1 class="page-title">90 DAY EXERCISE RECOMMENDATION</h1>
+        <p class="page-subtitle">九十天運動計劃建議</p>
+      </div>
+
+      <div class="intro-box">
+        <p>本計畫旨在運用現有肌力優勢，透過規律有氧與阻力訓練優化身體組成。目標為降低體脂肪並提升心肺耐力，打造代謝良好的強健體質，以支持長期的活躍生活。</p>
+      </div>
+
+      <div class="main-grid">
+        <aside class="sidebar-card">
+          <div class="sidebar-inner">
+            <div class="sidebar-kicker">90 天策略</div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-label">主要目標</div>
+              <p class="sidebar-text">降低體脂肪、提升心肺耐力，並同步維持肌力與活動度，建立更穩定且可持續的運動基礎。</p>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-label">三大模組</div>
+              <ul class="sidebar-list">
+                <li>有氧運動｜燃燒脂肪，強化心肺</li>
+                <li>阻力訓練｜鑄造肌肉，穩固地基</li>
+                <li>功能性活動度｜靈活關節，自由移動</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-label">執行原則</div>
+              <ul class="sidebar-list">
+                <li>依 FITT 原則進行週期化安排</li>
+                <li>先建立規律，再逐步提升刺激量</li>
+                <li>以可長期維持為優先，不追求短期爆量</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-label">觀察指標</div>
+              <ul class="sidebar-list">
+                <li>體脂與內臟脂肪變化</li>
+                <li>最大攝氧量與心肺恢復能力</li>
+                <li>關節活動度與訓練穩定性</li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+
+        <section class="content-stack">
+          <article class="module-card">
+            <div class="module-head head-1">
+              <strong>第一優先｜有氧運動</strong>
+              <span>燃燒脂肪 × 心肺升級</span>
+            </div>
+            <div class="module-body">
+              <div class="module-left">
+                <span class="module-tag tag-1">有氧運動</span>
+                <h2 class="module-title">燃燒脂肪，強化心肺</h2>
+                <div class="goal-box">
+                  <div class="box-label">核心目標</div>
+                  <p class="box-copy">提升攝氧效率，促進脂肪代謝並降低內臟脂肪堆積。</p>
+                </div>
+                <div class="mets-box">
+                  <div class="box-label">一週 METs 分鐘目標</div>
+                  <div class="mets-value">1550 ~ 2000</div>
+                </div>
+              </div>
+              <div class="module-right">
+                <div class="fitt-box">
+                  <h3 class="fitt-title">FITT 訓練準則</h3>
+                  <ul class="fitt-list">
+                    <li><b>F（頻率）</b>：每週 3-5 天。</li>
+                    <li><b>I（強度）</b>：中等強度，保持在「可對話但微喘」的程度（Zone 2）。</li>
+                    <li><b>T（時間）</b>：每次 30-60 分鐘，目標每週累積至少 150 分鐘。</li>
+                    <li><b>T（類型）</b>：快走、單車、游泳或橢圓機等大肌群節律性運動。</li>
+                  </ul>
+                </div>
+                <div class="why-box">
+                  <h3 class="why-title">The Why</h3>
+                  <p class="why-copy">持續的有氧刺激能有效代謝內臟脂肪，提升最大攝氧量，並優化心血管循環系統的運作效率。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="module-card">
+            <div class="module-head head-2">
+              <strong>第二優先｜阻力訓練</strong>
+              <span>肌肉穩定 × 代謝支撐</span>
+            </div>
+            <div class="module-body">
+              <div class="module-left">
+                <span class="module-tag tag-2">阻力訓練</span>
+                <h2 class="module-title">鑄造肌肉，穩固地基</h2>
+                <div class="goal-box">
+                  <div class="box-label">核心目標</div>
+                  <p class="box-copy">維持骨骼肌質量，提升基礎代謝率以輔助體重管理。</p>
+                </div>
+                <div class="mets-box">
+                  <div class="box-label">一週 METs 分鐘目標</div>
+                  <div class="mets-value">400 - 525</div>
+                </div>
+              </div>
+              <div class="module-right">
+                <div class="fitt-box">
+                  <h3 class="fitt-title">FITT 訓練準則</h3>
+                  <ul class="fitt-list">
+                    <li><b>F（頻率）</b>：每週 2-3 天，非連續日進行。</li>
+                    <li><b>I（強度）</b>：中高強度，每組做 8-12 下感到疲勞的重量。</li>
+                    <li><b>T（時間）</b>：每次 40-50 分鐘，涵蓋全身主要肌群。</li>
+                    <li><b>T（類型）</b>：自由重量、機械器材或徒手肌力訓練。</li>
+                  </ul>
+                </div>
+                <div class="why-box">
+                  <h3 class="why-title">The Why</h3>
+                  <p class="why-copy">增加肌肉量有助於提升靜止代謝率，改善體脂率，並強化骨骼與關節的支撐力，預防肌肉流失。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="module-card">
+            <div class="module-head head-3">
+              <strong>第三優先｜功能性活動度</strong>
+              <span>關節靈活 × 動作品質</span>
+            </div>
+            <div class="module-body">
+              <div class="module-left">
+                <span class="module-tag tag-3">功能性活動度</span>
+                <h2 class="module-title">靈活關節，自由移動</h2>
+                <div class="goal-box">
+                  <div class="box-label">核心目標</div>
+                  <p class="box-copy">改善關節活動範圍，預防運動傷害並提升動作流暢度。</p>
+                </div>
+              </div>
+              <div class="module-right">
+                <div class="fitt-box">
+                  <h3 class="fitt-title">FITT 訓練準則</h3>
+                  <ul class="fitt-list">
+                    <li><b>F（頻率）</b>：每週至少 2-3 天，理想為每日進行。</li>
+                    <li><b>I（強度）</b>：伸展至肌肉感到輕微緊繃但無疼痛感。</li>
+                    <li><b>T（時間）</b>：每次 10-15 分鐘，每個靜態動作停留 10-30 秒。</li>
+                    <li><b>T（類型）</b>：動態暖身、靜態伸展、瑜珈或滾筒放鬆。</li>
+                  </ul>
+                </div>
+                <div class="why-box">
+                  <h3 class="why-title">The Why</h3>
+                  <p class="why-copy">良好的活動度能修正動作模式，減少代償，提升身體靈活度，確保訓練時的動作效率與安全性。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <div class="footnote">＊ 建議搭配專業教練進行個人化指導，不僅能確保安全與執行精準度，更能協助您將計畫落實為具體行動，有效達成健康逆轉目標。</div>
+    </div>
+  </div>
+	<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+$( document ).ready(function(){
+	$.each(window.parent.userdata, function(idx,val){
+		$("." + idx).text(val.value);
+	} );
+});
+</script>
+</body>
+</html>

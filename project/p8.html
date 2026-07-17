@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>內在生理構面綜覽</title>
+
+  <style>
+    :root {
+      --brand: #c42aa0;
+      --brand-soft: rgba(196, 42, 160, 0.10);
+      --brand-line: rgba(196, 42, 160, 0.28);
+
+      --grade-b: #2F8C56;
+      --grade-c: #8A6A00;
+
+      --black: #111318;
+      --text: #444952;
+      --muted: #7B8088;
+      --light-text: #A1A5AB;
+      --line: #E4E6E9;
+      --soft-line: #ECEEF0;
+      --soft-bg: #F7F7F8;
+      --page: #FFFFFF;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 28px;
+      background: #EEF1F2;
+      color: var(--text);
+      font-family: Arial, "Noto Sans TC", "PingFang TC",
+                   "Microsoft JhengHei", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .report-page {
+      width: 210mm;
+      min-height: 1200px;
+      background: var(--page);
+      box-shadow: 0 18px 48px rgba(17, 19, 24, 0.10);
+      overflow: hidden;
+    }
+
+    /* 頁首：參考圖二的資訊帶 */
+    .report-topbar {
+      min-height: 58px;
+      padding: 0 38px;
+      background: var(--brand);
+      color: rgba(255,255,255,.82);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .topbar-left,
+    .topbar-right {
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.82);
+      flex: 0 0 auto;
+    }
+
+    .report-body {
+      padding: 40px 38px 34px;
+    }
+
+    /* 大標區 */
+    .hero-heading {
+      margin-bottom: 30px;
+    }
+
+    .hero-title {
+      margin: 0 0 9px;
+      color: #090B10;
+      font-size: 30px;
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: -.035em;
+    }
+
+    .hero-meta {
+      margin: 0;
+      color: #787D84;
+      font-size: 16px;
+      line-height: 1.3;
+      font-weight: 500;
+    }
+
+    /* 說明框 */
+    .intro-card {
+      margin-bottom: 28px;
+      padding: 18px 20px;
+      border: 1px solid var(--brand-line);
+      border-radius: 14px;
+      background: rgba(196, 42, 160, 0.035);
+    }
+
+    .intro-card p {
+      margin: 0;
+      color: #4D525A;
+      font-size: 12px;
+      line-height: 1.75;
+      font-weight: 500;
+      text-align: justify;
+    }
+
+    /* 上半部：總分與子構面 */
+    .score-overview {
+      display: grid;
+      grid-template-columns: 285px minmax(0, 1fr);
+      gap: 38px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .total-score {
+      min-height: 292px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-ring {
+      width: 230px;
+      height: 230px;
+      position: relative;
+    }
+
+    .score-ring svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transform: rotate(-90deg);
+    }
+
+    .ring-bg {
+      fill: none;
+      stroke: #ECEEF1;
+      stroke-width: 7;
+    }
+
+    .ring-value {
+      fill: none;
+      stroke: var(--brand);
+      stroke-width: 14;
+      stroke-linecap: round;
+      stroke-dasharray: 65 100;
+    }
+
+    .score-ring-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-number {
+      color: var(--brand);
+      font-size: 62px;
+      line-height: .95;
+      font-weight: 900;
+      letter-spacing: -.055em;
+    }
+
+    .score-scale {
+      margin-top: 8px;
+      color: #9A9EA4;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 600;
+      letter-spacing: .08em;
+    }
+
+    .score-grade {
+      margin-top: 15px;
+      min-width: 46px;
+      height: 22px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--grade-c);
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .score-caption {
+      margin-top: 14px;
+      color: #747982;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .16em;
+    }
+
+    .score-meta {
+      margin-top: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .score-meta-primary {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      line-height: 1;
+    }
+
+    .score-meta-primary strong {
+      color: #15181D;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .score-meta-primary span {
+      color: #7E838B;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .score-meta-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      color: #969BA2;
+      font-size: 10px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .score-meta-secondary strong {
+      color: #7D828A;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .domain-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .domain-row {
+      min-height: 61px;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr) 92px 42px 68px;
+      column-gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .domain-row:last-child {
+      border-bottom: 0;
+    }
+
+    .domain-letter {
+      color: #A6A9AE;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .domain-name {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .domain-name strong {
+      color: #171A1F;
+      font-size: 12px;
+      line-height: 1.15;
+      font-weight: 900;
+    }
+
+    .domain-name span {
+      color: #999DA3;
+      font-size: 9.5px;
+      line-height: 1.2;
+      font-weight: 500;
+    }
+
+    .domain-name .domain-count-inline {
+      margin-top: 2px;
+      color: #A6AAB0;
+      font-size: 9px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .domain-meter {
+      height: 7px;
+      border-radius: 999px;
+      background: #EEEFF1;
+      position: relative;
+    }
+
+    .domain-meter::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--value);
+      border-radius: inherit;
+      background: linear-gradient(90deg,
+        rgba(196,42,160,.18),
+        rgba(196,42,160,.42));
+    }
+
+    .domain-meter::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: var(--value);
+      width: 10px;
+      height: 10px;
+      border: 2px solid var(--meter-color);
+      border-radius: 50%;
+      background: #FFFFFF;
+      transform: translate(-50%, -50%);
+    }
+
+    .domain-score {
+      color: #181B20;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 900;
+      text-align: right;
+    }
+
+
+    .grade-pill {
+      min-width: 54px;
+      height: 20px;
+      padding: 0 9px;
+      border-radius: 999px;
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: .07em;
+    }
+
+    .grade-b {
+      background: var(--grade-b);
+    }
+
+    .grade-c {
+      background: var(--grade-c);
+    }
+
+    /* 雷達圖區 */
+    .radar-section {
+      padding-top: 4px;
+    }
+
+    .radar-title {
+      margin: 0 0 8px;
+      color: #20242A;
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: .03em;
+    }
+
+    .radar-chart {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .radar-grid {
+      fill: none;
+      stroke: #E0E3E6;
+      stroke-width: 1;
+    }
+
+    .radar-axis {
+      stroke: #E4E6E9;
+      stroke-width: 1;
+    }
+
+    .radar-area {
+      fill: rgba(196,42,160,.12);
+      stroke: var(--brand);
+      stroke-width: 3;
+      stroke-linejoin: round;
+    }
+
+    .radar-point {
+      fill: var(--brand);
+      stroke: #FFFFFF;
+      stroke-width: 3;
+    }
+
+    .radar-label {
+      fill: #4D525A;
+      font-size: 13px;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+
+    .radar-badge {
+      rx: 12;
+      ry: 12;
+    }
+
+    .radar-badge-text {
+      fill: #FFFFFF;
+      font-size: 11px;
+      font-weight: 900;
+      text-anchor: middle;
+    }
+
+
+    /* 底部導覽列 */
+    .report-nav {
+      margin-top: 24px;
+      min-height: 54px;
+      padding: 10px 22px;
+      border: 1px solid #6F747A;
+      border-radius: 12px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      overflow: hidden;
+    }
+
+    .report-nav-icon {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand);
+    }
+
+    .report-nav-icon svg {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+
+    .report-nav-links {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 0;
+      white-space: nowrap;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+      letter-spacing: .01em;
+    }
+
+    .report-nav-item {
+      color: #B0B4B9;
+    }
+
+    .report-nav-item.active {
+      color: var(--brand);
+      font-weight: 900;
+    }
+
+    .report-nav-separator {
+      margin: 0 7px;
+      color: #B0B4B9;
+      font-weight: 700;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: #FFFFFF;
+      }
+
+      .report-page {
+        width: 210mm;
+        min-height: 297mm;
+        box-shadow: none;
+      }
+    }
+
+    @media (max-width: 820px) {
+      body {
+        padding: 0;
+      }
+
+      .report-page {
+        width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+      }
+
+      .report-topbar {
+        padding: 16px 22px;
+      }
+
+      .topbar-right {
+        display: none;
+      }
+
+      .report-body {
+        padding: 30px 22px;
+      }
+
+      .score-overview {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .domain-row {
+        grid-template-columns: 24px minmax(0, 1fr) 80px 36px 58px;
+        column-gap: 8px;
+      }
+
+      .report-nav {
+        align-items: flex-start;
+      }
+
+      .report-nav-links {
+        flex-wrap: wrap;
+        white-space: normal;
+        row-gap: 4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="report-page">
+
+    <header class="report-topbar">
+      <div class="topbar-left">
+        <span class="topbar-dot"></span>
+        <span>逆齡方案報告・內在生理構面</span>
+      </div>
+      <div class="topbar-right">Not Just Lifespan, But Healthspan</div>
+    </header>
+
+    <div class="report-body">
+
+      <section class="hero-heading">
+        <h1 class="hero-title">BIOLOGICAL DOMAIN</h1>
+        <p class="hero-meta">內在生理構面綜覽</p>
+      </section>
+
+      <section class="intro-card">
+        <p>
+          內在生理構面分數是了解體內運作及身體活力的關鍵。它將抽象的血檢數據概念轉化為具體指標，引導透過精準行動來優化身體機能，提升活力與生命品質。分數是依會員既有之正式檢驗資料建立的相對整理分數，目的是幫助閱讀與追蹤，不代表臨床診斷結果。
+        </p>
+      </section>
+
+      <section class="score-overview">
+
+        <div class="total-score">
+          <div class="score-ring">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="ring-bg" cx="60" cy="60" r="46" pathLength="100"></circle>
+              <circle class="ring-value" cx="60" cy="60" r="46" pathLength="100"></circle>
+            </svg>
+
+            <div class="score-ring-content">
+              <div class="score-number item_1012">65</div>
+              <div class="score-scale">/ 100</div>
+              <div class="score-grade item_1028">C</div>
+            </div>
+          </div>
+
+          <div class="score-caption">內在生理構面總分</div>
+
+          <div class="score-meta">
+            <div class="score-meta-primary">
+              <strong>43</strong>
+              <span>項指標</span>
+            </div>
+
+            <div class="score-meta-secondary">
+              <span>前期分數 <strong class="item_1012">N/A</strong></span>
+              <span>變化 <strong class="item_1085">N/A</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-list">
+
+          <div class="domain-row">
+            <div class="domain-letter">A</div>
+            <div class="domain-name">
+              <strong>循環系統</strong>
+              <span>Cardiovascular / Lipid</span>
+              <span class="domain-count-inline">12 項指標</span>
+            </div>
+            <div class="domain-meter" style="--value:62%; --meter-color:#8A6A00;"></div>
+            <div class="domain-score item_1015">62</div>
+            <div>
+              <div class="grade-pill grade-c item_1031">C</div>
+            </div>
+          </div>
+
+          <div class="domain-row">
+            <div class="domain-letter">B</div>
+            <div class="domain-name">
+              <strong>代謝調節</strong>
+              <span>Metabolic</span>
+              <span class="domain-count-inline">11 項指標</span>
+            </div>
+            <div class="domain-meter" style="--value:54%; --meter-color:#8A6A00;"></div>
+            <div class="domain-score item_1016">54</div>
+            <div>
+              <div class="grade-pill grade-c item_1032">C</div>
+            </div>
+          </div>
+
+          <div class="domain-row">
+            <div class="domain-letter">C</div>
+            <div class="domain-name">
+              <strong>發炎狀態</strong>
+              <span>Inflammation</span>
+              <span class="domain-count-inline">12 項指標</span>
+            </div>
+            <div class="domain-meter" style="--value:71%; --meter-color:#2F8C56;"></div>
+            <div class="domain-score item_1017">71</div>
+            <div>
+              <div class="grade-pill grade-b item_1033">B</div>
+            </div>
+          </div>
+
+          <div class="domain-row">
+            <div class="domain-letter">D</div>
+            <div class="domain-name">
+              <strong>修復合成</strong>
+              <span>Recovery / Synthesis</span>
+              <span class="domain-count-inline">10 項指標</span>
+            </div>
+            <div class="domain-meter" style="--value:80%; --meter-color:#2F8C56;"></div>
+            <div class="domain-score item_1018">80</div>
+            <div>
+              <div class="grade-pill grade-b item_1034">B</div>
+            </div>
+          </div>
+
+          <div class="domain-row">
+            <div class="domain-letter">E</div>
+            <div class="domain-name">
+              <strong>細胞保護力</strong>
+              <span>Oxidative Stress</span>
+              <span class="domain-count-inline">10 項指標</span>
+            </div>
+            <div class="domain-meter" style="--value:77%; --meter-color:#2F8C56;"></div>
+            <div class="domain-score item_1019">77</div>
+            <div>
+              <div class="grade-pill grade-b item_1035">B</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="radar-section">
+        <h2 class="radar-title">各領域平衡分佈</h2>
+
+        <svg class="radar-chart" viewBox="0 0 500 405"
+             role="img"
+             aria-label="循環系統62、代謝調節54、發炎狀態71、修復合成80、細胞保護力77的雷達圖">
+
+          <polygon class="radar-grid" points="250.0,189.0 274.7,207.0 265.3,236.0 234.7,236.0 225.3,207.0"></polygon><polygon class="radar-grid" points="250.0,163.0 299.5,198.9 280.6,257.1 219.4,257.1 200.5,198.9"></polygon><polygon class="radar-grid" points="250.0,137.0 324.2,190.9 295.8,278.1 204.2,278.1 175.8,190.9"></polygon><polygon class="radar-grid" points="250.0,111.0 348.9,182.9 311.1,299.1 188.9,299.1 151.1,182.9"></polygon><polygon class="radar-grid" points="250.0,85.0 373.6,174.8 326.4,320.2 173.6,320.2 126.4,174.8"></polygon>
+
+          <line class="radar-axis" x1="250" y1="215" x2="250.0" y2="85.0"></line><line class="radar-axis" x1="250" y1="215" x2="373.6" y2="174.8"></line><line class="radar-axis" x1="250" y1="215" x2="326.4" y2="320.2"></line><line class="radar-axis" x1="250" y1="215" x2="173.6" y2="320.2"></line><line class="radar-axis" x1="250" y1="215" x2="126.4" y2="174.8"></line>
+
+          <polygon class="radar-area" points="250.0,134.4 316.8,193.3 304.3,289.7 188.9,299.1 154.8,184.1"></polygon>
+
+          <circle class="radar-point" cx="250.0" cy="134.4" r="6"></circle><circle class="radar-point" cx="316.8" cy="193.3" r="6"></circle><circle class="radar-point" cx="304.3" cy="289.7" r="6"></circle><circle class="radar-point" cx="188.9" cy="299.1" r="6"></circle><circle class="radar-point" cx="154.8" cy="184.1" r="6"></circle>
+
+          <!-- Labels -->
+          <text class="radar-label" x="250" y="34">循環系統</text>
+          <rect class="radar-badge" x="225" y="43" width="50" height="24" fill="#8A6A00"></rect>
+          <text class="radar-badge-text item_1015" x="250" y="59">62</text>
+
+          <text class="radar-label" x="425" y="145">代謝調節</text>
+          <rect class="radar-badge" x="400" y="154" width="50" height="24" fill="#8A6A00"></rect>
+          <text class="radar-badge-text item_1016" x="425" y="170">54</text>
+
+          <text class="radar-label" x="365" y="365">發炎狀態</text>
+          <rect class="radar-badge" x="340" y="374" width="50" height="24" fill="#2F8C56"></rect>
+          <text class="radar-badge-text item_1017" x="365" y="390">71</text>
+
+          <text class="radar-label" x="135" y="365">修復合成</text>
+          <rect class="radar-badge" x="110" y="374" width="50" height="24" fill="#2F8C56"></rect>
+          <text class="radar-badge-text item_1018" x="135" y="390">80</text>
+
+          <text class="radar-label" x="74" y="145">細胞保護力</text>
+          <rect class="radar-badge" x="49" y="154" width="50" height="24" fill="#2F8C56"></rect>
+          <text class="radar-badge-text item_1019" x="74" y="170">77</text>
+        </svg>
+      </section>
+
+      <nav class="report-nav" aria-label="報告章節導覽">
+        <div class="report-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14.5" stroke="currentColor"/>
+            <path d="M20.8 10.8L17.7 17.7L10.8 20.8L13.9 13.9L20.8 10.8Z"
+                  stroke="currentColor"
+                  stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="1.35" fill="currentColor"/>
+          </svg>
+        </div>
+
+        <div class="report-nav-links">
+          <span class="report-nav-item">全人健康總覽</span>
+          <span class="report-nav-separator">・</span>
+          <span class="report-nav-item active">內在生理構面</span>
+          <span class="report-nav-separator">・</span>
+          <span class="report-nav-item">體能行動構面</span>
+          <span class="report-nav-separator">・</span>
+          <span class="report-nav-item">心靈和諧構面</span>
+          <span class="report-nav-separator">・</span>
+          <span class="report-nav-item">90天行動計劃</span>
+          <span class="report-nav-separator">・</span>
+          <span class="report-nav-item">焦點指標</span>
+        </div>
+      </nav>
+
+    </div>
+  </main>
+	<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+$( document ).ready(function(){
+	$.each(window.parent.userdata, function(idx,val){
+		$("." + idx).text(val.value);
+	} );
+});
+</script>
+</body>
+</html>

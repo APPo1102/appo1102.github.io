@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全人健康綜覽 — 報告目錄</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#eef1ef}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;color:#212529}
+.lr-stage{width:min(100%,800px);margin:0 auto;container-type:inline-size;background:#fff}
+.lr-page{position:relative;width:100%;min-height:141.44cqw;background:#fff;box-shadow:0 0 0 1px #e9eeeb inset;padding-bottom:6cqw}
+.lr-page *{box-sizing:border-box}
+
+.lr-topbar{position:relative;left:.5cqw;top:.22cqw;width:99cqw;height:6.62cqw;background:#4b9a7b;color:#fff;display:flex;align-items:center;padding:0 3.55cqw;font-size:1.16cqw;letter-spacing:.03em}
+.lr-topbar__left{display:flex;align-items:center;gap:1.08cqw;font-weight:700;white-space:nowrap}
+.lr-topbar__dot{width:.82cqw;height:.82cqw;border-radius:50%;background:#fff;display:block;opacity:.95}
+.lr-topbar__sub{font-weight:500;opacity:.6;margin-left:.6cqw}
+.lr-topbar__right{margin-left:auto;opacity:.72;font-size:1.1cqw;white-space:nowrap}
+
+.lr-toc-title{margin:9.5cqw 0 0 6.3cqw;font-size:6.6cqw;font-weight:800;color:#215d6b;letter-spacing:.01em}
+
+.lr-toc-divider{margin:3.2cqw 6.3cqw 0;height:.14cqw;background:#d2d7d3}
+
+.lr-toc-columns{display:flex;gap:6cqw;margin:3cqw 6.3cqw 0;align-items:flex-start}
+.lr-toc-col{flex:1 1 0;display:flex;flex-direction:column;gap:3.6cqw}
+
+.lr-toc-entry__head{display:flex;align-items:baseline;gap:.9cqw}
+.lr-toc-entry__num{font-size:2.05cqw;font-weight:800;color:#215d6b}
+.lr-toc-entry__title{font-size:2.05cqw;font-weight:800;color:#16181a}
+.lr-toc-entry__badge{background:#d7f24a;color:#16181a;font-size:1.05cqw;font-weight:700;letter-spacing:.05em;padding:.25cqw 1cqw;border-radius:.3cqw;margin-left:.3cqw}
+.lr-toc-entry__page{margin-left:auto;font-size:1.4cqw;color:#9fa4a8;font-weight:600;white-space:nowrap}
+.lr-toc-entry__subtitle{font-size:1.25cqw;color:#9fa4a8;font-weight:600;letter-spacing:.02em;margin:.3cqw 0 0}
+
+.lr-toc-sublist{list-style:none;margin:1.6cqw 0 0;padding:0 0 0 1.6cqw;border-left:1px solid #e3e6e4}
+.lr-toc-sublist li{position:relative;font-size:1.5cqw;font-weight:700;color:#212529;margin-bottom:1.4cqw;padding-left:1.4cqw}
+.lr-toc-sublist li:last-child{margin-bottom:0}
+.lr-toc-sublist li::before{content:"·";position:absolute;left:0;top:0;color:#9fa4a8;font-weight:700}
+.lr-toc-sublist--numbered li{padding-left:2.4cqw}
+.lr-toc-sublist--numbered li .n{position:absolute;left:0;top:.1cqw;font-size:1cqw;color:#9fa4a8;font-weight:700}
+.lr-toc-sublist--numbered li::before{content:""}
+
+@media (max-width:520px){.lr-stage{width:100%}}
+@media print{html,body{background:#fff}.lr-stage{width:210mm;max-width:none}.lr-page{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="lr-stage">
+  <div class="lr-page">
+
+    <div class="lr-topbar">
+      <div class="lr-topbar__left">
+        <span class="lr-topbar__dot"></span>
+        <span>簡介　INTRODUCTION</span>
+        <span class="lr-topbar__sub">TABLE OF CONTENTS</span>
+      </div>
+      <div class="lr-topbar__right">報告編號　LR-2026-0210</div>
+    </div>
+
+    <h1 class="lr-toc-title">報告目錄</h1>
+    <div class="lr-toc-divider"></div>
+
+    <div class="lr-toc-columns">
+      <div class="lr-toc-col">
+
+        <div>
+          <div class="lr-toc-entry__head">
+            <span class="lr-toc-entry__num">01</span>
+            <span class="lr-toc-entry__title">全人健康綜覽</span>
+            <span class="lr-toc-entry__page">03</span>
+          </div>
+          <div class="lr-toc-entry__subtitle">Longevity Overview</div>
+        </div>
+
+        <div>
+          <div class="lr-toc-entry__head">
+            <span class="lr-toc-entry__num">02</span>
+            <span class="lr-toc-entry__title">內在生理構面</span>
+            <span class="lr-toc-entry__page">07</span>
+          </div>
+          <div class="lr-toc-entry__subtitle">Biological Domain</div>
+          <ul class="lr-toc-sublist">
+            <li>循環系統</li>
+            <li>代謝調節</li>
+            <li>發炎狀態</li>
+            <li>修復合成</li>
+            <li>細胞保護力</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="lr-toc-entry__head">
+            <span class="lr-toc-entry__num">03</span>
+            <span class="lr-toc-entry__title">體能行動構面</span>
+            <span class="lr-toc-entry__page">07</span>
+          </div>
+          <div class="lr-toc-entry__subtitle">Fitness Domain</div>
+          <ul class="lr-toc-sublist">
+            <li>心肺耐力</li>
+            <li>肌肉儲備</li>
+            <li>活動度</li>
+            <li>身體組成</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="lr-toc-col">
+
+        <div>
+          <div class="lr-toc-entry__head">
+            <span class="lr-toc-entry__num">04</span>
+            <span class="lr-toc-entry__title">心靈和諧構面</span>
+            <span class="lr-toc-entry__page">18</span>
+          </div>
+          <div class="lr-toc-entry__subtitle">Inner Well Being Domain</div>
+          <ul class="lr-toc-sublist">
+            <li>睡眠品質</li>
+            <li>壓力調節</li>
+            <li>心理穩定</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="lr-toc-entry__head">
+            <span class="lr-toc-entry__num">05</span>
+            <span class="lr-toc-entry__title">九十天行動計畫</span>
+            <span class="lr-toc-entry__badge">重點</span>
+            <span class="lr-toc-entry__page">18</span>
+          </div>
+          <div class="lr-toc-entry__subtitle">90 Day Plan</div>
+          <ul class="lr-toc-sublist">
+            <li>A. 飲食計畫</li>
+            <li>B. 運動計畫</li>
+            <li>C. 心靈計畫</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="lr-toc-entry__head">
+            <span class="lr-toc-entry__num">06</span>
+            <span class="lr-toc-entry__title">附件</span>
+            <span class="lr-toc-entry__page">07</span>
+          </div>
+          <div class="lr-toc-entry__subtitle">Appendix</div>
+          <ul class="lr-toc-sublist lr-toc-sublist--numbered">
+            <li><span class="n">01</span>項目數據與改善策略</li>
+            <li><span class="n">02</span>健康食物範例營養表</li>
+            <li><span class="n">03</span>報告與演算法發展說明</li>
+            <li><span class="n">04</span>文獻</li>
+            <li><span class="n">05</span>免責申明</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+    window.parent.postMessage({ type: "setHeight", height: height }, "*");
+}
+window.addEventListener("load", sendHeight);
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+</script>
+</body>
+</html>

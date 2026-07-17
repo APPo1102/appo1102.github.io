@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圖表說明、演算模型、參考文獻與免責聲明</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:#eef0f3;
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;
+  color:#1d2533;
+}
+.page{
+  position:relative;
+  width:794px;
+  min-height:1123px;
+  margin:12px auto;
+  background:
+    radial-gradient(circle at 80% 12%,rgba(184,190,201,.16),transparent 42%),
+    linear-gradient(90deg,#fff 0%,#fff 68%,#f8f9fb 100%);
+  border:1px solid #d9dde4;
+  overflow:hidden;
+  page-break-after:always;
+  break-after:page;
+}
+.page:last-child{page-break-after:auto;break-after:auto}
+.header{
+  height:56px;
+  padding:0 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#465069;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2px;
+}
+.header div:last-child{white-space:nowrap}
+.content{padding:36px 46px 38px}
+.hero{
+  text-align:center;
+  padding:0 0 18px;
+  margin-bottom:18px;
+  border-bottom:2px solid #66748b;
+}
+.hero h1{
+  margin:0;
+  font-size:30px;
+  line-height:1.15;
+  font-weight:900;
+  color:#101827;
+}
+.hero p{
+  margin:8px 0 0;
+  font-size:11px;
+  font-weight:800;
+  color:#8893a5;
+  letter-spacing:.22em;
+}
+.lead{
+  margin:0 20px 18px;
+  text-align:center;
+  font-size:12.5px;
+  line-height:1.8;
+  color:#4d586a;
+}
+.section{
+  margin:0 0 18px;
+}
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 12px;
+  padding-bottom:8px;
+  border-bottom:1px solid #dce2ea;
+}
+.section-no{
+  min-width:29px;
+  padding:4px 7px;
+  border-radius:6px;
+  background:#eef1f5;
+  color:#526078;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
+}
+.section-title h2{
+  margin:0;
+  color:#202938;
+  font-size:17px;
+  line-height:1.3;
+}
+.section-title em{
+  color:#8b96a8;
+  font-size:10px;
+  font-style:italic;
+  font-weight:700;
+  letter-spacing:.08em;
+}
+.status-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.status-card{
+  min-height:66px;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:1px solid #dfe4eb;
+  background:#fff;
+}
+.status-card.e{grid-column:1 / -1;width:65%;justify-self:center}
+.badge{
+  flex:0 0 auto;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:17px;
+  font-weight:900;
+}
+.badge.a{background:#2b7de9}
+.badge.b{background:#18a36e}
+.badge.c{background:#e3b41e;color:#1f2937}
+.badge.d{background:#ef6b34}
+.badge.e{background:#e52031}
+.status-card b{display:block;font-size:14px;color:#202938}
+.status-card small{display:block;margin-top:3px;color:#7b8799;font-size:10px}
+.radar-box{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:20px;
+  border:1px solid #dfe4eb;
+  background:#fff;
+  min-height:360px;
+  padding:18px;
+}
+.radar-notes{padding-right:18px;border-right:1px solid #e4e8ee}
+.radar-notes h3{margin:0 0 5px;font-size:14px}
+.radar-notes p{margin:0 0 13px;color:#657084;font-size:11px;line-height:1.6}
+.icon-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px}
+.callout{
+  margin-top:130px;
+  padding:10px 12px;
+  border-left:4px solid #8b96a8;
+  background:#f6f7f9;
+  color:#4d586a;
+  font-size:10.5px;
+  line-height:1.6;
+  font-weight:700;
+}
+.radar-wrap{display:flex;align-items:center;justify-content:center}
+.disclaimer-line{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:3px solid #465069;
+  font-size:9.5px;
+  line-height:1.55;
+  color:#748094;
+}
+.two-col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+.body-text{
+  font-size:11px;
+  line-height:1.78;
+  color:#465266;
+}
+.body-text p{margin:0 0 10px}
+.body-text ul{margin:6px 0 0;padding-left:18px}
+.body-text li{margin:0 0 5px}
+.four-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px 20px;
+}
+.foundation{
+  padding-bottom:12px;
+  border-bottom:1px solid #e1e5eb;
+}
+.foundation h3{
+  margin:0 0 8px;
+  font-size:13px;
+  line-height:1.35;
+}
+.foundation h3 span{
+  display:block;
+  margin-top:2px;
+  color:#8a95a7;
+  font-size:9px;
+  font-style:italic;
+  font-weight:700;
+}
+.foundation p,.foundation li{
+  color:#4f5a6c;
+  font-size:10.2px;
+  line-height:1.6;
+}
+.foundation p{margin:0 0 7px}
+.foundation ul{margin:0;padding-left:17px}
+.principles{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.principle{
+  padding:14px;
+  min-height:214px;
+  border:1px solid #dfe4eb;
+  border-top:4px solid #7f8ca2;
+  background:#fff;
+}
+.principle h3{margin:0 0 3px;font-size:13px}
+.principle em{display:block;margin-bottom:11px;color:#8a95a7;font-size:9px}
+.principle p,.principle li{font-size:9.8px;line-height:1.62;color:#4e596b}
+.principle ul{padding-left:17px;margin:7px 0}
+.bullets{margin:8px 0 0;padding-left:20px}
+.bullets li{margin-bottom:5px;font-size:10.5px;line-height:1.55;color:#4c586a}
+.role-table{width:100%;border-collapse:collapse;margin-top:8px}
+.role-table th,.role-table td{
+  padding:11px 4px;
+  border-top:1px solid #dfe4eb;
+  font-size:10.5px;
+  line-height:1.55;
+  text-align:left;
+  vertical-align:top;
+}
+.role-table th{width:22%;color:#202938}
+.footer-disclaimer{
+  position:absolute;
+  left:46px;
+  right:46px;
+  bottom:28px;
+  padding-top:10px;
+  border-top:3px solid #465069;
+  font-size:9.5px;
+  color:#667286;
+  line-height:1.55;
+}
+.references-page .content{padding:28px 46px 34px}
+.references-page .hero{margin-bottom:15px;padding-bottom:12px}
+.references-page .hero h1{font-size:28px}
+.references-page .section-title{margin-bottom:8px}
+.reference-columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+.reference-item{
+  margin:0 0 7px;
+  font-size:7.7px;
+  line-height:1.38;
+  color:#344054;
+  text-align:justify;
+}
+.reference-item b{color:#1f2937}
+.books .reference-item{font-size:8px;line-height:1.42;margin-bottom:8px}
+.disclaimer-page .content{padding:40px 60px}
+.notice-box{
+  margin:18px 0;
+  padding:16px 18px;
+  border-left:4px solid #7f8ca2;
+  background:#f7f8fa;
+}
+.notice-box h3{margin:0 0 10px;font-size:14px}
+.notice-box li{margin-bottom:8px;font-size:10.5px;line-height:1.62;color:#475467}
+.disclaimer-intro{font-size:10.7px;line-height:1.72;color:#536075}
+.rule{
+  display:grid;
+  grid-template-columns:30px 1fr;
+  gap:12px;
+  margin:15px 0;
+}
+.rule .num{
+  width:28px;height:28px;
+  display:grid;place-items:center;
+  border-radius:6px;
+  background:#eef1f5;
+  color:#526078;
+  font-weight:900;
+}
+.rule h3{margin:0 0 4px;font-size:12.5px}
+.rule h3 span{margin-left:7px;color:#97a1b1;font-size:8.5px;font-weight:700}
+.rule p{margin:0;font-size:10.5px;line-height:1.62;color:#536075}
+.closing{
+  position:absolute;
+  left:80px;
+  right:80px;
+  bottom:38px;
+  padding-top:22px;
+  border-top:1px solid #dfe4eb;
+  text-align:center;
+  font-size:10px;
+  line-height:1.7;
+  color:#586477;
+  font-style:italic;
+}
+@media print{
+  body{background:#fff}
+  .page{margin:0;border:none;width:210mm;min-height:297mm}
+}
+@media(max-width:820px){
+  .page{width:100%;margin:0 0 12px}
+}
+</style>
+</head>
+<body>
+
+<section class="page">
+  <header class="header"><div>逆齡方案報告說明</div><div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div></header>
+  <main class="content">
+    <div class="hero"><h1>圖表說明</h1><p>VISUAL GUIDE &amp; INTERPRETATION</p></div>
+    <p class="lead">這份報告透過分數、燈號與圖表協助閱讀既有資料，幫助您快速辨識哪些面向適合優先安排生活型態調整與後續追蹤。</p>
+
+    <section class="section">
+      <div class="section-title"><span class="section-no">I</span><h2>等級與訊號辨識</h2><em>STATUS INDICATORS</em></div>
+      <div class="status-grid">
+        <div class="status-card"><span class="badge a">A</span><div><b>巔峰狀態</b><small>保持並繼續優化</small></div></div>
+        <div class="status-card"><span class="badge b">B</span><div><b>安全訊號</b><small>邁向卓越之機會點</small></div></div>
+        <div class="status-card"><span class="badge c">C</span><div><b>注意訊號</b><small>關鍵行動轉捩點</small></div></div>
+        <div class="status-card"><span class="badge d">D</span><div><b>警示訊號</b><small>建議積極採取行動調整生活型態</small></div></div>
+        <div class="status-card e"><span class="badge e">E</span><div><b>立即關注</b><small>強烈建議尋求醫療協助與指導</small></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="section-no">II</span><h2>雷達圖協助一眼看清全局</h2><em>RADAR CHART OVERVIEW</em></div>
+      <div class="radar-box">
+        <div class="radar-notes">
+          <h3><span class="icon-dot" style="background:#7f8ca2"></span>看「形狀」：</h3>
+          <p>較均衡的外擴形狀，代表不同面向在本模型中的相對位置較平均。</p>
+          <h3><span class="icon-dot" style="background:#3d9c79"></span>突出 (Spikes)：</h3>
+          <p>代表目前相對穩定的面向，可持續維持。</p>
+          <h3><span class="icon-dot" style="background:#bc6a79"></span>凹陷 (Dips)：</h3>
+          <p>代表較適合優先安排生活型態調整與追蹤的面向。</p>
+          <div class="callout">健康管理的重點不是追求單項滿分，而是逐步整理較弱項，讓整體分布更平衡，並據此安排接下來 90 天的行動重點。</div>
+        </div>
+        <div class="radar-wrap">
+          <svg width="255" height="255" viewBox="0 0 255 255" aria-label="雷達圖範例">
+            <g transform="translate(127.5 127.5)">
+              <polygon points="0,-78 74,-24 46,63 -46,63 -74,-24" fill="none" stroke="#d9dee7"/>
+              <polygon points="0,-58 55,-18 34,47 -34,47 -55,-18" fill="none" stroke="#d9dee7"/>
+              <polygon points="0,-39 37,-12 23,32 -23,32 -37,-12" fill="none" stroke="#d9dee7"/>
+              <polygon points="0,-19 18,-6 11,16 -11,16 -18,-6" fill="none" stroke="#d9dee7"/>
+              <line x1="0" y1="0" x2="0" y2="-78" stroke="#e2e6ed"/>
+              <line x1="0" y1="0" x2="74" y2="-24" stroke="#e2e6ed"/>
+              <line x1="0" y1="0" x2="46" y2="63" stroke="#e2e6ed"/>
+              <line x1="0" y1="0" x2="-46" y2="63" stroke="#e2e6ed"/>
+              <line x1="0" y1="0" x2="-74" y2="-24" stroke="#e2e6ed"/>
+              <polygon points="0,-51 43,-14 35,48 -23,32 -51,-17" fill="rgba(76,130,198,.15)" stroke="#4c82c6" stroke-width="3"/>
+              <polygon points="0,-70 60,-19 43,59 -34,47 -65,-21" fill="rgba(196,129,53,.12)" stroke="#c48135" stroke-width="3"/>
+              <g fill="#4c82c6">
+                <circle cx="0" cy="-51" r="4"/><circle cx="43" cy="-14" r="4"/><circle cx="35" cy="48" r="4"/><circle cx="-23" cy="32" r="4"/><circle cx="-51" cy="-17" r="4"/>
+              </g>
+              <g fill="#c48135">
+                <circle cx="0" cy="-70" r="5"/><circle cx="60" cy="-19" r="5"/><circle cx="43" cy="59" r="5"/><circle cx="-34" cy="47" r="5"/><circle cx="-65" cy="-21" r="5"/>
+              </g>
+              <text x="0" y="-92" text-anchor="middle" font-size="10" fill="#505c70">內在生理</text>
+              <text x="93" y="-24" text-anchor="middle" font-size="10" fill="#505c70">心肺代謝</text>
+              <text x="67" y="80" text-anchor="middle" font-size="10" fill="#505c70">心靈和諧</text>
+              <text x="-67" y="80" text-anchor="middle" font-size="10" fill="#505c70">修復能力</text>
+              <text x="-93" y="-24" text-anchor="middle" font-size="10" fill="#505c70">體適能</text>
+            </g>
+            <g transform="translate(54 234)" font-size="9" fill="#6d788a">
+              <circle cx="0" cy="0" r="5" fill="#8d97a6"/><text x="9" y="3">初始基準</text>
+              <circle cx="72" cy="0" r="5" fill="#4c82c6"/><text x="81" y="3">90天</text>
+              <circle cx="127" cy="0" r="5" fill="#c48135"/><text x="136" y="3">180天</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="disclaimer-line"><b>免責聲明：</b>本報告中的分數、燈號、模型參考區間、說明文字與建議方向，屬健康管理用途；不構成臨床診斷、治療、處方、醫囑或個別醫療處置決策。</div>
+    </section>
+  </main>
+</section>
+
+<section class="page">
+  <header class="header"><div>逆齡方案報告 - 項目報告與附件</div><div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div></header>
+  <main class="content">
+    <div class="hero"><h1>逆齡方案演算模型說明</h1><p>SCIENTIFIC FRAMEWORK &amp; IMPLEMENTATION GUIDELINES</p></div>
+
+    <section class="section">
+      <div class="section-title"><span class="section-no">I</span><h2>模型發展說明</h2><em>INTRODUCTION</em></div>
+      <div class="two-col body-text">
+        <div>
+          <p>本模型的建構源自於現代醫學與藥物的轉變：由以疾病治療為核心的傳統醫療模式（Medicine 2.0），逐步邁向以延長健康壽命（Healthspan）及預防功能失調（Functional Dysregulation）為導向的整合性健康管理。</p>
+          <p>本計畫整合近年老化科學（Geroscience）領域的重要研究成果，特別是針對「老化表徵（Hallmarks of Aging）」相關機制的觀察與介入策略，並將其轉譯為可實際應用且具一致性的健康評估與建議架構。</p>
+        </div>
+        <div>
+          <p>在方法學上，本模型結合了<b>內在生理指標分析</b>（Physiological Marker Panels）與<b>客觀體適能與功能性評估</b>（Physical Capacity Assessment）。透過多面向資料的整合分析，建立相對於單一年齡指標更具參考價值的「生理功能狀態評估」，並據此提供個別化的健康促進建議。</p>
+          <p><i>需特別說明，該評估屬於健康管理與風險分層工具，並非醫療診斷或健康之替代。</i></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="section-no">II</span><h2>模型理論基礎</h2><em>THEORETICAL FOUNDATION</em></div>
+      <p class="body-text">本模型主要建立於以下四大健康維度之整合性觀點，相關架構參考國際臨床指引與同儕審查之學術文獻（SCIE期刊）：</p>
+      <div class="four-grid">
+        <article class="foundation">
+          <h3>1. 代謝與發炎調節<span>METABOLIC &amp; INFLAMMATORY REGULATION</span></h3>
+          <p>模型關注代謝功能與低度慢性發炎之間的關聯性，例如胰島素阻抗指標 <b>HOMA-IR</b> 與發炎指標（如 <b>hsCRP</b> 等）。</p>
+          <p>建議策略以提升代謝彈性（Metabolic Flexibility）為目標，包含：</p>
+          <ul><li>營養結構調整（如蛋白質攝取比例與精緻碳水控制）</li><li>規律運動介入</li><li>飲食時間管理（如間歇性進食）</li></ul>
+          <p><i>上述作法主要用於支持代謝調節與體組成管理，其效果會因個體差異而有所不同。</i></p>
+        </article>
+        <article class="foundation">
+          <h3>2. 肌肉中心健康觀<span>MUSCLE-CENTRIC HEALTH PERSPECTIVE</span></h3>
+          <p>骨骼肌被視為重要的代謝調節組織，與功能維持及生活品質密切相關。研究顯示，肌力（如握力）與整體健康狀態具有統計相關性。</p>
+          <p>因此，本模型將阻力訓練列為重要介入策略之一，以支持：</p>
+          <ul><li>肌肉量維持 SMI</li><li>功能性動作能力</li><li>日常活動表現</li></ul>
+        </article>
+        <article class="foundation">
+          <h3>3. 心肺適能與恢復能力<span>CARDIORESPIRATORY FITNESS &amp; RECOVERY</span></h3>
+          <p>心肺適能（如最大攝氧量 <b>VO2max</b>）在流行病學研究中與健康風險具有顯著關聯。</p>
+          <p>本模型採用分區訓練週期化設計（如 Zone 2 與高強度間歇訓練 <b>HIIT</b>），目標在於：</p>
+          <ul><li>提升心肺耐力</li><li>支持粒線體功能</li><li>改善運動後恢復能力（如心率恢復 <b>HRR</b>）</li></ul>
+          <p><i>所有運動建議皆需依個別能力與風險評估進行調整。</i></p>
+        </article>
+        <article class="foundation">
+          <h3>4. 神經與代謝平衡<span>NEURO-METABOLIC BALANCE</span></h3>
+          <p>心理壓力與睡眠品質被視為與代謝調節及自律神經功能密切相關。長期壓力與睡眠不足，可能影響荷爾蒙平衡與發炎狀態。</p>
+          <p>本模型建議透過以下方式促進整體平衡：</p>
+          <ul><li>睡眠品質優化</li><li>壓力管理（如呼吸訓練、正念練習）</li><li>建立穩定作息與生活節律</li></ul>
+          <p><i>此類介入主要用於支持身體恢復與調節能力。</i></p>
+        </article>
+      </div>
+    </section>
+  </main>
+</section>
+
+<section class="page">
+  <header class="header"><div>逆齡方案報告 - 項目報告與附件</div><div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div></header>
+  <main class="content">
+    <section class="section">
+      <div class="section-title"><span class="section-no">III</span><h2>模型執行原則</h2><em>IMPLEMENTATION PRINCIPLES</em></div>
+      <p class="body-text">為兼顧科學性與可持續性，本模型遵循以下三項核心原則：</p>
+      <div class="principles">
+        <article class="principle">
+          <h3>1. 數據導向的個別化建議</h3><em>Data-Driven Personalization</em>
+          <p>所有建議均依據個體的：</p>
+          <ul><li>內在生理指標數據<br>（如 TG/HDL-C、HOMA-IR）</li><li>體適能評估結果</li></ul>
+          <p>並依 <b>FITT 原則</b>（頻率、強度、時間、類型）進行設計與調整，以提升建議的適配性與實用性。</p>
+        </article>
+        <article class="principle">
+          <h3>2. 多面向漸進調整</h3><em>Multimodal Adaptation</em>
+          <p>介入策略採漸進式原則，以支持身體適應並降低過度負荷風險，涵蓋：</p>
+          <ul><li>阻力訓練（重量與次數）</li><li>心肺訓練（強度與時間）</li><li>活動度與功能性訓練</li><li>生活型態調整</li></ul>
+        </article>
+        <article class="principle">
+          <h3>3. 基礎健康優先</h3><em>Foundational Prioritization</em>
+          <p>除運動與營養外，本模型強調：</p>
+          <ul><li>睡眠</li><li>壓力調節</li><li>心理健康</li></ul>
+          <p>為整體健康管理的重要基礎，有助於支持身體的恢復與調節機制。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" style="margin-top:26px">
+      <div class="section-title"><span class="section-no">IV</span><h2>專家顧問與科學依據</h2><em>SCIENTIFIC BASIS &amp; EXPERT ADVISORY</em></div>
+      <p class="body-text">本模型由光田綜合醫院跨領域專業團隊共同建構與審視，涵蓋臨床醫學、運動科學、營養學與實驗室醫學等領域，並參考：</p>
+      <ul class="bullets">
+        <li>國際臨床實務指引（Clinical Practice Guidelines）</li>
+        <li>系統性回顧與統合分析（Systematic Reviews &amp; Meta-analyses）</li>
+        <li>SCIE 收錄之同儕審查期刊文獻</li>
+      </ul>
+      <p class="body-text">以確保方法學具備一致性、科學性與實務應用價值。</p>
+
+      <h3 style="font-size:13px;margin:18px 0 6px;padding-left:8px;border-left:4px solid #7f8ca2">專業分工說明</h3>
+      <table class="role-table">
+        <tr><th>功能醫學領域</th><td>負責整合內在生理指標與臨床資訊，進行功能性分析與健康風險評估，並提供個別化健康管理建議。</td></tr>
+        <tr><th>運動醫學領域</th><td>根據體能狀態與風險評估，制定安全且適切的運動建議，並協助預防運動相關傷害。</td></tr>
+        <tr><th>營養專業領域</th><td>依據營養學原則與臨床建議，規劃飲食策略，並提供長期可執行的營養指導。</td></tr>
+        <tr><th>血液生化領域</th><td>負責檢測流程與品質控管，確保數據的準確性與一致性，作為後續分析與追蹤依據。</td></tr>
+      </table>
+    </section>
+  </main>
+  <div class="footer-disclaimer"><b>補充說明：</b>本模型所提供之分析與建議，屬於健康管理與風險評估用途，並非醫療診斷或治療建議。如有特定疾病或醫療需求，建議諮詢合格醫療專業人員。</div>
+</section>
+
+<section class="page references-page">
+  <header class="header"><div>逆齡方案報告 - 項目報告與附件</div><div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div></header>
+  <main class="content">
+    <div class="hero"><h1>參考文獻</h1><p>SCIENTIFIC CITATIONS &amp; REFERENCES</p></div>
+    <div class="section-title"><span class="section-no">I</span><h2>研究文獻</h2><em>RESEARCHES</em></div>
+    <div class="reference-columns">
+      <div><div class="reference-item"><b>Athinarayanan, Shaminie J., et al.</b> “Long-Term Effects of a Novel Continuous Care Model Including Nutritional Ketosis for the Management of Type 2 Diabetes: A 2-Year Non-randomized Clinical Trial.” <i>Frontiers in Endocrinology</i>, vol. 10, 2019, p. 348. Frontiers, doi:10.3389/fendo.2019.00348.</div>
+<div class="reference-item"><b>Blair, Steven N., et al.</b> “Physical Fitness and All-Cause Mortality: A Prospective Study of Healthy Men and Women.” <i>JAMA</i>, vol. 262, no. 17, 1989, pp. 2395-401. JAMA Network, doi:10.1001/jama.1989.03430170057028.</div>
+<div class="reference-item"><b>Bruce, Robert A., et al.</b> “Maximal Oxygen Intake and Nomographic Assessment of Functional Aerobic Impairment in Cardiovascular Disease.” <i>American Heart Journal</i>, vol. 80, no. 4, 1973, pp. 546-62. ScienceDirect, doi:10.1016/0002-8703(73)90500-X.</div>
+<div class="reference-item"><b>Cappuccio, Francesco P., et al.</b> “Sleep Duration and All-Cause Mortality: A Systematic Review and Meta-Analysis of Prospective Studies.” <i>Sleep</i>, vol. 33, no. 5, 2010, pp. 585-92. Oxford Academic, doi:10.1093/sleep/33.5.585.</div>
+<div class="reference-item"><b>Cohen, R., et al.</b> “Purpose in Life and Its Association with All-Cause Mortality in Adults: A Meta-Analysis.” <i>Psychosomatic Medicine</i>, vol. 78, no. 2, 2016, pp. 122-35. Lippincott Williams & Wilkins, doi:10.1097/PSY.0000000000000274.</div>
+<div class="reference-item"><b>Epel, Elissa S., et al.</b> “Accelerated Telomere Shortening in Response to Life Stress.” <i>Proceedings of the National Academy of Sciences</i>, vol. 101, no. 49, 2004, pp. 17312-15. PNAS, doi:10.1073/pnas.0407162101.</div>
+<div class="reference-item"><b>Ference, Brian A., et al.</b> “Low-Density Lipoproteins Cause Atherosclerotic Cardiovascular Disease. 1. Evidence from Genetic, Epidemiologic, and Clinical Studies. A Consensus Statement from the European Atherosclerosis Society Consensus Panel.” <i>European Heart Journal</i>, vol. 38, no. 32, 2017, pp. 2459-72. Oxford Academic, doi:10.1093/eurheartj/ehx144.</div>
+<div class="reference-item"><b>Foster, Grant D., et al.</b> “Generalized Equations for Predicting Maximal Oxygen Uptake from Treadmill Testing.” <i>American Heart Journal</i>, vol. 107, no. 2, 1984, pp. 345-52. ScienceDirect, doi:10.1016/0002-8703(84)90500-7.</div>
+<div class="reference-item"><b>Fox, Caroline S., et al.</b> “Abdominal Visceral and Subcutaneous Adipose Tissue Compartments: Association with Metabolic Risk Factors in the Framingham Heart Study.” <i>Circulation</i>, vol. 116, no. 1, 2007, pp. 39-48. AHA Journals, doi:10.1161/CIRCULATIONAHA.106.675355.</div>
+<div class="reference-item"><b>Franceschi, Claudio, et al.</b> “Inflamm-aging: An Evolutionary Perspective on Immunosenescence.” <i>Annals of the New York Academy of Sciences</i>, vol. 908, no. 1, 2000, pp. 244-54. Wiley Online Library, doi:10.1111/j.1749-6632.2000.tb06651.x.</div>
+<div class="reference-item"><b>Imtiaz, S, et al.</b> “Neutrophil lymphocyte ratio as a simple and independent predictor of all-cause mortality in the general population.” <i>Journal of Clinical Laboratory Analysis</i>, vol. 35, no. 1, 2021, e23600. Wiley Online Library, doi:10.1002/jcla.23600.</div>
+<div class="reference-item"><b>Jones, David S., et al.</b> “Functional Medicine: A 21st Century Model of Patient Care.” <i>Integrative Medicine: A Clinician’s Journal</i>, vol. 18, no. 1, 2019, pp. 34-36. PMC, www.ncbi.nlm.nih.gov/pmc/articles/PMC6469490/.</div></div>
+      <div><div class="reference-item"><b>Lane, Melissa M., et al.</b> “Ultra-Processed Food Exposure and Adverse Health Outcomes: Umbrella Review of Epidemiological Meta-Analyses.” <i>The BMJ</i>, vol. 384, 2024, p. e077310. BMJ, doi:10.1136/bmj-2023-077310.</div>
+<div class="reference-item"><b>Leong, Darryl P., et al.</b> “Prognostic Value of Grip Strength: Findings from the Prospective Urban Rural Epidemiology (PURE) Study.” <i>The Lancet</i>, vol. 386, no. 9990, 2015, pp. 266-73. The Lancet, doi:10.1016/S0140-6736(14)62000-6.</div>
+<div class="reference-item"><b>Li, H, et al.</b> “Prognostic value of neutrophil-to-lymphocyte ratio, platelet-to-lymphocyte ratio and monocyte-to-lymphocyte ratio in patients with cardiovascular diseases: A systematic review and meta-analysis.” <i>Aging (Albany NY)</i>, vol. 13, no. 11, 2021, pp. 15480-99. Aging-US, doi:10.18632/aging.203090.</div>
+<div class="reference-item"><b>López-Otín, Carlos, et al.</b> “The Hallmarks of Aging.” <i>Cell</i>, vol. 153, no. 6, 2013, pp. 1194-217. ScienceDirect, doi:10.1016/j.cell.2013.05.039.</div>
+<div class="reference-item"><b>López-Otín, Carlos, et al.</b> “Hallmarks of Aging: An Expanding Universe.” <i>Cell</i>, vol. 186, no. 2, 2023, pp. 243-78. ScienceDirect, doi:10.1016/j.cell.2022.11.001.</div>
+<div class="reference-item"><b>Mandsager, Kyle, et al.</b> “Association of Cardiorespiratory Fitness With Long-term Mortality Among Adults Undergoing Exercise Treadmill Testing.” <i>JAMA Network Open</i>, vol. 1, no. 6, 2018, e183605. JAMA Network, doi:10.1001/jamanetworkopen.2018.3605.</div>
+<div class="reference-item"><b>Matthews, D.R., et al.</b> “Homeostasis Model Assessment: Insulin Resistance and β-Cell Function from Fasting Plasma Glucose and Insulin Concentrations in Man.” <i>Diabetologia</i>, vol. 28, no. 7, 1985, pp. 412-19. SpringerLink, doi:10.1007/BF00280883.</div>
+<div class="reference-item"><b>McLaughlin, Tracey, et al.</b> “Use of Metabolic Markers to Identify Overweight Individuals Who Are Insulin Resistant.” <i>Annals of Internal Medicine</i>, vol. 138, no. 10, 2003, pp. 802-09. ACP Journals, doi:10.7326/0003-4819-138-10-200305200-00011.</div>
+<div class="reference-item"><b>Miljkovic, Iva, et al.</b> “Abdominal Myosteatosis Is Independently Associated with All-Cause Mortality in Community-Dwelling Older Adults.” <i>Journal of Gerontology: Series A, Biological Sciences and Medical Sciences</i>, vol. 70, no. 1, 2015, pp. 75-81. Oxford Academic, doi:10.1093/gerona/glu082.</div>
+<div class="reference-item"><b>Monteiro, Carlos A., et al.</b> “Ultra-Processed Foods: What They Are and How to Identify Them.” <i>Public Health Nutrition</i>, vol. 22, no. 5, 2019, pp. 936-41. Cambridge University Press, doi:10.1017/S1368980018003762.</div>
+<div class="reference-item"><b>Rantanen, Taina, et al.</b> “Midlife Hand Grip Strength as a Predictor of Old Age Disability.” <i>JAMA</i>, vol. 281, no. 6, 1999, pp. 558-60. JAMA Network, doi:10.1001/jama.281.6.558.</div>
+<div class="reference-item"><b>Reaven, Gerald M.</b> “Banting Lecture 1988: Role of Insulin Resistance in Human Disease.” <i>Diabetes</i>, vol. 37, no. 12, 1988, pp. 1595-607. American Diabetes Association, doi:10.2337/diab.37.12.1595.</div>
+<div class="reference-item"><b>Ridker, Paul M., et al.</b> “C-Reactive Protein and Subsequent Risk of Cardiovascular Events Among Apparently Healthy Women.” <i>JAMA</i>, vol. 277, no. 7, 1997, pp. 549-55. JAMA Network, doi:10.1001/jama.1997.03540310061033.</div></div>
+    </div>
+  </main>
+</section>
+
+<section class="page references-page">
+  <header class="header"><div>逆齡方案報告 - 項目報告與附件</div><div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div></header>
+  <main class="content">
+    <div class="section-title"><span class="section-no">I</span><h2>研究文獻（續）</h2><em>RESEARCHES CONT.</em></div>
+    <div class="reference-columns">
+      <div><div class="reference-item"><b>Sniderman, Allan D., et al.</b> “Why Is Apolipoprotein B a More Accurate Marker of Cardiovascular Risk Than Low-Density Lipoprotein Cholesterol?” <i>Journal of Clinical Lipidology</i>, vol. 5, no. 4, 2011, pp. 287-97. ScienceDirect, doi:10.1016/j.jacl.2011.03.003.</div>
+<div class="reference-item"><b>Srour, Bernard, et al.</b> “Ultra-Processed Food Intake and Risk of Cardiovascular Disease: Prospective Cohort Study (NutriNet-Santé).” <i>The BMJ</i>, vol. 365, 2019, p. l1451. BMJ, doi:10.1136/bmj.l1451.</div>
+<div class="reference-item"><b>Srikanthan, Preethi, and Arun S. Karlamangla.</b> “Muscle Mass Index as a Predictor of Longevity in Older-Adults.” <i>The American Journal of Medicine</i>, vol. 127, no. 6, 2014, pp. 547-53. ScienceDirect, doi:10.1016/j.amjmed.2014.02.007.</div></div>
+      <div><div class="reference-item"><b>Volek, Jeff S., et al.</b> “Carbohydrate Restriction Has a More Favorable Impact on the Metabolic Syndrome than a Low Fat Diet.” <i>Lipids</i>, vol. 44, no. 4, 2009, pp. 297-309. SpringerLink, doi:10.1007/s11745-008-3274-2.</div>
+<div class="reference-item"><b>Yang, Y, et al.</b> “Systemic immune-inflammation index (SII) as a biomarker for predicting 1-year all-cause mortality in elderly patients with coronary artery disease.” <i>BMC Geriatrics</i>, vol. 22, no. 1, 2022, p. 586. BMC, doi:10.1186/s12877-022-03290-x.</div>
+<div class="reference-item"><b>Yusuf, Salim, et al.</b> “Effect of Potentially Modifiable Risk Factors Associated with Myocardial Infarction in 52 Countries (the INTERHEART Study): Case-Control Study.” <i>The Lancet</i>, vol. 364, no. 9438, 2004, pp. 937-52. The Lancet, doi:10.1016/S0140-6736(04)17018-9.</div></div>
+    </div>
+
+    <div class="section-title" style="margin-top:24px"><span class="section-no">II</span><h2>推薦書籍</h2><em>BOOKS</em></div>
+    <div class="reference-columns books">
+      <div><div class="reference-item"><b>Attia, Peter, with Bill Gifford.</b> <i>Outlive: The Science & Art of Longevity.</i> Harmony Books, 2023.</div>
+<div class="reference-item"><b>Bikman, Benjamin.</b> <i>Why We Get Sick: The Hidden Epidemic at the Root of Most Chronic Disease—and How to Fight It.</i> BenBella Books, 2020.</div>
+<div class="reference-item"><b>Blackburn, Elizabeth, and Elissa Epel.</b> <i>The Telomere Effect: A Revolutionary Approach to Living Younger, Healthier, Longer.</i> Grand Central Publishing, 2017.</div>
+<div class="reference-item"><b>Bland, Jeffrey.</b> <i>The Disease Delusion: Conquering the Causes of Chronic Illness for a Healthier, Longer Life.</i> HarperWave, 2014.</div>
+<div class="reference-item"><b>Institute for Functional Medicine.</b> <i>Textbook of Functional Medicine.</i> Gig Harbor, WA, Institute for Functional Medicine, 2010.</div>
+<div class="reference-item"><b>Levine, Morgan.</b> <i>True Age: Cutting-Edge Research to Help Turn Back the Clock.</i> Penguin, 2023.</div>
+<div class="reference-item"><b>Longo, Valter.</b> <i>The Longevity Diet: Discover the New Science behind Stem Cell Activation and Regeneration to Slow Aging, Fight Disease, and Optimize Weight.</i> Avery, 2018.</div>
+<div class="reference-item"><b>Lustig, Robert H.</b> <i>Metabolical: The Lure and the Lies of Processed Food, Nutrition, and Modern Medicine.</i> HarperWave, 2021.</div>
+<div class="reference-item"><b>Lyon, Gabrielle.</b> <i>Forever Strong: A New, Science-Based Strategy for Aging Well.</i> Atria Books, 2023.</div>
+<div class="reference-item"><b>Maurer, Richard.</b> <i>The Blood Code: Unlock the Secrets of Your Metabolism.</i> Waterfront Press, 2014.</div></div>
+      <div><div class="reference-item"><b>Means, Casey, with Calley Means.</b> <i>Good Energy: The Surprising Connection Between Some Habits and Sustainable Health.</i> Avery, 2024.</div>
+<div class="reference-item"><b>Ornish, Dean.</b> <i>Undo It!: How Simple Lifestyle Changes Can Reverse Most Chronic Diseases.</i> Ballantine Books, 2019.</div>
+<div class="reference-item"><b>Phinney, Stephen D., and Jeff S. Volek.</b> <i>The Art and Science of Low Carbohydrate Living: An Expert Guide to Making the Life-Saving Switch to Carbohydrate Restriction.</i> Beyond Obesity LLC, 2011.</div>
+<div class="reference-item"><b>Shanahan, Catherine.</b> <i>Dark Calories: How Vegetable Oils Destroy Our Health and How We Can Get It Back.</i> Hachette Go, 2024.</div>
+<div class="reference-item"><b>Sinclair, David A., and Matthew D. LaPlante.</b> <i>Lifespan: Why We Age—and Why We Don’t Have To.</i> Atria Books, 2019.</div>
+<div class="reference-item"><b>Van Tulleken, Chris.</b> <i>Ultra-Processed People: The Science Behind Food That Isn’t Food.</i> W.W. Norton, 2023.</div>
+<div class="reference-item"><b>Waldinger, Robert, and Marc Schulz.</b> <i>The Good Life: Lessons from the World’s Longest Scientific Study of Happiness.</i> Simon & Schuster, 2023.</div>
+<div class="reference-item"><b>Walker, Matthew.</b> <i>Why We Sleep: Unlocking the Power of Sleep and Dreams.</i> Scribner, 2017.</div>
+<div class="reference-item"><b>Zachary, Brandy.</b> <i>A Practitioner’s Guide to Mastering Functional Medicine Lab Values – Foundations for Integrative Testing.</i> Dr. Z Functional Medicine LabDX, 2025.</div></div>
+    </div>
+  </main>
+</section>
+
+<section class="page disclaimer-page">
+  <header class="header"><div>逆齡方案報告 - 項目報告與附件</div><div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div></header>
+  <main class="content">
+    <div class="hero"><h1>免責申明</h1><p>LEGAL DISCLAIMER</p></div>
+    <p class="disclaimer-intro">本報告為個人化健康管理參考文件，內容係依會員事前簽署之同意授權書，使用會員提供或授權使用之正式檢驗資料、體適能資料與生活型態資料整理而成，供健康教育、生活型態規劃與後續追蹤整合參考使用。</p>
+
+    <div class="notice-box">
+      <h3>請特別留意：</h3>
+      <ul>
+        <li>本報告中的分數、燈號、模型參考區間、說明文字與建議方向，屬健康管理用途，不構成臨床診斷、治療、處方、醫囑或個別醫療處置決策。</li>
+        <li>若會員目前有症狀、既往病史、慢性病、正在服藥、懷孕、術後恢復或其他個案需求，請在調整飲食、運動或生活型態前，先向合格醫療專業人員諮詢。</li>
+        <li>本報告如提及醫師、營養師、物理治療師、運動或其他專業顧問，係指模型與內容架構曾接受一般性專業審視，不表示該等專業人員已對每一位會員完成個別診察、個別檢驗判讀或治療建議。</li>
+        <li>檢驗數值之正式效力與臨床意義，應以原出具單位之正式報告、參考值與合格醫療專業人員之判讀為準。</li>
+      </ul>
+    </div>
+
+    <p class="disclaimer-intro">感謝您閱讀這份專屬的健康報告。它旨在提供一份兼具專業名詞與易讀說明的健康管理參考，協助您更清楚地理解自身資料。這份逆齡報告的角色，是協助您理解資料、安排生活型態與後續追蹤方向。為了確保您的安全與權益，請詳閱以下重要準則：</p>
+
+    <div class="rule"><div class="num">1</div><div><h3>非臨床診斷 <span>NON-CLINICAL DIAGNOSIS</span></h3><p>本報告內容僅供資訊與教育目的，用於健康管理與輔助，不取代正式檢驗報告、臨床診斷或醫療處置。</p></div></div>
+    <div class="rule"><div class="num">2</div><div><h3>專業諮詢 <span>PROFESSIONAL CONSULTATION</span></h3><p>若您有慢性病史、正在服藥、對檢驗結果有疑問，或在執行計畫過程中出現不適，請諮詢合格醫療專業人員。</p></div></div>
+    <div class="rule"><div class="num">3</div><div><h3>責任歸屬 <span>LIABILITY &amp; RESPONSIBILITY</span></h3><p>本報告作者及合作機構（World Gym、光燦健康、光田綜合醫院）不承擔因個人自行使用內容所致之直接或間接風險；正式檢驗數值與臨床意義仍應以原出具單位及合格醫療專業人員之判讀為準。</p></div></div>
+  </main>
+  <div class="closing">願您將這份報告視為輔助工具，在正式資料、日常執行與專業判讀之間，建立更穩定的健康管理節奏。</div>
+</section>
+		<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+</script>
+</body>
+</html>

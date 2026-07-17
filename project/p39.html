@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>項目報告與附件</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:#eef0f3;
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;
+    color:#111318;
+  }
+  .page{
+    width:794px;
+    min-height:1123px;
+    margin:10px auto;
+    position:relative;
+    overflow:hidden;
+    border:1px solid #d9dde4;
+    background:
+      radial-gradient(circle at 76% 24%, rgba(186,191,201,.34) 0%, rgba(223,226,232,.22) 28%, rgba(255,255,255,0) 58%),
+      linear-gradient(90deg,#ffffff 0%,#ffffff 58%,#f3f5f8 100%);
+  }
+  .page::before{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:430px;
+    height:390px;
+    background:radial-gradient(circle at 18% 82%, rgba(199,204,212,.48) 0%, rgba(226,229,234,.30) 40%, rgba(255,255,255,0) 78%);
+    pointer-events:none;
+  }
+  .header{
+    height:56px;
+    padding:0 28px;
+    background:#465069;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:2.1px;
+    position:relative;
+    z-index:2;
+  }
+  .header > div{white-space:nowrap;opacity:.96}
+
+  .content{
+    padding:56px 54px 62px 54px;
+    position:relative;
+    z-index:1;
+  }
+  .section-kicker{
+    margin:0 0 34px;
+    color:#4f596b;
+    font-size:11px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:.31em;
+    text-transform:uppercase;
+  }
+  .eyebrow{
+    margin:0 0 28px;
+    color:#697386;
+    font-size:11px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+  }
+  .title{
+    margin:0;
+    font-size:84px;
+    line-height:.96;
+    font-weight:900;
+    letter-spacing:-3px;
+    white-space:nowrap;
+    background:linear-gradient(180deg,#101217 0%,#101217 58%,#5d687d 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+  }
+  .description{
+    margin:42px 0 0;
+    width:60%;
+    font-size:15px;
+    line-height:1.78;
+    font-weight:600;
+    color:#313844;
+  }
+
+  .appendix{
+    margin-top:312px;
+    width:62%;
+    padding-left:34px;
+  }
+  .appendix-heading{
+    margin:0 0 22px;
+    color:#4f596b;
+    font-size:15px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:.28em;
+  }
+  .appendix-list{
+    list-style:none;
+    margin:0;
+    padding:0 0 0 14px;
+  }
+  .appendix-list li{
+    margin:0 0 13px;
+    font-size:17px;
+    line-height:1.5;
+    font-weight:700;
+    color:#252c36;
+  }
+  .appendix-list li:last-child{margin-bottom:0}
+
+  @media print{
+    body{background:#fff}
+    .page{margin:0;border:none}
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+    </div>
+
+    <main class="content">
+      <div class="section-kicker">APPENDIX</div>
+      <div class="eyebrow">ITEM REPORT AND APPENDIX</div>
+      <h1 class="title">項目報告與附件</h1>
+
+      <p class="description">提供個人化行動建議和演算模型之說明及文獻，呈現詳細生理、身體組成、體適能、生化指標與生活型態的完整基線檢測數據，並給予各類健康食物來源範例。</p>
+
+      <section class="appendix">
+        <h2 class="appendix-heading">關鍵項目報告</h2>
+        <ul class="appendix-list">
+          <li>優質蛋白質食物營養表</li>
+          <li>健康碳水化合物食物營養表</li>
+          <li>健康脂肪來源食物營養表</li>
+          <li>膳食纖維食物營養表</li>
+          <li>逆齡方案演算模型說明</li>
+          <li>參考文獻</li>
+          <li>免責申明</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+		<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+</script>
+</body>
+</html>

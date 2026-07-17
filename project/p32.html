@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>九十天飲食策略建議</title>
+  <style>
+    :root{
+      --brand:#582DBE;
+      --brand-soft:#F5F1FC;
+      --brand-soft-2:#F8F6FC;
+      --brand-line:#E7E0F4;
+      --text:#11151D;
+      --text-2:#5E6672;
+      --muted:#959DA8;
+      --line:#E7EAF0;
+      --panel:#FCFCFD;
+      --soft:#F6F7F9;
+      --soft-purple:#F6F3FB;
+      --soft-red:#FBF5F5;
+      --green:#4F8F68;
+      --yellow:#B89B44;
+      --orange:#C8834A;
+      --teal:#4C9B95;
+      --red:#C75E69;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      background:#eef1ef;
+      color:var(--text);
+      font-family:Arial,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      padding:24px;
+    }
+
+    .report-page{
+      width:210mm;
+      min-height:297mm;
+      margin:0 auto;
+      background:#fff;
+      box-shadow:0 10px 30px rgba(17,21,29,.08);
+      overflow:hidden;
+    }
+
+    .topbar{
+      height:14.5mm;
+      padding:0 12mm;
+      background:var(--brand);
+      color:rgba(255,255,255,.94);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .topbar-left,.topbar-right{
+      font-size:8.2px;
+      font-weight:700;
+      letter-spacing:.2em;
+      white-space:nowrap;
+      line-height:1;
+    }
+
+    .page-body{padding:10mm 11.5mm 10mm}
+
+    .title-block{
+      margin-bottom:6mm;
+    }
+    .page-title{
+      margin:0;
+      color:#090C12;
+      font-size:29px;
+      line-height:1.02;
+      font-weight:900;
+      letter-spacing:-.045em;
+      text-transform:uppercase;
+    }
+    .page-subtitle{
+      margin:6px 0 0;
+      color:#9097A1;
+      font-size:11px;
+      line-height:1.25;
+      font-weight:800;
+      letter-spacing:.01em;
+    }
+
+    .section-card,
+    .table-card,
+    .stat-card,
+    .bottom-note{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fff;
+    }
+
+    .strategy-card{
+      margin-bottom:5.5mm;
+      overflow:hidden;
+    }
+    .strategy-inner{padding:5.5mm 6mm 5.5mm}
+    .section-heading,
+    .block-title{
+      margin:0 0 3.2mm;
+      color:#171C24;
+      font-size:15px;
+      line-height:1.2;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .section-heading::before,
+    .block-title::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--brand);
+      box-shadow:0 0 0 4px var(--brand-soft);
+      flex:0 0 auto;
+    }
+
+    .applies-box{
+      background:var(--soft-purple);
+      border:1px solid var(--brand-line);
+      border-radius:12px;
+      padding:10px 12px;
+      margin-bottom:3.2mm;
+    }
+    .applies-box p{
+      margin:0;
+      color:#695C8E;
+      font-size:8px;
+      line-height:1.68;
+      font-weight:800;
+    }
+    .applies-label{
+      display:inline-block;
+      margin-right:8px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#EEE8FA;
+      color:var(--brand);
+      font-size:7.4px;
+      font-weight:900;
+    }
+
+    .strategy-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:3.2mm;
+    }
+    .strategy-item{
+      display:grid;
+      grid-template-columns:9px 1fr;
+      gap:10px;
+      align-items:start;
+    }
+    .strategy-dot{width:9px;height:9px;border-radius:50%;margin-top:4px}
+    .dot-carb{background:var(--yellow)}
+    .dot-fat{background:var(--orange)}
+    .dot-protein{background:var(--green)}
+    .strategy-item p{
+      margin:0;
+      color:var(--text-2);
+      font-size:8px;
+      line-height:1.62;
+      font-weight:700;
+    }
+    .strategy-item b{color:#202733}
+
+    .warning-box{
+      background:var(--soft-red);
+      border:1px solid #EDD6D9;
+      border-radius:12px;
+      padding:10px 12px;
+      color:#B55461;
+      font-size:8px;
+      line-height:1.55;
+      font-weight:900;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:4mm;
+      margin-bottom:3.5mm;
+    }
+    .stat-card{
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background:#fff;
+    }
+    .stat-label{
+      color:#505A68;
+      font-size:8.8px;
+      font-weight:900;
+    }
+    .stat-value{
+      color:var(--brand);
+      font-size:18px;
+      line-height:1;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .stat-value small{
+      color:#9AA2AC;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .table-card{
+      overflow:hidden;
+      margin-bottom:4mm;
+      background:#fff;
+    }
+    table{width:100%;border-collapse:collapse}
+    th,td{
+      padding:9px 11px;
+      border-bottom:1px solid var(--line);
+      text-align:center;
+      vertical-align:middle;
+    }
+    th{
+      background:#FAFBFC;
+      color:#6F7884;
+      font-size:7.8px;
+      font-weight:900;
+    }
+    td{
+      color:#313845;
+      font-size:8px;
+      line-height:1.45;
+      font-weight:800;
+    }
+    th:first-child,td:first-child{text-align:left}
+
+    .nutrition-name{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+    .name-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+    .protein{background:var(--green)}
+    .carb{background:var(--yellow)}
+    .fat{background:var(--orange)}
+    .fiber{background:var(--teal)}
+    .name-main{color:#18212B;font-size:8.2px;font-weight:900}
+    .name-sub{color:#9BA3AD;font-size:7.3px;font-weight:800;margin-left:4px}
+    .v-green{color:var(--green)!important}
+    .v-yellow{color:var(--yellow)!important}
+    .v-orange{color:var(--orange)!important}
+    .v-teal{color:var(--teal)!important}
+
+    .table-foot{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:8px 11px 10px;
+      background:#FCFCFD;
+      color:#9199A4;
+      font-size:7px;
+      line-height:1.5;
+      font-weight:700;
+    }
+
+    .goal-card-table td:first-child{
+      color:var(--brand);
+      font-weight:900;
+    }
+
+    .bottom-note{
+      margin-top:4mm;
+      background:#FCFCFD;
+      padding:9px 11px;
+      color:#9AA1AC;
+      font-size:7.4px;
+      line-height:1.55;
+      font-weight:800;
+    }
+
+    @media print{
+      body{padding:0;background:#fff}
+      .report-page{box-shadow:none;margin:0}
+      @page{size:A4 portrait;margin:0}
+    }
+  </style>
+</head>
+<body>
+  <div class="report-page">
+    <header class="topbar">
+      <div class="topbar-left">逆齡方案報告・九十天行動計畫</div>
+      <div class="topbar-right">NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+    </header>
+
+    <main class="page-body">
+      <div class="title-block">
+        <h1 class="page-title">90 DAY DIETARY RECOMMENDATION</h1>
+        <p class="page-subtitle">九十天飲食策略建議</p>
+      </div>
+
+      <section class="section-card strategy-card">
+        <div class="strategy-inner">
+          <h2 class="section-heading">代謝管理策略</h2>
+
+          <div class="applies-box">
+            <p><span class="applies-label">適用情境</span>需要調節能量使用模式、降低醣類代謝負荷或優化脂肪利用率者。此策略旨在透過調整燃料來源，訓練身體重拾「代謝靈活性」。</p>
+          </div>
+
+          <div class="strategy-list">
+            <div class="strategy-item">
+              <span class="strategy-dot dot-carb"></span>
+              <p><b>碳水化合物 (&lt;35%)</b>：降低醣類攝取佔比，以減少血糖波動幅度與胰島素分泌刺激。</p>
+            </div>
+            <div class="strategy-item">
+              <span class="strategy-dot dot-fat"></span>
+              <p><b>脂質 (45%)</b>：轉變為主要的能量來源，引導身體適應脂肪氧化供能模式。</p>
+            </div>
+            <div class="strategy-item">
+              <span class="strategy-dot dot-protein"></span>
+              <p><b>蛋白質 (20%+ 或 2.0g/kg 除脂體重)</b>：維持足量攝取以確保肌肉留存，並提供必要的飽足感支持。</p>
+            </div>
+          </div>
+
+          <div class="warning-box">▲ 避免超加工食品、含糖飲料、精製劣質油。優先攝取蛋白質及膳食纖維。</div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="block-title">每日營養攝取建議</h2>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">基礎代謝率 (BMR)</div>
+            <div class="stat-value item_6102">1,698 <small>大卡</small></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">每日總熱量消耗 (TDEE)</div>
+            <div class="stat-value item_6103">2,633 <small>大卡</small></div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>營養素 (Nutrient)</th>
+                <th>熱量 %</th>
+                <th>熱量 (大卡)</th>
+                <th>重量 (g)</th>
+                <th>份數 *</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="nutrition-name"><span class="name-dot protein"></span><span><span class="name-main">蛋白質</span><span class="name-sub">Protein</span></span></div></td>
+                <td class="v-green item_6104">25%</td>
+                <td class="item_6105">658</td>
+                <td class="item_6106">165 g</td>
+                <td class="item_6107">23.6 份</td>
+              </tr>
+              <tr>
+                <td><div class="nutrition-name"><span class="name-dot carb"></span><span><span class="name-main">碳水化合物</span><span class="name-sub">Carb</span></span></div></td>
+                <td class="v-yellow item_6108">35%</td>
+                <td class="item_6109">922</td>
+                <td class="item_6110">230 g</td>
+                <td class="item_6111">15.3 份</td>
+              </tr>
+              <tr>
+                <td><div class="nutrition-name"><span class="name-dot fat"></span><span><span class="name-main">油脂</span><span class="name-sub">Fat</span></span></div></td>
+                <td class="v-orange item_6112">40%</td>
+                <td class="item_6113">1,053</td>
+                <td class="item_6114">117 g</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td><div class="nutrition-name"><span class="name-dot fiber"></span><span><span class="name-main">膳食纖維</span><span class="name-sub">Fiber</span></span></div></td>
+                <td>-</td>
+                <td>-</td>
+                <td class="v-teal item_6115">37 g</td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-foot">
+            <div>* 此建議為體重維持為基準。若有減脂或增肌目標可以調整熱量及巨量營養素比率。</div>
+            <div>* 蛋白質 7g / 份。碳水化合物 15g / 份。</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="block-title">個別化目標調整建議</h2>
+        <div class="table-card goal-card-table">
+          <table>
+            <thead>
+              <tr>
+                <th>目標</th>
+                <th>每日熱量</th>
+                <th>蛋白質</th>
+                <th>脂肪</th>
+                <th>碳水化合物</th>
+                <th>運動</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>減脂</td>
+                <td>減少 300 至 500 大卡</td>
+                <td>1.6 ~ 2.4 g / kg 體重</td>
+                <td>可適當減量</td>
+                <td>可適當減量</td>
+                <td>Zone 2 及 HIIT</td>
+              </tr>
+              <tr>
+                <td>增肌</td>
+                <td>增加 200 至 400 大卡</td>
+                <td>1.6 ~ 2.2 g / kg 體重</td>
+                <td>可適當增量</td>
+                <td>可適當增量</td>
+                <td>阻力運動</td>
+              </tr>
+              <tr>
+                <td>代謝靈活性</td>
+                <td>維持或降低</td>
+                <td>1.6 ~ 2.4 g / kg 體重</td>
+                <td>維持或增加比例</td>
+                <td>降低比例，原型高纖</td>
+                <td>有氧 + 阻力</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="bottom-note">ⓘ 請諮詢您的私人教練，依據您的體組成目標和訓練狀態，進行飲食調整與建議。</div>
+    </main>
+  </div>
+	<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+$( document ).ready(function(){
+	$.each(window.parent.userdata, function(idx,val){
+		$("." + idx).text(val.value);
+	} );
+});
+</script>
+</body>
+</html>

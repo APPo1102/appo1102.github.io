@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>九十天行動計劃｜生活型態優化焦點</title>
+  <style>
+    :root{
+      --brand:#582DBE;
+      --brand-soft:rgba(88,45,190,.08);
+      --bg:#FFFFFF;
+      --text:#11151D;
+      --text-2:#59616D;
+      --muted:#8E949D;
+      --line:#D9DDE4;
+      --card:#FFFFFF;
+      --orange:#F6811E;
+      --orange-soft:rgba(246,129,30,.10);
+      --orange-soft-2:rgba(246,129,30,.06);
+      --orange-line:rgba(246,129,30,.28);
+      --purple-soft:#F3ECFE;
+      --grade-a:#4F7EDB;
+      --grade-b:#4D945E;
+      --grade-c:#9A7A16;
+      --grade-d:#E78A39;
+      --shadow:0 18px 48px rgba(17,19,24,.10);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      background:#fff;
+      color:var(--text);
+      font-family:Arial,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      padding:28px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+    .report-page{
+      width:210mm;
+      min-height:297mm;
+      max-width:210mm;
+      background:#fff;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .topbar{
+      min-height:58px;
+      padding:0 38px;
+      background:var(--brand);
+      color:rgba(255,255,255,.92);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .topbar-left,.topbar-right{
+      font-size:10px;
+      line-height:1;
+      font-weight:700;
+      letter-spacing:.26em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .topbar-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.88);flex:0 0 auto}
+    .report-body{padding:30px 30px 28px}
+    .hero{display:block;margin-bottom:20px}
+    .hero-kicker{
+      margin:0 0 10px;
+      color:#B8BDC5;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.18em;
+      line-height:1.2;
+      text-transform:uppercase;
+    }
+    .hero-title{margin:0;color:#0B0D11;font-size:31px;line-height:1.08;font-weight:900;letter-spacing:-.04em}
+    .cards-grid{display:grid;grid-template-columns:1fr;gap:16px}
+    .focus-card{
+      background:#fff;
+      border:1px solid rgba(17,19,24,.10);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 8px 24px rgba(17,19,24,.05);
+    }
+    .card-section{padding:16px 18px}
+    .section-top{
+      background:linear-gradient(180deg,var(--orange-soft),var(--orange-soft-2));
+    }
+    .section-mid,.section-bottom{background:#fff}
+    .section-divider{height:1px;background:var(--line)}
+    .summary-grid{
+      display:grid;
+      grid-template-columns:190px minmax(0,1fr) 74px;
+      gap:12px;
+      align-items:center;
+      min-width:0;
+    }
+    .metric-kicker{display:flex;align-items:flex-start;gap:16px}
+    .metric-icon{
+      width:48px;height:48px;border-radius:50%;
+      background:rgba(246,129,30,.15);
+      color:var(--orange);
+      display:flex;align-items:center;justify-content:center;
+      font-size:22px;font-weight:900;
+      flex:0 0 auto;
+      margin-top:2px;
+    }
+    .metric-name{margin:0;color:#151922;font-size:22px;font-weight:900;line-height:1.15;white-space:nowrap}
+    .metric-en{margin:7px 0 0;color:#959CAA;font-size:15px;font-weight:700;line-height:1.15;white-space:nowrap}
+    .score-panel{
+      display:grid;
+      grid-template-columns:minmax(0,.95fr) minmax(0,.82fr) minmax(0,1.15fr);
+      align-items:end;
+      gap:14px;
+      padding-top:4px;
+      min-width:0;
+      background:transparent;
+      border:0;
+    }
+    .score-col{
+      min-width:0;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      align-items:flex-start;
+      gap:8px;
+      border:0 !important;
+    }
+    .score-cap,.range-cap{
+      color:#A2A8B2;
+      font-size:11px;
+      font-weight:800;
+      line-height:1.1;
+      white-space:nowrap;
+    }
+    .score-val{
+      color:#19202A;
+      font-size:22px;
+      font-weight:900;
+      line-height:1.02;
+      white-space:nowrap;
+    }
+    .score-col.current .score-val{font-size:46px;color:var(--orange);letter-spacing:-.04em}
+    .range-val{
+      color:#19202A;
+      font-size:14px;
+      font-weight:900;
+      line-height:1.2;
+      white-space:nowrap;
+    }
+    .grade-stack{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:2px;min-width:0}
+    .grade-label{font-size:12px;font-weight:800;color:#A2A8B2;letter-spacing:.04em;line-height:1;white-space:nowrap}
+    .grade-pill{
+      min-width:66px;height:44px;padding:0 18px;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;
+      color:#fff;font-size:20px;font-weight:900;line-height:1;
+    }
+    .grade-a{background:var(--grade-a)}
+    .grade-b{background:var(--grade-b)}
+    .grade-c{background:var(--grade-c)}
+    .grade-d{background:var(--grade-d)}
+    .mid-panel{display:flex;flex-direction:column;gap:14px}
+    .copy-block{background:#fff}
+    .copy-block h3{margin:0 0 10px;color:#20252E;font-size:18px;font-weight:900}
+    .copy-block p{margin:0;color:#707786;font-size:16px;line-height:1.78}
+    .analysis-box{
+      border:1px solid var(--orange-line);
+      background:rgba(246,129,30,.04);
+      border-radius:18px;
+      padding:18px 20px;
+    }
+    .analysis-box h3{margin:0 0 10px;color:#E46F0B;font-size:18px;font-weight:900}
+    .analysis-box p{margin:0;color:#5A616C;font-size:16px;line-height:1.78}
+    .strategy-box{background:var(--purple-soft);border:1px solid rgba(88,45,190,.12);border-radius:18px;padding:18px 20px}
+    .strategy-title{margin:0 0 14px;color:var(--brand);font-size:18px;font-weight:900;display:flex;align-items:center;gap:10px}
+    .strategy-title::before{content:"◎";font-size:18px;line-height:1}
+    .strategy-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px}
+    .strategy-item{
+      display:grid;
+      grid-template-columns:32px minmax(0,1fr) auto;
+      align-items:start;
+      gap:10px 14px;
+      color:#5B6370;
+      font-size:15px;
+      line-height:1.72;
+    }
+    .strategy-num{color:#7E44E6;font-weight:900;font-size:19px;line-height:1.15;padding-top:1px}
+    .strategy-text{min-width:0}
+    .tag{
+      padding:7px 16px;
+      border-radius:999px;
+      font-size:13px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.04em;
+      white-space:nowrap;
+      align-self:center;
+      margin-left:4px;
+    }
+    .tag-food{background:rgba(31,187,131,.14);color:#22985F}
+    .tag-train{background:rgba(14,155,196,.14);color:#0B87AB}
+    .tag-life{background:rgba(88,45,190,.14);color:var(--brand)}
+    .footnote{margin-top:16px;text-align:center;color:#A5ACB6;font-size:11px;line-height:1.6}
+    @page{size:A4;margin:0}
+    @media print{
+      body{padding:0;background:#fff}
+      .report-page{width:210mm;min-height:297mm;max-width:210mm;box-shadow:none}
+    }
+    @media (max-width: 980px){
+      body{padding:0}
+      .report-page{width:100%;min-height:100vh;box-shadow:none}
+      .topbar{padding:16px 22px}
+      .topbar-right{display:none}
+      .report-body{padding:28px 20px}
+      .summary-grid{grid-template-columns:1fr;gap:16px}
+      .grade-stack{align-items:flex-start;gap:10px}
+      .score-panel{
+        grid-template-columns:1fr;
+        gap:12px;
+        padding:12px 14px;
+        background:rgba(246,129,30,.06);
+        border:1px solid rgba(246,129,30,.12);
+        border-radius:14px;
+      }
+      .score-col{padding:0;border-left:none !important;gap:6px}
+      .score-col.current .score-val{font-size:42px}
+      .metric-name{font-size:24px}
+      .metric-en{font-size:17px}
+      .grade-pill{min-width:92px;height:58px;font-size:24px}
+      .strategy-item{grid-template-columns:1fr auto;grid-template-areas:"num tag" "text text";gap:6px 10px}
+      .strategy-num{grid-area:num;font-size:18px}
+      .strategy-text{grid-area:text}
+      .tag{grid-area:tag;align-self:start}
+    }
+  </style>
+</head>
+<body>
+  <main class="report-page">
+    <header class="topbar">
+      <div class="topbar-left"><span class="topbar-dot"></span><span>90-Day Action Plan ・ Score Overview</span></div>
+      <div class="topbar-right">Report ID: LR-2026-0210</div>
+    </header>
+    <div class="report-body">
+      <section class="hero">
+        <p class="hero-kicker">Improvement Focus</p>
+        <h1 class="hero-title">生活型態優化焦點</h1>
+      </section>
+      <section class="cards-grid">
+        <article class="focus-card">
+          <div class="card-section section-top">
+            <div class="summary-grid">
+              <div class="metric-kicker">
+                <div class="metric-icon">◔</div>
+                <div>
+                  <h2 class="metric-name">體脂肪 %</h2>
+                  <p class="metric-en">Body Fat %</p>
+                </div>
+              </div>
+              <div class="score-panel">
+                <div class="score-col current"><span class="score-cap">本期數值</span><span class="score-val item_1550">25</span></div>
+                <div class="score-col"><span class="score-cap">前期數值</span><span class="score-val item_1750">N/A</span></div>
+                <div class="score-col"><span class="range-cap">理想範圍</span><span class="range-val">M: &lt;15 F: &lt;22</span></div>
+              </div>
+              <div class="grade-stack">
+                <span class="grade-label">等級</span>
+                <span class="grade-pill grade-d item_1950">D</span>
+              </div>
+            </div>
+          </div>
+          <div class="section-divider"></div>
+          <div class="card-section section-mid">
+            <div class="mid-panel">
+              <div class="copy-block">
+                <h3>項目說明</h3>
+                <p>評估體內脂肪總量佔體重的比例，數值可能反映長期能量儲存狀態與體內分泌平衡，這或許是預防代謝虛弱與維持細胞活力的關鍵指標。</p>
+              </div>
+              <div class="analysis-box">
+                <h3>狀態解析</h3>
+                <p>數值偏離可能反映肌肉量儲備不足或脂肪堆積偏多，數據或許提示能量代謝效率正在減緩。建議在專業教練引導下進行漸進式阻力訓練，配合等餐飲食調整，這可能有利逐步優化。</p>
+              </div>
+            </div>
+          </div>
+          <div class="section-divider"></div>
+          <div class="card-section section-bottom">
+            <div class="strategy-box">
+              <p class="strategy-title">優化行動策略</p>
+              <ul class="strategy-list">
+                <li class="strategy-item"><span class="strategy-num">1.</span><span class="strategy-text">飲食方面可適度調整碳水化合物比例，並多攝取天然膳食纖維豐富的原型食物。</span><span class="tag tag-food">飲食</span></li>
+                <li class="strategy-item"><span class="strategy-num">2.</span><span class="strategy-text">結合規律的漸進式阻力訓練與中強度有氧，這也許有利於優化身體組成分布。</span><span class="tag tag-train">運動</span></li>
+                <li class="strategy-item"><span class="strategy-num">3.</span><span class="strategy-text">每日維持充足睡眠並管理長期慢性情緒壓力，這大概有益於調度體脂荷爾蒙。</span><span class="tag tag-life">生活型態</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+        <article class="focus-card">
+          <div class="card-section section-top">
+            <div class="summary-grid">
+              <div class="metric-kicker">
+                <div class="metric-icon">◎</div>
+                <div>
+                  <h2 class="metric-name">內臟脂肪</h2>
+                  <p class="metric-en">Visceral Fat</p>
+                </div>
+              </div>
+              <div class="score-panel">
+                <div class="score-col current"><span class="score-cap">本期數值</span><span class="score-val item_1505">12</span></div>
+                <div class="score-col"><span class="score-cap">前期數值</span><span class="score-val item_1705">N/A</span></div>
+                <div class="score-col"><span class="range-cap">理想範圍</span><span class="range-val">1.0 - 3.9</span></div>
+              </div>
+              <div class="grade-stack">
+                <span class="grade-label">等級</span>
+                <span class="grade-pill grade-d item_1905">D</span>
+              </div>
+            </div>
+          </div>
+          <div class="section-divider"></div>
+          <div class="card-section section-mid">
+            <div class="mid-panel">
+              <div class="copy-block">
+                <h3>項目說明</h3>
+                <p>評估腹部深層內臟周邊脂肪蓄積程度，數值可能反映代謝器官代謝壓力，這或許是觀測全身慢性應激、胰島素感度與微血管健康的敏感標記。</p>
+              </div>
+              <div class="analysis-box">
+                <h3>狀態解析</h3>
+                <p>指標明顯偏離，數值或許顯示核心脂肪過度蓄積，這可能會加重內臟與血管的轉運負荷。建議尋求專業人員引導，規劃以阻力運動為核心的減脂計畫，這也許能協助逐步緩解。</p>
+              </div>
+            </div>
+          </div>
+          <div class="section-divider"></div>
+          <div class="card-section section-bottom">
+            <div class="strategy-box">
+              <p class="strategy-title">優化行動策略</p>
+              <ul class="strategy-list">
+                <li class="strategy-item"><span class="strategy-num">1.</span><span class="strategy-text">飲食中應嚴格限制果糖與超加工食品，這或許能減少腹部內臟的脂肪合成。</span><span class="tag tag-food">飲食</span></li>
+                <li class="strategy-item"><span class="strategy-num">2.</span><span class="strategy-text">每日安排適度中高強度的有氧鍛鍊與阻力運動，這也許能主動動員核心脂肪。</span><span class="tag tag-train">運動</span></li>
+                <li class="strategy-item"><span class="strategy-num">3.</span><span class="strategy-text">限制晚餐進食時間並拉長夜間空腹窗口，這大概能溫和調節體內的能量儲存。</span><span class="tag tag-life">生活型態</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+        <article class="focus-card">
+          <div class="card-section section-top">
+            <div class="summary-grid">
+              <div class="metric-kicker">
+                <div class="metric-icon">↕</div>
+                <div>
+                  <h2 class="metric-name">腰臀比</h2>
+                  <p class="metric-en">WHR</p>
+                </div>
+              </div>
+              <div class="score-panel">
+                <div class="score-col current"><span class="score-cap">本期數值</span><span class="score-val item_1518">1</span></div>
+                <div class="score-col"><span class="score-cap">前期數值</span><span class="score-val item_1718">N/A</span></div>
+                <div class="score-col"><span class="range-cap">理想範圍</span><span class="range-val">M: &lt;0.85 F: &lt;0.75</span></div>
+              </div>
+              <div class="grade-stack">
+                <span class="grade-label">等級</span>
+                <span class="grade-pill grade-d item_1918">D</span>
+              </div>
+            </div>
+          </div>
+          <div class="section-divider"></div>
+          <div class="card-section section-mid">
+            <div class="mid-panel">
+              <div class="copy-block">
+                <h3>項目說明</h3>
+                <p>評估腰圍與臀圍的相對比例，可能精確反映脂肪在腹部與下肢的分布趨向，這或許是評估腹部中央型脂肪蓄積與代謝靈活性的高敏感指標。</p>
+              </div>
+              <div class="analysis-box">
+                <h3>狀態解析</h3>
+                <p>指標偏離，數值或許顯示腹部脂肪累積偏多。這在長期下會易干擾胰島素代謝，並增加血管內皮與發炎狀態負荷。建議尋求專業教練指引，進行功能性阻力鍛鍊，這可能有助緩和。</p>
+              </div>
+            </div>
+          </div>
+          <div class="section-divider"></div>
+          <div class="card-section section-bottom">
+            <div class="strategy-box">
+              <p class="strategy-title">優化行動策略</p>
+              <ul class="strategy-list">
+                <li class="strategy-item"><span class="strategy-num">1.</span><span class="strategy-text">飲食中應嚴格限制含糖飲料與超加工精製糖類，這能從源頭調度核心脂肪。</span><span class="tag tag-food">飲食</span></li>
+                <li class="strategy-item"><span class="strategy-num">2.</span><span class="strategy-text">每日安排適度中高強度的阻力鍛鍊與有氧運動，這也許有利於提高脂肪代謝。</span><span class="tag tag-train">運動</span></li>
+                <li class="strategy-item"><span class="strategy-num">3.</span><span class="strategy-text">確保每日獲得充足睡眠並溫和放鬆調解壓力，這大概有助於調度皮質醇水平。</span><span class="tag tag-life">生活型態</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </section>
+      <div class="footnote">後續可依三項優先焦點逐步執行九十天行動策略，並結合睡眠、運動與飲食紀錄追蹤變化。</div>
+    </div>
+  </main>
+	<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+$( document ).ready(function(){
+	$.each(window.parent.userdata, function(idx,val){
+		$("." + idx).text(val.value);
+	} );
+});
+</script>
+</body>
+</html>

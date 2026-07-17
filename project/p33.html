@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>九十天飲食策略進程</title>
+  <style>
+    :root{
+      --brand:#582DBE;
+      --text:#11151D;
+      --text-2:#606877;
+      --text-3:#98A1AE;
+      --line:#E6E8EF;
+      --line-2:#D8DDEA;
+      --white:#FFFFFF;
+      --p1:#8B67D6;
+      --p1-bg:#F4EEFD;
+      --p2:#B97BC6;
+      --p2-bg:#F8EFF8;
+      --p3:#6579D6;
+      --p3-bg:#EEF2FD;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      background:#eef1ef;
+      font-family:Arial,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      color:var(--text);
+      padding:20px;
+    }
+
+    .page{
+      width:210mm;
+      min-height:297mm;
+      margin:0 auto;
+      background:#fff;
+      box-shadow:0 8px 30px rgba(0,0,0,.08);
+      overflow:hidden;
+    }
+
+    .topbar{
+      height:14.5mm;
+      background:var(--brand);
+      color:#fff;
+      padding:0 12mm;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .topbar div{
+      font-size:8.2px;
+      font-weight:700;
+      letter-spacing:.2em;
+      white-space:nowrap;
+    }
+
+    .content{
+      background:#fff;
+      padding:11mm 12mm 10mm;
+    }
+
+    .heading{margin-bottom:6mm}
+    .heading h1{
+      margin:0;
+      font-size:30px;
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:-.04em;
+      color:#0B0F15;
+    }
+    .heading p{
+      margin:8px 0 0;
+      font-size:11px;
+      line-height:1.3;
+      font-weight:800;
+      color:#97A2B1;
+    }
+
+    .intro{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px 16px;
+      color:var(--text-2);
+      font-size:8.5px;
+      line-height:1.72;
+      font-weight:800;
+      margin-bottom:6mm;
+      background:#fff;
+    }
+
+    .timeline{
+      position:relative;
+      padding-left:20mm;
+    }
+    .timeline::before{
+      content:"";
+      position:absolute;
+      left:10mm;
+      top:2mm;
+      bottom:2mm;
+      width:2px;
+      background:linear-gradient(to bottom, #E4DEF7 0%, #E7EBF6 100%);
+      border-radius:999px;
+    }
+
+    .phase{
+      position:relative;
+      margin-bottom:8mm;
+    }
+    .phase:last-child{margin-bottom:0}
+    .phase::before{
+      content:"";
+      position:absolute;
+      left:-12.7mm;
+      top:14px;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:#fff;
+      border:4px solid currentColor;
+      box-shadow:0 0 0 5px #fff;
+    }
+
+    .phase.p1{color:var(--p1)}
+    .phase.p2{color:var(--p2)}
+    .phase.p3{color:var(--p3)}
+
+    .phase-box{
+      border:none;
+      border-radius:0;
+      padding:0 0 4px;
+      background:transparent;
+    }
+
+    .phase-top{
+      display:grid;
+      grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+      gap:20px;
+      align-items:end;
+      margin-bottom:14px;
+    }
+
+    .phase-tag{
+      display:inline-block;
+      padding:8px 18px;
+      border-radius:999px;
+      font-size:8.8px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.02em;
+      margin-bottom:12px;
+    }
+    .p1 .phase-tag{background:var(--p1-bg);color:var(--p1)}
+    .p2 .phase-tag{background:var(--p2-bg);color:var(--p2)}
+    .p3 .phase-tag{background:var(--p3-bg);color:var(--p3)}
+
+    .phase-title{
+      margin:0;
+      font-size:22px;
+      line-height:1.22;
+      font-weight:900;
+      letter-spacing:-.02em;
+      color:#171B22;
+    }
+
+    .goal-block{
+      padding:0 0 2px;
+      align-self:end;
+    }
+    .goal-label{
+      margin:0 0 7px;
+      font-size:8.1px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .p1 .goal-label{color:var(--p1)}
+    .p2 .goal-label{color:var(--p2)}
+    .p3 .goal-label{color:var(--p3)}
+
+    .goal-text{
+      margin:0;
+      font-size:8.5px;
+      line-height:1.72;
+      font-weight:800;
+      color:var(--text-2);
+    }
+
+    .action-card{
+      border-radius:16px;
+      padding:16px 18px;
+      margin-bottom:12px;
+      border:1px solid var(--line);
+    }
+    .p1 .action-card{background:linear-gradient(180deg, #FCFAFF 0%, var(--p1-bg) 100%)}
+    .p2 .action-card{background:linear-gradient(180deg, #FFFDFE 0%, var(--p2-bg) 100%)}
+    .p3 .action-card{background:linear-gradient(180deg, #FEFEFF 0%, var(--p3-bg) 100%)}
+
+    .action-label{
+      margin:0 0 8px;
+      font-size:9px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .p1 .action-label{color:var(--p1)}
+    .p2 .action-label{color:var(--p2)}
+    .p3 .action-label{color:var(--p3)}
+
+    .action-text{
+      margin:0;
+      font-size:10px;
+      line-height:1.82;
+      font-weight:800;
+      color:#49515F;
+    }
+
+    .minor-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      padding-top:2px;
+      border-top:1px solid #F0F2F6;
+    }
+    .minor-item{
+      padding-top:10px;
+    }
+    .minor-label{
+      margin:0 0 6px;
+      font-size:7.8px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .minor-item.key .minor-label{color:#8F79D8}
+    .minor-item.note .minor-label{color:#94A0B3}
+
+    .minor-item p{
+      margin:0;
+      font-size:7.8px;
+      line-height:1.72;
+      font-weight:800;
+      color:var(--text-2);
+    }
+
+    .footer-note{
+      margin-top:6mm;
+      border-top:1px solid var(--line);
+      padding-top:4mm;
+      color:#A0A7B3;
+      font-size:7.5px;
+      line-height:1.6;
+      font-weight:800;
+    }
+
+    @media (max-width: 900px){
+      .phase-top,
+      .minor-row{grid-template-columns:1fr}
+    }
+
+    @media print{
+      body{padding:0;background:#fff}
+      .page{box-shadow:none;margin:0}
+      @page{size:A4 portrait;margin:0}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div>逆齡方案報告・九十天行動計畫</div>
+      <div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+    </header>
+
+    <main class="content">
+      <section class="heading">
+        <h1>九十天飲食策略進程</h1>
+        <p>90 Day Dietary Strategy Progression</p>
+      </section>
+
+      <section class="intro">
+        透過循序漸進的三階段規劃，幫助身體平穩過渡至燃脂模式。從穩定血糖到建立代謝靈活度，最終將健康飲食內化為可長久維持的生活型態。
+      </section>
+
+      <section class="timeline">
+        <article class="phase p1">
+          <div class="phase-box">
+            <div class="phase-top">
+              <div>
+                <div class="phase-tag">第 1-30 天</div>
+                <h2 class="phase-title">重塑代謝，穩定血糖</h2>
+              </div>
+              <div class="goal-block">
+                <div class="goal-label">階段目標</div>
+                <p class="goal-text">通過高蛋白與適量碳水的營養比例，平穩能量波動。</p>
+              </div>
+            </div>
+
+            <div class="action-card">
+              <div class="action-label">具體行動</div>
+              <p class="action-text">每日攝取 165 克蛋白質 與 37 克纖維，剔除精緻糖與加工澱粉，確保攝取優質油脂。</p>
+            </div>
+
+            <div class="minor-row">
+              <div class="minor-item key">
+                <div class="minor-label">成功關鍵</div>
+                <p>利用充足的蛋白質與纖維增加飽足感，避免飢餓。</p>
+              </div>
+              <div class="minor-item note">
+                <div class="minor-label">注意事項</div>
+                <p>多喝水並適度補充電解質，以緩解身體適應期的反應。</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="phase p2">
+          <div class="phase-box">
+            <div class="phase-top">
+              <div>
+                <div class="phase-tag">第 31-60 天</div>
+                <h2 class="phase-title">啟動燃脂，增強修復</h2>
+              </div>
+              <div class="goal-block">
+                <div class="goal-label">階段目標</div>
+                <p class="goal-text">提升代謝靈活度，引導身體利用脂肪作為能量。</p>
+              </div>
+            </div>
+
+            <div class="action-card">
+              <div class="action-label">具體行動</div>
+              <p class="action-text">嘗試將進食時間縮短至 12 小時內（12:12），維持原型食物攝取，減少發炎反應。</p>
+            </div>
+
+            <div class="minor-row">
+              <div class="minor-item key">
+                <div class="minor-label">成功關鍵</div>
+                <p>專注於營養密度，確保微量營養素充足。</p>
+              </div>
+              <div class="minor-item note">
+                <div class="minor-label">注意事項</div>
+                <p>觀察體能恢復狀況，依據運動強度微調碳水化合物攝取時機（如運動後）。</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="phase p3">
+          <div class="phase-box">
+            <div class="phase-top">
+              <div>
+                <div class="phase-tag">第 61-90 天</div>
+                <h2 class="phase-title">優化體質，長久維持</h2>
+              </div>
+              <div class="goal-block">
+                <div class="goal-label">階段目標</div>
+                <p class="goal-text">建立可持續的健康生活型態，鞏固肌肉量。</p>
+              </div>
+            </div>
+
+            <div class="action-card">
+              <div class="action-label">具體行動</div>
+              <p class="action-text">靈活運用代謝管理飲食原則，維持高蛋白攝取以支持肌肉合成，持續監控腰圍變化。</p>
+            </div>
+
+            <div class="minor-row">
+              <div class="minor-item key">
+                <div class="minor-label">成功關鍵</div>
+                <p>將健康飲食內化為直覺習慣，而非短期限制。</p>
+              </div>
+              <div class="minor-item note">
+                <div class="minor-label">注意事項</div>
+                <p>定期檢視身體組成數據，保持身心平衡，享受充滿活力的生活。</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <div class="footer-note">＊ 建議搭配專業輔導進行個人化指導，不僅能確保安全與執行精準度，更能協助您將計畫落實為具體行動，有效達成健康逆齡目標。</div>
+    </main>
+  </div>
+	<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>90天追蹤清單｜水平標題柔和配色版</title>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:#f3f4f6;
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    color:#111827;
+  }
+  .page{
+    width:794px;
+    min-height:1123px;
+    margin:10px auto;
+    background:#fff;
+    border:1px solid #d9dde4;
+    overflow:hidden;
+  }
+  .header{
+    background:#582DBE;
+    color:#fff;
+    padding:16px 28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1px;
+  }
+  .header .right{letter-spacing:2px; opacity:.95;}
+  .content{padding:28px 36px 28px 36px;}
+  .title-row{display:block; margin-bottom:18px;}
+  h1{margin:0; font-size:30px; line-height:1.08; font-weight:900; color:#0f172a;}
+  .sub{margin-top:6px; font-size:14px; color:#94a3b8; font-weight:800;}
+  .intro{
+    border-left:4px solid #d7c8a2;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-left-width:4px;
+    border-radius:16px;
+    padding:16px 18px;
+    font-size:13px;
+    line-height:1.8;
+    color:#4b5563;
+    margin-bottom:18px;
+  }
+  .intro b{color:#582DBE;}
+
+  .timeline{position:relative; padding-left:28px;}
+  .timeline:before{
+    content:"";
+    position:absolute;
+    left:11px;
+    top:10px;
+    bottom:10px;
+    width:2px;
+    background:#e5e7eb;
+  }
+  .step{
+    position:relative;
+    margin-bottom:20px;
+    padding-left:26px;
+  }
+  .step:last-child{margin-bottom:0;}
+  .step:before{
+    content:"";
+    position:absolute;
+    left:-2px;
+    top:10px;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#fff;
+    border:3px solid var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+
+  .step-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:10px;
+  }
+  .step-main{
+    min-width:0;
+    flex:1 1 auto;
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .bubble{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 18px;
+    border-radius:999px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.3px;
+    white-space:nowrap;
+    flex:0 0 auto;
+  }
+  .step-title{
+    font-size:27px;
+    font-weight:900;
+    line-height:1.18;
+    color:#111827;
+    flex:1 1 auto;
+  }
+  .exec-tag{
+    flex:0 0 auto;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:7px 13px;
+    border-radius:999px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-size:11px;
+    line-height:1;
+    font-weight:900;
+    white-space:nowrap;
+    margin-top:4px;
+  }
+
+  .action-box{
+    padding:2px 0 12px;
+    margin-bottom:8px;
+  }
+  .action-label{
+    font-size:12px;
+    font-weight:900;
+    color:var(--accent);
+    margin-bottom:8px;
+  }
+  .action-text{
+    font-size:14px;
+    line-height:1.75;
+    font-weight:700;
+    color:#374151;
+  }
+  .note-row{
+    display:block;
+    padding:14px 2px 2px;
+    border-top:1px solid #eceff4;
+  }
+  .note h4{
+    margin:0 0 8px;
+    font-size:12px;
+    font-weight:900;
+    color:var(--accent);
+  }
+  .note p{
+    margin:0;
+    font-size:12.5px;
+    line-height:1.75;
+    color:#4b5563;
+    font-weight:600;
+  }
+
+  .gold{--accent:#c49a17; --accent-soft:#f6f1df;}
+  .blue{--accent:#2b89ad; --accent-soft:#edf5f9;}
+  .pink{--accent:#b24c7b; --accent-soft:#f6edf2;}
+  .neutral{--accent:#582DBE; --accent-soft:#F1ECFC;}
+
+  @media print{
+    body{background:#fff; margin:0}
+    .page{margin:0; border:none; width:794px; min-height:1123px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div>逆齡方案報告 - 九十天行動計畫</div>
+    <div class="right">NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+  </div>
+  <div class="content">
+    <div class="title-row">
+      <h1>九十天追蹤清單</h1>
+      <div class="sub">90 Day Tracking Check-List</div>
+    </div>
+
+    <div class="intro">
+      這份藍圖的真正力量，在於<b>持續且客觀的數據追蹤</b>。每一次的紀錄與檢視，都能清晰地為您展現進步軌跡，並將短暫的努力，轉化為持久、可見的健康逆齡成果。
+    </div>
+
+    <div class="timeline">
+      <div class="step gold">
+        <div class="step-header">
+          <div class="step-main">
+            <div class="bubble">每日追蹤</div>
+            <div class="step-title">記錄飲食與運動</div>
+          </div>
+          <div class="exec-tag">使用逆齡計畫 App</div>
+        </div>
+        <div class="action-box">
+          <div class="action-label">行動</div>
+          <div class="action-text">記錄您的飲食與運動。</div>
+        </div>
+        <div class="note-row">
+          <div class="note">
+            <h4>為何重要</h4>
+            <p>這是為了「建立責任感」。誠實地記錄能讓您和您的教練清楚地知道什麼有效、什麼需要調整。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step blue">
+        <div class="step-header">
+          <div class="step-main">
+            <div class="bubble">每月追蹤</div>
+            <div class="step-title">檢視身體組成變化</div>
+          </div>
+          <div class="exec-tag">InBody 測量</div>
+        </div>
+        <div class="action-box">
+          <div class="action-label">行動</div>
+          <div class="action-text">每月安排一次 InBody 測量（建議在固定時間，例如週五早上）。</div>
+        </div>
+        <div class="note-row">
+          <div class="note">
+            <h4>為何重要</h4>
+            <p>體重不是我們的主要指標。我們關注的是「身體組成」的變化——您的骨骼肌 (SMI) 是否在上升？您的脂肪肝是否在下降？這是判斷計畫是否有效的最快途徑。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step pink">
+        <div class="step-header">
+          <div class="step-main">
+            <div class="bubble">第 45 天</div>
+            <div class="step-title">安排期中檢核</div>
+          </div>
+          <div class="exec-tag">體適能評估</div>
+        </div>
+        <div class="action-box">
+          <div class="action-label">行動</div>
+          <div class="action-text">安排一次體適能評估。</div>
+        </div>
+        <div class="note-row">
+          <div class="note">
+            <h4>為何重要</h4>
+            <p>您的力量和耐力進步得比您想像的還快！我們將重新測量您的「椅子坐立」、「握力」和「VO2Max 估算」。看到這些數字的進步，將是您堅持下去的最強動力！</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step neutral">
+        <div class="step-header">
+          <div class="step-main">
+            <div class="bubble">第 90 天</div>
+            <div class="step-title">成果驗收</div>
+          </div>
+          <div class="exec-tag">完整複測</div>
+        </div>
+        <div class="action-box">
+          <div class="action-label">行動</div>
+          <div class="action-text">安排您的追蹤內在生理指標，檢驗所抽血 (Follow-up Labs)。</div>
+        </div>
+        <div class="note-row">
+          <div class="note">
+            <h4>為何重要</h4>
+            <p>這是見證奇蹟的時刻。我們將把您第 90 天的內在生理指標與您第 1 天的數據並列比較，共同見證您的逆齡成果。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+		<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+</script>
+</body>
+</html>

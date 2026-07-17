@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="./user/user5.js"></script>
+<meta charset="UTF-8">
+<title>AI 網頁預覽</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f5f5f5;
+    font-family:Arial, Helvetica, sans-serif;
+    padding:30px;
+}
+
+.page{
+    margin-bottom:30px;
+}
+
+.title{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+    color:#666;
+}
+
+iframe{
+    width:100%;
+    border:none;
+    display:block;
+    background:#fff;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+</style>
+
+</head>
+<body>
+
+<iframe src="p1.html" scrolling="no"></iframe>
+
+<iframe src="p2.html" scrolling="no"></iframe>
+
+<iframe src="p3.html" scrolling="no"></iframe>
+
+<iframe src="p4.html" scrolling="no"></iframe>
+
+<iframe src="p5.html" scrolling="no"></iframe>
+	
+<iframe src="p7.html" scrolling="no"></iframe>
+	
+<iframe src="p8.html" scrolling="no"></iframe>
+	
+<iframe src="p9.html" scrolling="no"></iframe>
+
+<iframe src="p10-13.html" scrolling="no"></iframe>
+	
+<iframe src="p14.html" scrolling="no"></iframe>
+	
+<iframe src="p15-18.html" scrolling="no"></iframe>
+	
+<iframe src="p19.html" scrolling="no"></iframe>
+	
+<iframe src="p20.html" scrolling="no"></iframe>
+	
+<iframe src="p21-23.html" scrolling="no"></iframe>
+	
+<iframe src="p24.html" scrolling="no"></iframe>
+	
+<iframe src="p25.html" scrolling="no"></iframe>
+	
+<iframe src="p26.html" scrolling="no"></iframe>
+	
+<iframe src="p27-31.html" scrolling="no"></iframe>
+	
+<iframe src="p32.html" scrolling="no"></iframe>
+	
+<iframe src="p33.html" scrolling="no"></iframe>
+	
+<iframe src="p34.html" scrolling="no"></iframe>
+	
+<iframe src="p35.html" scrolling="no"></iframe>
+	
+<iframe src="p36.html" scrolling="no"></iframe>
+	
+<iframe src="p37.html" scrolling="no"></iframe>
+	
+<iframe src="p38.html" scrolling="no"></iframe>
+	
+<iframe src="p39.html" scrolling="no"></iframe>
+	
+<iframe src="p40-55.html" scrolling="no"></iframe>
+	
+<iframe src="p56-65.html" scrolling="no"></iframe>
+	
+<iframe src="p66-71.html" scrolling="no"></iframe>
+	
+<script>
+window.addEventListener("message", function(event) {
+
+    if (event.data.type == "setHeight") {
+    document.querySelectorAll("iframe").forEach(function(frame) {
+
+        if (frame.contentWindow === event.source) {
+            frame.style.height = event.data.height + "px";
+        }
+
+    });
+	}
+});
+</script>
+
+</body>
+
+</html>

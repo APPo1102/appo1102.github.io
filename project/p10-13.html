@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>內在生理構面 四頁整合</title>
+  <style>
+    :root{
+      --brand:#c42aa0;
+      --line:#E5E7EB;
+      --soft-line:#EEF1F4;
+      --text:#15181D;
+      --muted:#7B8088;
+      --light:#A6ABB2;
+      --card:#FFFFFF;
+      --bg:#F3F5F7;
+
+      --grade-a:#38668D;
+      --grade-b:#2F8C56;
+      --grade-c:#8A6A00;
+      --grade-d:#C7661D;
+      --grade-e:#A73A3D;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:Arial,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    }
+
+    .report-page{
+      width:210mm;
+      min-height:297mm;
+      margin:18px auto;
+      background:#fff;
+      box-shadow:0 18px 48px rgba(17,19,24,.10);
+      overflow:hidden;
+      page-break-after:always;
+      break-after:page;
+    }
+
+    .report-page.last-page{
+      page-break-after:auto;
+      break-after:auto;
+    }
+
+    .report-topbar{
+      min-height:58px;
+      padding:0 38px;
+      background:var(--brand);
+      color:rgba(255,255,255,.82);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+
+    .topbar-left,
+    .topbar-right{
+      font-size:10px;
+      line-height:1;
+      font-weight:700;
+      letter-spacing:.26em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .topbar-dot{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:rgba(255,255,255,.82);
+      flex:0 0 auto;
+    }
+
+    .report-body{
+      padding:38px 40px 34px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) 190px;
+      gap:20px;
+      align-items:start;
+      margin-bottom:18px;
+    }
+
+    .hero-title{
+      margin:0 0 8px;
+      font-size:31px;
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:-.04em;
+      color:#0B0D11;
+      text-transform:uppercase;
+    }
+
+    .hero-subtitle{
+      margin:0;
+      color:#6F757D;
+      font-size:18px;
+      line-height:1.25;
+      font-weight:700;
+    }
+
+    .hero-score{
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      padding-top:2px;
+      min-width:0;
+      white-space:nowrap;
+    }
+
+    .hero-score-label{
+      font-size:12px;
+      line-height:1;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .label-a{ color:var(--grade-a); }
+    .label-b{ color:var(--grade-b); }
+    .label-c{ color:var(--grade-c); }
+    .label-d{ color:var(--grade-d); }
+    .label-e{ color:var(--grade-e); }
+
+    .mini-ring{
+      width:96px;
+      height:96px;
+      position:relative;
+      flex:0 0 auto;
+    }
+
+    .mini-ring svg{
+      width:100%;
+      height:100%;
+      display:block;
+      transform:rotate(-90deg);
+    }
+
+    .mini-ring-bg{
+      fill:none;
+      stroke:#EFEFF1;
+      stroke-width:9;
+    }
+
+    .mini-ring-value{
+      fill:none;
+      stroke:var(--brand);
+      stroke-width:9;
+      stroke-linecap:round;
+    }
+
+    .mini-ring-content{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#0F1217;
+      font-size:24px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:-.04em;
+    }
+
+    .mini-ring-grade{
+      min-width:40px;
+      height:26px;
+      padding:0 12px;
+      border-radius:999px;
+      color:#fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.02em;
+      flex:0 0 auto;
+    }
+
+    .summary-card{
+      margin-bottom:18px;
+      padding:14px 18px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      box-shadow:0 1px 0 rgba(17,19,24,.02);
+    }
+
+    .summary-card p{
+      margin:0;
+      color:#50555D;
+      font-size:12px;
+      line-height:1.72;
+      font-weight:500;
+      text-align:justify;
+    }
+
+    .table-card{
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fff;
+    }
+
+    .table-card-head{
+      min-height:46px;
+      padding:0 20px;
+      background:#FAFBFC;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .table-card-head h2{
+      margin:0;
+      color:#1A1D23;
+      font-size:14px;
+      line-height:1;
+      font-weight:900;
+    }
+
+    .table-card-head span{
+      color:#969BA3;
+      font-size:11px;
+      line-height:1;
+      font-weight:700;
+    }
+
+    .table-grid{
+      display:grid;
+      grid-template-columns:2.2fr .72fr .88fr .88fr 1fr 2.55fr;
+      column-gap:16px;
+      align-items:center;
+    }
+
+    .table-head{
+      min-height:44px;
+      padding:0 20px;
+      border-bottom:1px solid var(--line);
+      color:#7B8088;
+      font-size:11px;
+      line-height:1.4;
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+
+    .table-row{
+      min-height:68px;
+      padding:10px 20px;
+      border-bottom:1px solid var(--soft-line);
+    }
+
+    .table-row:last-child{ border-bottom:0; }
+
+    .marker{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .marker-zh{
+      color:#171A1F;
+      font-size:13px;
+      line-height:1.22;
+      font-weight:900;
+    }
+
+    .marker-en{
+      color:#A0A4AA;
+      font-size:10px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .grade-cell{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .grade-pill{
+      min-width:34px;
+      height:24px;
+      padding:0 10px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+      line-height:1;
+      font-weight:900;
+      color:#fff;
+    }
+
+    .grade-a{ background:var(--grade-a); color:#fff; }
+    .grade-b{ background:var(--grade-b); color:#fff; }
+    .grade-c{ background:var(--grade-c); color:#fff; }
+    .grade-d{ background:var(--grade-d); color:#fff; }
+    .grade-e{ background:var(--grade-e); color:#fff; }
+
+    .value-cell{
+      text-align:center;
+      font-size:18px;
+      line-height:1;
+      font-weight:900;
+    }
+
+    .value-cell.grade-a{ color:var(--grade-a); background:none; }
+    .value-cell.grade-b{ color:var(--grade-b); background:none; }
+    .value-cell.grade-c{ color:var(--grade-c); background:none; }
+    .value-cell.grade-d{ color:var(--grade-d); background:none; }
+    .value-cell.grade-e{ color:var(--grade-e); background:none; }
+
+    .na-cell,
+    .range-cell{
+      text-align:center;
+      color:#7F8590;
+      font-size:11px;
+      line-height:1.45;
+      font-weight:700;
+    }
+
+    .desc-cell{
+      color:#525861;
+      font-size:11px;
+      line-height:1.55;
+      font-weight:500;
+    }
+
+    @page{
+      size:A4;
+      margin:0;
+    }
+
+    @media print{
+      body{ background:#fff; }
+      .report-page{
+        margin:0;
+        width:210mm;
+        min-height:297mm;
+        box-shadow:none;
+      }
+    }
+
+    @media (max-width: 820px){
+      .report-page{
+        width:100%;
+        min-height:100vh;
+        margin:0 0 16px;
+        box-shadow:none;
+      }
+
+      .report-topbar{ padding:16px 22px; }
+      .topbar-right{ display:none; }
+      .report-body{ padding:30px 22px; }
+      .hero{ grid-template-columns:1fr; }
+      .hero-score{ justify-content:flex-start; }
+
+      .table-card{ overflow-x:auto; }
+      .table-head,
+      .table-row{ width:930px; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="report-page">
+    <header class="report-topbar">
+      <div class="topbar-left">
+        <span class="topbar-dot"></span>
+        <span>BIOLOGICAL HEALTH ・ B ・ METABOLIC</span>
+      </div>
+      <div class="topbar-right">REPORT ID : LR-2026-0210</div>
+    </header>
+
+    <div class="report-body">
+      <section class="hero">
+        <div>
+          <h1 class="hero-title">B. METABOLIC FLEXIBILITY</h1>
+          <p class="hero-subtitle">代謝調節</p>
+        </div>
+
+        <div class="hero-score">
+          <div class="hero-score-label label-d">警示</div>
+          <div class="mini-ring-grade grade-d item_5202">D</div>
+          <div class="mini-ring">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="mini-ring-bg" cx="60" cy="60" r="46" pathLength="100"></circle>
+              <circle class="mini-ring-value" cx="60" cy="60" r="46" pathLength="100" style="stroke-dasharray:51 100;"></circle>
+            </svg>
+            <div class="mini-ring-content item_5201">51</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-card">
+        <p class="item_5203">數據可能顯示代謝靈活性趨於平均，也許反映了日常精緻醣類或加工食品攝取稍頻繁。這在長期下可能緩慢增加細胞的代償負擔。建議評估調整每餐營養比例，並適度加入規律阻力訓練，這或許能協助調節胰島素的敏感度。</p>
+      </section>
+
+      <section class="table-card" aria-label="代謝調節指標總覽">
+        <div class="table-card-head">
+          <h2>指標總覽</h2>
+          <span>共 11 項</span>
+        </div>
+
+        <div class="table-head table-grid">
+          <div>項目</div>
+          <div style="text-align:center;">等級</div>
+          <div style="text-align:center;">本期數值</div>
+          <div style="text-align:center;">前期數值</div>
+          <div style="text-align:center;">理想範圍</div>
+          <div>說明</div>
+        </div>
+
+        
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">內臟脂肪</div>
+            <div class="marker-en">Visceral Fat</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-d item_1905">D</span></div>
+          <div class="value-cell grade-d item_1505">12</div>
+          <div class="na-cell item_1705">N/A</div>
+          <div class="range-cell">1.0 - 3.9</div>
+          <div class="desc-cell">評估腹部內臟周邊脂肪蓄積，反映核心代謝應激風險。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">體脂肪 %</div>
+            <div class="marker-en">Body Fat %</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-d item_1913">D</span></div>
+          <div class="value-cell grade-d item_1513">25</div>
+          <div class="na-cell item_1713">N/A</div>
+          <div class="range-cell">M: &lt;15 / F: &lt;22</div>
+          <div class="desc-cell">評估體內脂肪總量佔比，反映能量儲存與代謝穩定度。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">腰臀比</div>
+            <div class="marker-en">WHR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-d item_1961">D</span></div>
+          <div class="value-cell grade-d item_1561">1.15</div>
+          <div class="na-cell item_1761">N/A</div>
+          <div class="range-cell">M: &lt;0.85 / F: &lt;0.75</div>
+          <div class="desc-cell">評估體脂分布趨勢，反映中央型脂肪蓄積之風險標記。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">高密度脂蛋白</div>
+            <div class="marker-en">HDL-C</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1960">C</span></div>
+          <div class="value-cell grade-c item_1560">40</div>
+          <div class="na-cell item_1760">N/A</div>
+          <div class="range-cell">60 - 90</div>
+          <div class="desc-cell">負責將脂質運送至組織，數據反映循環環境之潛在脂質沉積趨勢。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">三酸甘油酯</div>
+            <div class="marker-en">Triglyceride</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1954">C</span></div>
+          <div class="value-cell grade-c item_1554">160</div>
+          <div class="na-cell item_1754">N/A</div>
+          <div class="range-cell">&lt; 100</div>
+          <div class="desc-cell">血液中主要的能量脂質，反映膳食熱量平衡與代謝調節效能。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">TG/HDL-C 比值</div>
+            <div class="marker-en">TG/HDL-C Ratio</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1906">C</span></div>
+          <div class="value-cell grade-c item_1506">4</div>
+          <div class="na-cell item_1706">N/A</div>
+          <div class="range-cell">&lt; 1.5</div>
+          <div class="desc-cell">評估胰島素感度與脂質顆粒特徵，反映代謝靈活性之綜合指標。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">空腹血糖</div>
+            <div class="marker-en">Fasting Glucose</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1956">C</span></div>
+          <div class="value-cell grade-c item_1556">95</div>
+          <div class="na-cell item_1756">N/A</div>
+          <div class="range-cell">75 - 90</div>
+          <div class="desc-cell">評估血液中葡萄糖濃度，反映基礎能量代謝穩定度之指標。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">空腹胰島素</div>
+            <div class="marker-en">Fasting Insulin</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1959">C</span></div>
+          <div class="value-cell grade-c item_1559">13</div>
+          <div class="na-cell item_1759">N/A</div>
+          <div class="range-cell">&lt; 5</div>
+          <div class="desc-cell">反映胰腺基礎分泌功能與細胞能量感度之生理狀態標記。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">HOMA-IR 阻抗指數</div>
+            <div class="marker-en">HOMA-IR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1955">C</span></div>
+          <div class="value-cell grade-c item_1555">3.05</div>
+          <div class="na-cell item_1755">N/A</div>
+          <div class="range-cell">&lt; 1</div>
+          <div class="desc-cell">評估血糖與胰島素互動，反映體內胰島素抗性趨勢之指標。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">血壓</div>
+            <div class="marker-en">舒張壓</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1901">B</span></div>
+          <div class="value-cell grade-b item_1501">75</div>
+          <div class="na-cell item_1701">N/A</div>
+          <div class="range-cell">&lt; 70</div>
+          <div class="desc-cell">評估心臟舒張時之血管壓力，反映外周阻力與血管健康品質。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">血壓</div>
+            <div class="marker-en">收縮壓</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-a item_1902">A</span></div>
+          <div class="value-cell grade-a item_1502">115</div>
+          <div class="na-cell item_1702">N/A</div>
+          <div class="range-cell">&lt; 120</div>
+          <div class="desc-cell">評估心臟收縮時對血管壁之壓力，反映循環動力與血管彈性。</div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="report-page">
+    <header class="report-topbar">
+      <div class="topbar-left">
+        <span class="topbar-dot"></span>
+        <span>BIOLOGICAL HEALTH ・ C ・ INFLAMMATION</span>
+      </div>
+      <div class="topbar-right">REPORT ID : LR-2026-0210</div>
+    </header>
+
+    <div class="report-body">
+      <section class="hero">
+        <div>
+          <h1 class="hero-title">C. INFLAMMATION STATUS</h1>
+          <p class="hero-subtitle">發炎狀態</p>
+        </div>
+
+        <div class="hero-score">
+          <div class="hero-score-label label-c">平均</div>
+          <div class="mini-ring-grade grade-c item_5302">C</div>
+          <div class="mini-ring">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="mini-ring-bg" cx="60" cy="60" r="46" pathLength="100"></circle>
+              <circle class="mini-ring-value" cx="60" cy="60" r="46" pathLength="100" style="stroke-dasharray:68 100;"></circle>
+            </svg>
+            <div class="mini-ring-content item_5301">68</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-card">
+        <p class="item_5303">數據可能顯示身體存在中度發炎應激，或許反映了內臟脂肪累積、精緻糖攝取過多或缺乏規律運動的潛在影響。長期可能緩慢消耗生理儲備，建議評估優化抗發炎飲食，加入溫和有氧活動，這大概有助於重啟系統的修復能力。</p>
+      </section>
+
+      <section class="table-card" aria-label="發炎狀態指標總覽">
+        <div class="table-card-head">
+          <h2>指標總覽</h2>
+          <span>共 12 項</span>
+        </div>
+
+        <div class="table-head table-grid">
+          <div>項目</div>
+          <div style="text-align:center;">等級</div>
+          <div style="text-align:center;">本期數值</div>
+          <div style="text-align:center;">前期數值</div>
+          <div style="text-align:center;">理想範圍</div>
+          <div>說明</div>
+        </div>
+
+        
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">內臟脂肪</div>
+            <div class="marker-en">Visceral Fat</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-d item_1951">D</span></div>
+          <div class="value-cell grade-d item_1551">12</div>
+          <div class="na-cell item_1751">N/A</div>
+          <div class="range-cell">1.0 - 3.9</div>
+          <div class="desc-cell">評估腹部內臟周邊脂肪蓄積，反映核心代謝應激風險。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">泛免疫發炎指數</div>
+            <div class="marker-en">PIV</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1945">C</span></div>
+          <div class="value-cell grade-citem_1545">413</div>
+          <div class="na-cell item_1745">N/A</div>
+          <div class="range-cell">&lt; 200</div>
+          <div class="desc-cell">整合多種免疫細胞數據，評估全身生理應激與免疫平衡之指標。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">單核球</div>
+            <div class="marker-en">Monocyte</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1946">B</span></div>
+          <div class="value-cell grade-b item_1546">0.6</div>
+          <div class="na-cell item_1746">N/A</div>
+          <div class="range-cell">0.3 - 0.5</div>
+          <div class="desc-cell">負責清除組織碎屑與長期防禦，反映內在環境清除修復效能。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">嗜酸性球</div>
+            <div class="marker-en">Eosinophils</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1947">B</span></div>
+          <div class="value-cell grade-b item_1547">0.3</div>
+          <div class="na-cell item_1747">N/A</div>
+          <div class="range-cell">0 - 0.2</div>
+          <div class="desc-cell">參與生理敏感度調節與防禦，反映黏膜系統對環境變化之應對力。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">嗜鹼性球</div>
+            <div class="marker-en">Basophils</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1949">B</span></div>
+          <div class="value-cell grade-b item_1549">0.1</div>
+          <div class="na-cell item_1749">N/A</div>
+          <div class="range-cell">0 - 0.05</div>
+          <div class="desc-cell">參與生理防禦與敏感反應，反映免疫系統對微環境之觀測度。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">嗜中性球/淋巴球比例</div>
+            <div class="marker-en">NLR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1906">B</span></div>
+          <div class="value-cell grade-b item_1506">2.5</div>
+          <div class="na-cell item_1706">N/A</div>
+          <div class="range-cell">0.78 - 1.5</div>
+          <div class="desc-cell">觀測先天與後天免疫平衡，反映生理應激與自主神經調節狀態。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">單核球/淋巴球比例</div>
+            <div class="marker-en">MLR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1948">B</span></div>
+          <div class="value-cell grade-b item_1548">0.3</div>
+          <div class="na-cell item_1748">N/A</div>
+          <div class="range-cell">&lt; 0.2</div>
+          <div class="desc-cell">評估內環境清除效能與免疫調節比例，反映組織代謝與修復負荷。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">血小板/淋巴球比例</div>
+            <div class="marker-en">PLR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1940">B</span></div>
+          <div class="value-cell grade-b item_1540">138</div>
+          <div class="na-cell item_1740">N/A</div>
+          <div class="range-cell">&lt; 100</div>
+          <div class="desc-cell">觀測微循環穩定度與生理應急狀態，評估全身性之潛在發炎趨勢。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">全身免疫發炎指數</div>
+            <div class="marker-en">SII</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1941">B</span></div>
+          <div class="value-cell grade-b item_1541">0.7</div>
+          <div class="na-cell item_1741">N/A</div>
+          <div class="range-cell">&lt; 0.5</div>
+          <div class="desc-cell">整合血小板與多種免疫數據，反映全身生理環境穩定度與發炎水平。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">高敏感度C-反應蛋白</div>
+            <div class="marker-en">hsCRP</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1942">B</span></div>
+          <div class="value-cell grade-b item_1542">0.7</div>
+          <div class="na-cell item_1742">N/A</div>
+          <div class="range-cell">&lt; 0.5</div>
+          <div class="desc-cell">評估微量發炎狀態，反映全身生理環境穩定度之敏感標記。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">嗜中性球</div>
+            <div class="marker-en">Neutrophil</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-a item_1943">A</span></div>
+          <div class="value-cell grade-a item_1543">5</div>
+          <div class="na-cell item_1743">N/A</div>
+          <div class="range-cell">3 - 5</div>
+          <div class="desc-cell">免疫系統首道防線，反映生理對急性負荷與發炎之即時應對。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">淋巴球</div>
+            <div class="marker-en">Lymphocyte</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-a item_1944">A</span></div>
+          <div class="value-cell grade-a item_1544">2</div>
+          <div class="na-cell item_1744">N/A</div>
+          <div class="range-cell">1.8 - 2.7</div>
+          <div class="desc-cell">後天免疫核心指標，反映長期防護力穩定度與環境應激適應潛力。</div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="report-page">
+    <header class="report-topbar">
+      <div class="topbar-left">
+        <span class="topbar-dot"></span>
+        <span>BIOLOGICAL HEALTH ・ D ・ RECOVERY</span>
+      </div>
+      <div class="topbar-right">REPORT ID : LR-2026-0210</div>
+    </header>
+
+    <div class="report-body">
+      <section class="hero">
+        <div>
+          <h1 class="hero-title">D. RECOVERY CAPACITY</h1>
+          <p class="hero-subtitle">修復合成</p>
+        </div>
+
+        <div class="hero-score">
+          <div class="hero-score-label label-b">良好</div>
+          <div class="mini-ring-grade grade-b item_5402">B</div>
+          <div class="mini-ring">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="mini-ring-bg" cx="60" cy="60" r="46" pathLength="100"></circle>
+              <circle class="mini-ring-value" cx="60" cy="60" r="46" pathLength="100" style="stroke-dasharray:78 100;"></circle>
+            </svg>
+            <div class="mini-ring-content item_5401">78</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-card">
+        <p class="item_5403">數據可能反映肌肉合成代謝速度與微觀修復效能趨於平均。日常高壓引起的高度質醇、過度有氧或重訓後缺乏規律睡眠，或許限制了合成激素的發揮。建議評估加入抗阻力運動、確保充足優質蛋白質，這可能協助重啟組織活力。</p>
+      </section>
+
+      <section class="table-card" aria-label="修復合成指標總覽">
+        <div class="table-card-head">
+          <h2>指標總覽</h2>
+          <span>共 10 項</span>
+        </div>
+
+        <div class="table-head table-grid">
+          <div>項目</div>
+          <div style="text-align:center;">等級</div>
+          <div style="text-align:center;">本期數值</div>
+          <div style="text-align:center;">前期數值</div>
+          <div style="text-align:center;">理想範圍</div>
+          <div>說明</div>
+        </div>
+
+        
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">空腹胰島素</div>
+            <div class="marker-en">Fasting Insulin</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1960">C</span></div>
+          <div class="value-cell grade-c item_1560">13</div>
+          <div class="na-cell item_1760">N/A</div>
+          <div class="range-cell">&lt; 5</div>
+          <div class="desc-cell">反映胰腺基礎分泌功能與細胞能量感度之生理狀態標記。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">骨骼肌指數</div>
+            <div class="marker-en">SMI</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1907">C</span></div>
+          <div class="value-cell grade-c item_1507">9.2</div>
+          <div class="na-cell item_1707">N/A</div>
+          <div class="range-cell">&gt; 10.5</div>
+          <div class="desc-cell">評估四肢肌肉量相對於身高之比例，反映功能性儲備。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">心律恢復</div>
+            <div class="marker-en">HRR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1921">C</span></div>
+          <div class="value-cell grade-c item_1521">25</div>
+          <div class="na-cell item_1721">N/A</div>
+          <div class="range-cell">（依年齡/性別）</div>
+          <div class="desc-cell">評估運動後心率下降速率，反映自主神經調節與副交感活性。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">血色素檢查</div>
+            <div class="marker-en">HB</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1933">B</span></div>
+          <div class="value-cell grade-b item_1533">15</div>
+          <div class="na-cell item_1733">N/A</div>
+          <div class="range-cell">14.2 - 14.8</div>
+          <div class="desc-cell">衡量血液攜氧能力核心指標，與體力儲備及代謝效率密切相關。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">血小板計數</div>
+            <div class="marker-en">PLT</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1934">B</span></div>
+          <div class="value-cell grade-b item_1534">275</div>
+          <div class="na-cell item_1734">N/A</div>
+          <div class="range-cell">200 - 250</div>
+          <div class="desc-cell">評估凝血功能與組織修復基礎，反映系統對修復之反應效能。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">睪固酮</div>
+            <div class="marker-en">Testosterone</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1962">B</span></div>
+          <div class="value-cell grade-b item_1562">450</div>
+          <div class="na-cell item_1762">N/A</div>
+          <div class="range-cell">600 - 850</div>
+          <div class="desc-cell">重要合成激素指標，反映肌肉修復力、能量與活力水平之狀態。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">標準化 FFMI</div>
+            <div class="marker-en">FFMI</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1909">B</span></div>
+          <div class="value-cell grade-b item_1509">20.39</div>
+          <div class="na-cell item_1709">N/A</div>
+          <div class="range-cell">（依年齡/性別）</div>
+          <div class="desc-cell">校正身高與體型後之除脂體重，反映肌肉發育品質。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">上肢肌力</div>
+            <div class="marker-en">Upper Body Strength</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1918">B</span></div>
+          <div class="value-cell grade-b item_1518">42</div>
+          <div class="na-cell item_1718">N/A</div>
+          <div class="range-cell">（依年齡/性別）</div>
+          <div class="desc-cell">評估上肢最大肌力，反映全身肌肉品質與長期健康儲備指標。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">下肢肌力</div>
+            <div class="marker-en">Lower Body Strength</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1919">B</span></div>
+          <div class="value-cell grade-b item_1519">23</div>
+          <div class="na-cell item_1719">N/A</div>
+          <div class="range-cell">（依年齡/性別）</div>
+          <div class="desc-cell">評估下肢爆發力與支撐效能，反映生活活動力與代謝健康度。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">紅血球計數</div>
+            <div class="marker-en">RBC</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-a item_1931">A</span></div>
+          <div class="value-cell grade-a item_1531">5</div>
+          <div class="na-cell item_1731">N/A</div>
+          <div class="range-cell">4.8 - 5.5</div>
+          <div class="desc-cell">評估體內氧氣運輸基礎，反映造血機能與生理儲備狀態。</div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="report-page last-page">
+    <header class="report-topbar">
+      <div class="topbar-left">
+        <span class="topbar-dot"></span>
+        <span>BIOLOGICAL HEALTH ・ E ・ OXIDATIVE STRESS</span>
+      </div>
+      <div class="topbar-right">REPORT ID : LR-2026-0210</div>
+    </header>
+
+    <div class="report-body">
+      <section class="hero">
+        <div>
+          <h1 class="hero-title">E. OXIDATIVE STRESS</h1>
+          <p class="hero-subtitle">細胞保護力</p>
+        </div>
+
+        <div class="hero-score">
+          <div class="hero-score-label label-c">平均</div>
+          <div class="mini-ring-grade grade-c item_5502">C</div>
+          <div class="mini-ring">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="mini-ring-bg" cx="60" cy="60" r="46" pathLength="100"></circle>
+              <circle class="mini-ring-value" cx="60" cy="60" r="46" pathLength="100" style="stroke-dasharray:71 100;"></circle>
+            </svg>
+            <div class="mini-ring-content item_5501">71</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-card">
+        <p class="item_5503">指標可能顯示細胞保護力趨於平均水準，數據或許反映出微觀氧化應激略有升高。這常與高溫烹調、精製加工食品過多，或是缺乏溫和運動有關。建議評估多攝取富含維生素 C 與 E 的原型食物，可能有助於重拾體內抗氧化調控平衡。</p>
+      </section>
+
+      <section class="table-card" aria-label="細胞保護力指標總覽">
+        <div class="table-card-head">
+          <h2>指標總覽</h2>
+          <span>共 10 項</span>
+        </div>
+
+        <div class="table-head table-grid">
+          <div>項目</div>
+          <div style="text-align:center;">等級</div>
+          <div style="text-align:center;">本期數值</div>
+          <div style="text-align:center;">前期數值</div>
+          <div style="text-align:center;">理想範圍</div>
+          <div>說明</div>
+        </div>
+
+        
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">內臟脂肪</div>
+            <div class="marker-en">Visceral Fat</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-d item_1950">D</span></div>
+          <div class="value-cell grade-d item_1550">12</div>
+          <div class="na-cell item_1750">N/A</div>
+          <div class="range-cell">1.0 - 3.9</div>
+          <div class="desc-cell">評估腹部內臟周邊脂肪蓄積，反映核心代謝應激風險。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">體脂肪 %</div>
+            <div class="marker-en">Body Fat %</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-d item_1905">D</span></div>
+          <div class="value-cell grade-d item_1505">25</div>
+          <div class="na-cell item_1705">N/A</div>
+          <div class="range-cell">M: &lt;15 / F: &lt;22</div>
+          <div class="desc-cell">評估體內脂肪總量佔比，反映能量儲存與代謝穩定度。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">三酸甘油酯</div>
+            <div class="marker-en">Triglyceride</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1951">C</span></div>
+          <div class="value-cell grade-c item_1551">160</div>
+          <div class="na-cell item_1751">N/A</div>
+          <div class="range-cell">&lt; 100</div>
+          <div class="desc-cell">血液中主要的能量脂質，反映膳食熱量平衡與代謝調節效能。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">TG/HDL-C 比值</div>
+            <div class="marker-en">TG/HDL Ratio</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1945">C</span></div>
+          <div class="value-cell grade-c item_1545">4</div>
+          <div class="na-cell item_1745">N/A</div>
+          <div class="range-cell">&lt; 1.5</div>
+          <div class="desc-cell">評估胰島素感度與脂質顆粒特徵，反映代謝靈活性之綜合指標。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">空腹胰島素</div>
+            <div class="marker-en">Fasting Insulin</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1960">C</span></div>
+          <div class="value-cell grade-c item_1560">13</div>
+          <div class="na-cell item_1760">N/A</div>
+          <div class="range-cell">&lt; 5</div>
+          <div class="desc-cell">反映胰腺基礎分泌功能與細胞能量感度之生理狀態標記。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">胰島素阻抗指數</div>
+            <div class="marker-en">HOMA-IR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-c item_1961">C</span></div>
+          <div class="value-cell grade-c item_1561">3.05</div>
+          <div class="na-cell item_1761">N/A</div>
+          <div class="range-cell">&lt; 1</div>
+          <div class="desc-cell">評估血糖與胰島素互動，反映體內胰島素抗性趨勢之指標。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">高敏感度 C-反應蛋白</div>
+            <div class="marker-en">hsCRP</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1947">B</span></div>
+          <div class="value-cell grade-b item_1547">0.7</div>
+          <div class="na-cell item_1747">N/A</div>
+          <div class="range-cell">&lt; 0.5</div>
+          <div class="desc-cell">評估微量發炎狀態，反映全身生理環境穩定度之敏感標記。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">嗜中性球/淋巴球比例</div>
+            <div class="marker-en">NLR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1906">B</span></div>
+          <div class="value-cell grade-b item_1506">2.5</div>
+          <div class="na-cell item_1706">N/A</div>
+          <div class="range-cell">0.78 - 1.5</div>
+          <div class="desc-cell">觀測先天與後天免疫平衡，反映生理應激與自主神經調節狀態。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">單核球/淋巴球比例</div>
+            <div class="marker-en">MLR</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-b item_1956">B</span></div>
+          <div class="value-cell grade-b item_1556">0.3</div>
+          <div class="na-cell item_1756">N/A</div>
+          <div class="range-cell">&lt; 0.2</div>
+          <div class="desc-cell">評估內環境清除效能與免疫調節比例，反映組織代謝與修復負荷。</div>
+        </div>
+        <div class="table-row table-grid">
+          <div class="marker">
+            <div class="marker-zh">總抗氧化能力</div>
+            <div class="marker-en">TAC</div>
+          </div>
+          <div class="grade-cell"><span class="grade-pill grade-a item_1955">A</span></div>
+          <div class="value-cell grade-a item_1555">2</div>
+          <div class="na-cell item_1755">N/A</div>
+          <div class="range-cell">&gt; 1.3</div>
+          <div class="desc-cell">衡量體內中和自由基之總合效能，反映細胞保護屏障之強度。</div>
+        </div>
+      </section>
+    </div>
+  </section>
+<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+$( document ).ready(function(){
+	$.each(window.parent.userdata, function(idx,val){
+		$("." + idx).text(val.value);
+	} );
+});
+</script>
+</body>
+</html>

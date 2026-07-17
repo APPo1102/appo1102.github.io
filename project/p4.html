@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全人健康分數總覽</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#eef1f3}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;color:#11151a}
+.lr-stage{width:min(100%,800px);margin:0 auto;container-type:inline-size;background:#fff}
+.lr-page{position:relative;width:100%;height:139.75cqw;min-height:0;background:#fff;overflow:hidden;box-shadow:0 0 0 1px #e8ecef inset}
+.lr-page *{box-sizing:border-box}
+.lr-topbar{position:absolute;left:.5cqw;top:.125cqw;width:99cqw;height:6.75cqw;background:#4a987d;color:#fff;display:flex;align-items:center;padding:0 3.5cqw;font-size:1.18cqw;letter-spacing:.02em}
+.lr-topbar__left{font-weight:700;display:flex;align-items:center;gap:1.05cqw;white-space:nowrap}
+.lr-topbar__dot{width:.78cqw;height:.78cqw;border-radius:50%;background:#fff;display:block;flex:0 0 auto}
+.lr-topbar__en{font-weight:700;letter-spacing:.2em;opacity:.52}
+.lr-topbar__right{margin-left:auto;font-size:1.12cqw;opacity:.72}
+.lr-titleblock{position:absolute;left:7.88cqw;top:13.52cqw;width:84.6cqw;height:10cqw}
+.lr-titleblock h1{margin:0;font-size:4.34cqw;line-height:1.08;font-weight:800;letter-spacing:-.035em}
+.lr-titleblock p{margin:1.15cqw 0 0;color:#6d7177;font-size:1.93cqw;font-weight:600;letter-spacing:.01em}
+.lr-compare{position:absolute;right:.02cqw;top:0;text-align:right;color:#6c7076}
+.lr-compare__badge{height:2.48cqw;border-radius:99px;background:#f1f2f3;padding:0 1.1cqw;display:inline-flex;align-items:center;gap:.9cqw;font-size:.97cqw;font-weight:700}
+.lr-compare__badge b{color:#252a30}
+.lr-compare__status{margin-top:1.15cqw;font-size:1.55cqw;font-weight:700}
+.lr-hero{position:absolute;left:7.88cqw;top:28.9cqw;width:84.62cqw;height:29.9cqw;display:grid;grid-template-columns:47.25cqw 34.75cqw;gap:2.7cqw}
+.lr-scorecard{position:relative;border-radius:1.2cqw;overflow:hidden;border:.15cqw solid #e3e5e5;background:#d9dad8}
+.lr-landscape{position:absolute;inset:0;width:100%;height:100%;display:block}
+.lr-scorecard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,.18) 48%,rgba(255,255,255,.14));pointer-events:none}
+.lr-scorecard__label{position:absolute;z-index:2;left:2.7cqw;top:3.15cqw;font-size:1.24cqw;color:#667079;font-weight:700;letter-spacing:.01em}
+.lr-scorecard__value{position:absolute;z-index:2;left:3.1cqw;top:7.75cqw;font-size:12.4cqw;line-height:.92;font-weight:700;letter-spacing:-.07em;color:#a17b00}
+.lr-scorecard__grade{position:absolute;z-index:2;right:3.55cqw;top:1.85cqw;width:9.5cqw;height:9.5cqw;border-radius:50%;background:#a17b00;color:#fff;display:grid;place-items:center;font-size:5cqw;line-height:1;font-weight:800}
+.lr-scorecard__watch{position:absolute;z-index:2;left:3.55cqw;bottom:2.35cqw;color:#a17b00;font-size:1.25cqw;font-weight:800;letter-spacing:.03em}
+.lr-rightcol{display:grid;grid-template-rows:16.3cqw 11.8cqw;gap:1.65cqw}
+.lr-agecard{position:relative;overflow:hidden;border-radius:1.25cqw;border:.15cqw solid #ded8c9;background:
+radial-gradient(circle at 25% 20%,rgba(255,255,255,.65) 0 .35cqw,transparent .42cqw),
+radial-gradient(circle at 70% 72%,rgba(80,70,45,.10) 0 .25cqw,transparent .34cqw),
+linear-gradient(115deg,#e6dfcc,#d8d0bd);}
+.lr-agecard::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(11deg,rgba(70,62,43,.025) 0 .12cqw,transparent .12cqw .46cqw);mix-blend-mode:multiply}
+.lr-runner{position:absolute;right:0;top:0;width:16.1cqw;height:16.1cqw;object-fit:cover;mix-blend-mode:multiply;opacity:.98}
+.lr-agecard__label{position:absolute;left:1.85cqw;top:1.65cqw;font-size:1.03cqw;font-weight:800;color:#697078;letter-spacing:.03em}
+.lr-agecard__num{position:absolute;left:1.9cqw;top:4.2cqw;font-size:6.6cqw;line-height:1;font-weight:800;letter-spacing:-.03em;color:#0c1014}
+.lr-agecard__unit{position:absolute;left:11.15cqw;top:8.85cqw;font-size:.95cqw;color:#74777a}
+.lr-agecard__prev{position:absolute;left:1.95cqw;bottom:2.35cqw;font-size:.98cqw;font-weight:600;color:#75797c}
+.lr-agecard__prev .blue{color:#2f6e91;font-weight:800}
+.lr-agecard__prev .red{color:#c53d45;font-weight:800}
+.lr-indicator{position:relative;border:.22cqw solid #e0e4e7;border-radius:1.15cqw;background:#fff;padding:1.85cqw 1.5cqw 1.25cqw}
+.lr-indicator__head{display:flex;align-items:center;justify-content:space-between;font-size:1.05cqw;font-weight:800}
+.lr-indicator__total{font-size:.55cqw;color:#8a8f94;font-weight:600}
+.lr-bar{height:.65cqw;margin-top:1.6cqw;border-radius:99px;overflow:hidden;display:grid;grid-template-columns:49fr 14fr 21fr 16fr 4fr;background:#ddd}
+.lr-bar span:nth-child(1){background:#4c7694}.lr-bar span:nth-child(2){background:#3d9b70}.lr-bar span:nth-child(3){background:#a67d00}.lr-bar span:nth-child(4){background:#d17b1a}.lr-bar span:nth-child(5){background:#c73742}
+.lr-indicator__cols{display:grid;grid-template-columns:repeat(5,1fr);margin-top:1.15cqw;text-align:center}
+.lr-indicator__col{font-size:.55cqw;color:#7a7f83;line-height:1.15}
+.lr-indicator__col .dot{width:.42cqw;height:.42cqw;border-radius:50%;display:inline-block;margin-right:.35cqw;vertical-align:middle}
+.lr-indicator__col b{display:block;margin-top:.5cqw;font-size:1.45cqw;line-height:1;font-weight:800}
+.lr-indicator__col small{display:block;margin-top:.28cqw;font-size:.46cqw;white-space:nowrap}
+.lr-indicator__col:nth-child(1) .dot,.lr-indicator__col:nth-child(1) b{background:#4c7694;color:#4c7694}.lr-indicator__col:nth-child(1) b{background:none}
+.lr-indicator__col:nth-child(2) .dot,.lr-indicator__col:nth-child(2) b{background:#3d9b70;color:#3d9b70}.lr-indicator__col:nth-child(2) b{background:none}
+.lr-indicator__col:nth-child(3) .dot,.lr-indicator__col:nth-child(3) b{background:#a67d00;color:#a67d00}.lr-indicator__col:nth-child(3) b{background:none}
+.lr-indicator__col:nth-child(4) .dot,.lr-indicator__col:nth-child(4) b{background:#d17b1a;color:#d17b1a}.lr-indicator__col:nth-child(4) b{background:none}
+.lr-indicator__col:nth-child(5) .dot,.lr-indicator__col:nth-child(5) b{background:#c73742;color:#c73742}.lr-indicator__col:nth-child(5) b{background:none}
+.lr-overview{position:absolute;left:7.88cqw;top:65.65cqw;width:84.62cqw}
+.lr-sectionline{display:flex;align-items:center;color:#a5a9ad;font-size:1.28cqw;font-weight:700;letter-spacing:.12em}
+.lr-sectionline .left{white-space:nowrap}
+.lr-sectionline .line{height:1px;background:#d5d8da;flex:1;margin:0 1.7cqw}
+.lr-sectionline .right{font-size:1.15cqw;letter-spacing:.18em;white-space:nowrap}
+.lr-overview p{margin:2.65cqw 0 0;font-size:1.43cqw;line-height:1.72;color:#34383c;font-weight:500}
+.lr-overview strong{color:#9b7b00;font-weight:800}
+.lr-subdomains{position:absolute;left:7.88cqw;top:87.9cqw;width:84.62cqw}
+.lr-subdomains .lr-sectionline .line{margin-left:1.6cqw}
+.lr-subdomains .lr-sectionline .right{font-size:1.03cqw;letter-spacing:.02em}
+.lr-domain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.85cqw;margin-top:1.65cqw}
+.lr-domain{position:relative;height:21.15cqw;border:.22cqw solid #e0e4e7;border-radius:1.4cqw;background:#fff;padding:1.9cqw 1.35cqw 1.2cqw}
+.lr-domain__top{height:3cqw;display:flex;align-items:flex-start;justify-content:space-between;gap:.7cqw}
+.lr-domain__icon{width:3.05cqw;height:3.05cqw;border-radius:50%;display:grid;place-items:center;flex:0 0 auto}
+.lr-domain__icon svg{width:2.05cqw;height:2.05cqw}
+.lr-domain__pill{padding:.44cqw .76cqw;border-radius:.35cqw;font-size:.78cqw;line-height:1;font-weight:800;white-space:nowrap;letter-spacing:.01em}
+.lr-domain h3{margin:1.05cqw 0 0;font-size:1.35cqw;line-height:1.25;color:#575c60;font-weight:800;white-space:nowrap}
+.lr-domain p{margin:1cqw 0 0;font-size:.75cqw;line-height:1.6;color:#8c9195;height:3.2cqw;overflow:hidden}
+.lr-domain__score{position:absolute;left:1.35cqw;bottom:1.45cqw;display:flex;align-items:center;gap:1cqw}
+.lr-domain__score b{font-size:5.2cqw;line-height:.9;letter-spacing:-.05em}
+.lr-domain__grade{width:4.15cqw;height:4.15cqw;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:2.15cqw;font-weight:800}
+.lr-domain__count{position:absolute;right:1.25cqw;bottom:1.45cqw;font-size:.72cqw;color:#9aa0a4}
+.lr-domain.gold .lr-domain__icon{background:#f7f3db}.lr-domain.gold .lr-domain__icon svg{color:#a17b00}.lr-domain.gold .lr-domain__pill{background:#f8f2cf;color:#947100}.lr-domain.gold .lr-domain__score b{color:#a17b00}.lr-domain.gold .lr-domain__grade{background:#a17b00}
+.lr-domain.green .lr-domain__icon{background:#eaf6ef}.lr-domain.green .lr-domain__icon svg{color:#3d966a}.lr-domain.green .lr-domain__pill{background:#e7f5ee;color:#34845e}.lr-domain.green .lr-domain__score b{color:#3d966a}.lr-domain.green .lr-domain__grade{background:#3d966a}
+.lr-domain.blue .lr-domain__icon{background:#edf4fa}.lr-domain.blue .lr-domain__icon svg{color:#4b6b86}.lr-domain.blue .lr-domain__pill{background:#edf4fa;color:#4b6b86}.lr-domain.blue .lr-domain__score b{color:#4b6b86}.lr-domain.blue .lr-domain__grade{background:#4b6b86}
+.lr-nav{position:absolute;left:7.88cqw;top:119.28cqw;width:84.62cqw;height:6.22cqw;border:.13cqw solid #2a2f34;border-radius:1.12cqw;display:flex;align-items:center;padding:0 3.3cqw;color:#a4a8ac;font-size:1.48cqw;font-weight:700;white-space:nowrap}
+.lr-nav__icon{width:2.65cqw;height:2.65cqw;border-radius:50%;border:.11cqw solid #4b6b86;display:grid;place-items:center;margin-right:4.1cqw;color:#4b6b86;flex:0 0 auto}
+.lr-nav__icon svg{width:1.5cqw;height:1.5cqw}
+.lr-nav strong{color:#4b6b86}
+.lr-nav .sep{margin:0 .65cqw;color:#b5b8bb}
+.lr-disclaimer{position:absolute;left:18cqw;top:130.05cqw;width:64cqw;text-align:center;color:#777d82;font-size:1.38cqw;line-height:1.55;letter-spacing:.01em}
+@media (max-width:520px){.lr-stage{width:100%}}
+@media print{html,body{background:#fff}.lr-stage{width:210mm;max-width:none}.lr-page{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="lr-stage">
+  <main class="lr-page">
+    <header class="lr-topbar">
+      <div class="lr-topbar__left"><span class="lr-topbar__dot"></span><span>逆齡方案報告分數總覽</span><span class="lr-topbar__en">· LONGEVITY SCORE OVERVIEW</span></div>
+      <div class="lr-topbar__right">REPORT ID: LR-2026-0210</div>
+    </header>
+
+    <section class="lr-titleblock">
+      <h1>全人健康分數總覽</h1>
+      <p>整合生理生化標記與功能性表現之多維度全人健康機能量化指標</p>
+      <div class="lr-compare">
+        <div class="lr-compare__badge"><span>PREVIOUS</span><b>68.1 → 68.1</b></div>
+        <div class="lr-compare__status">Maintain · 維持</div>
+      </div>
+    </section>
+
+    <section class="lr-hero">
+      <article class="lr-scorecard">
+        <svg class="lr-landscape" viewBox="0 0 600 380" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef2f0"/><stop offset=".55" stop-color="#ece7d9"/><stop offset="1" stop-color="#c8c8c3"/></linearGradient>
+            <radialGradient id="sun"><stop offset="0" stop-color="#fffbe5" stop-opacity="1"/><stop offset=".25" stop-color="#fff8d7" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+            <filter id="blur"><feGaussianBlur stdDeviation="9"/></filter>
+          </defs>
+          <rect width="600" height="380" fill="url(#sky)"/>
+          <circle cx="445" cy="187" r="55" fill="url(#sun)"/>
+          <path d="M0 215 C85 208 140 203 195 197 C260 189 325 199 382 171 C430 147 471 148 520 139 C556 132 580 137 600 139 L600 380 L0 380Z" fill="#babcbc" opacity=".68"/>
+          <path d="M0 247 C82 236 132 235 205 229 C285 223 328 223 385 232 C448 242 501 228 556 230 C575 231 590 235 600 238 L600 380 L0 380Z" fill="#aeb1b1" opacity=".78"/>
+          <path d="M0 285 C105 269 183 277 262 267 C347 257 425 265 510 258 C548 255 577 260 600 264 L600 380 L0 380Z" fill="#9da0a0" opacity=".42"/>
+          <g filter="url(#blur)" opacity=".9">
+            <circle cx="300" cy="360" r="18" fill="#f5f0d9"/><circle cx="336" cy="348" r="12" fill="#fff6d4"/><circle cx="370" cy="361" r="15" fill="#fff9df"/><circle cx="402" cy="345" r="11" fill="#fff8db"/><circle cx="438" cy="359" r="16" fill="#f7f0d2"/><circle cx="475" cy="349" r="13" fill="#fff7d8"/>
+          </g>
+        </svg>
+        <div class="lr-scorecard__label">LONGEVITY SCORE&nbsp;&nbsp;·&nbsp;&nbsp;全人健康綜合分數</div>
+        <div class="lr-scorecard__value item_1011">68</div>
+        <div class="lr-scorecard__grade item_1027">C</div>
+        <div class="lr-scorecard__watch">WATCH · 關注</div>
+      </article>
+
+      <div class="lr-rightcol">
+        <article class="lr-agecard">
+          <img class="lr-runner" alt="運動者" src="data:image/jpeg;base64,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">
+          <div class="lr-agecard__label">FITNESS AGE&nbsp;&nbsp;·&nbsp;&nbsp;體能年齡估算</div>
+          <div class="lr-agecard__num item_1043">38</div>
+          <div class="lr-agecard__unit">歲</div>
+          <div class="lr-agecard__prev">前次測量：&nbsp;45 → <span class="blue">38</span> <span class="red">-7 歲</span></div>
+        </article>
+
+        <article class="lr-indicator">
+          <div class="lr-indicator__head"><span>75+ 項指標</span><span class="lr-indicator__total">TOTAL · 104</span></div>
+          <div class="lr-bar"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="lr-indicator__cols">
+            <div class="lr-indicator__col"><span class="dot"></span>A<b class="item_1047">49</b><small>47.1% · 卓越</small></div>
+            <div class="lr-indicator__col"><span class="dot"></span>B<b class="item_1048">14</b><small>13.5% · 良好</small></div>
+            <div class="lr-indicator__col"><span class="dot"></span>C<b class="item_1049">21</b><small>20.2% · 關注</small></div>
+            <div class="lr-indicator__col"><span class="dot"></span>D<b class="item_1050">16</b><small>15.4% · 警示</small></div>
+            <div class="lr-indicator__col"><span class="dot"></span>E<b class="item_1051">4</b><small>3.8% · 高風險</small></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="lr-overview">
+      <div class="lr-sectionline"><span class="left">報告內容</span><span class="line"></span><span class="right">REPORT OVERVIEW</span></div>
+      <p class="item_1217">整體表現可能處於<strong>平均水準</strong>，或許反映出日常活動量不足或生活疲憊。數據提示若長期如此，可能會增加系統負擔，建議評估調整生活習慣、增加原型食物攝取，可能有助於提升日常活力。</p>
+    </section>
+
+    <section class="lr-subdomains">
+      <div class="lr-sectionline"><span class="left">SUBDOMAIN BREAKDOWN · 三大子分數</span><span class="line"></span><span class="right">COMPOSING THE 68</span></div>
+      <div class="lr-domain-grid">
+        <article class="lr-domain gold">
+          <div class="lr-domain__top">
+            <div class="lr-domain__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h4l2-5 3.2 10L16 12h4"/><path d="M12 21C7 18 3 14.4 3 9.6A4.6 4.6 0 0 1 7.7 5c1.8 0 3.3.9 4.3 2.2C13 5.9 14.5 5 16.3 5A4.6 4.6 0 0 1 21 9.6C21 14.4 17 18 12 21Z"/></svg>
+            </div>
+            <span class="lr-domain__pill">WATCH · 關注</span>
+          </div>
+          <h3>內在生理構面分數 · BIOLOGICAL</h3>
+          <p>整合血脂、代謝與免疫發炎指標之系統性內環境生化機能評估。</p>
+          <div class="lr-domain__score"><b class="item_1012">65</b><span class="lr-domain__grade item_1028">C</span></div>
+          <span class="lr-domain__count">40項指標</span>
+        </article>
+
+        <article class="lr-domain green">
+          <div class="lr-domain__top">
+            <div class="lr-domain__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 4v16M16 4v16M5 7h6M13 7h6M5 17h6M13 17h6"/><path d="M3 10v4M21 10v4"/></svg>
+            </div>
+            <span class="lr-domain__pill">SOLID · 良好</span>
+          </div>
+          <h3>體能行動構面分數 · FITNESS</h3>
+          <p>整合人體組成、肌肉力量與心肺耐力之綜合生理機能表現評估。</p>
+          <div class="lr-domain__score"><b class="item_1013">69</b><span class="lr-domain__grade item_1029">B</span></div>
+          <span class="lr-domain__count">24項指標</span>
+        </article>
+
+        <article class="lr-domain blue">
+          <div class="lr-domain__top">
+            <div class="lr-domain__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9.5 4.5A3.5 3.5 0 0 0 6 8v.7A3.2 3.2 0 0 0 4 12a3.2 3.2 0 0 0 2 3.3V16a3.5 3.5 0 0 0 3.5 3.5c1 0 1.9-.4 2.5-1V5.5c-.6-.6-1.5-1-2.5-1Z"/><path d="M14.5 4.5A3.5 3.5 0 0 1 18 8v.7a3.2 3.2 0 0 1 2 3.3 3.2 3.2 0 0 1-2 3.3V16a3.5 3.5 0 0 1-3.5 3.5c-1 0-1.9-.4-2.5-1V5.5c.6-.6 1.5-1 2.5-1Z"/><path d="M8 9.5h2M14 9.5h2M8 14.5h2M14 14.5h2"/></svg>
+            </div>
+            <span class="lr-domain__pill">PEAK · 卓越</span>
+          </div>
+          <h3>心靈和諧構面分數 · WELL-BEING</h3>
+          <p>評估睡眠品質、壓力負荷與心理韌性之自律神經與情緒指標。</p>
+          <div class="lr-domain__score"><b class="item_1014">85</b><span class="lr-domain__grade item_1030">A</span></div>
+          <span class="lr-domain__count">15項指標</span>
+        </article>
+      </div>
+    </section>
+
+    <nav class="lr-nav" aria-label="報告導覽">
+      <span class="lr-nav__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 19 9 9l10-4-4 10-10 4Z"/><path d="m9 9 6 6"/></svg></span>
+      <strong>全人健康總覽</strong><span class="sep">·</span>內在生理構面<span class="sep">·</span>體能行動構面<span class="sep">·</span>心靈和諧構面<span class="sep">·</span>90天行動計劃<span class="sep">·</span>焦點指標
+    </nav>
+
+    <footer class="lr-disclaimer">本報告中的分數、燈號、模型參考區間、說明文字與建議方向，屬健康管理用途，<br>不構成臨床診斷、治療、處方、醫囑或個別醫療處置決策。</footer>
+  </main>
+</div>
+	<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+$( document ).ready(function(){
+	$.each(window.parent.userdata, function(idx,val){
+		$("." + idx).text(val.value);
+	} );
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>項目報告與附件｜營養食物範例</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:#eef0f3;
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;
+  color:#1b2230;
+}
+.report-page{
+  position:relative;
+  width:794px;
+  min-height:1123px;
+  margin:12px auto;
+  background:
+    radial-gradient(circle at 78% 14%,rgba(184,190,201,.16),transparent 38%),
+    linear-gradient(90deg,#fff 0%,#fff 67%,#f8f9fb 100%);
+  border:1px solid #d8dde5;
+  overflow:hidden;
+  break-after:page;
+  page-break-after:always;
+}
+.report-page:last-child{break-after:auto;page-break-after:auto}
+.page-header{
+  height:56px;
+  padding:0 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  background:#465069;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2px;
+}
+.page-header div:last-child{white-space:nowrap}
+.content{
+  padding:34px 38px 38px;
+}
+.title-block{
+  margin-bottom:18px;
+}
+.title-block .eyebrow{
+  color:#8993a4;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.28em;
+  margin-bottom:10px;
+}
+.title-block h1{
+  margin:0;
+  font-size:31px;
+  line-height:1.1;
+  font-weight:900;
+  color:#111827;
+}
+.title-block p{
+  margin:7px 0 0;
+  color:#98a2b3;
+  font-size:14px;
+  font-weight:700;
+}
+.info-box{
+  margin:0 0 16px;
+  padding:16px 18px;
+  border:1px solid #dde2ea;
+  border-radius:14px;
+  background:#fff;
+  color:#4b5563;
+  font-size:12.5px;
+  line-height:1.75;
+}
+.info-box h3{
+  margin:0 0 10px;
+  color:#202734;
+  font-size:16px;
+  line-height:1.3;
+}
+.info-box h4{
+  margin:14px 0 8px;
+  padding-bottom:7px;
+  border-bottom:1px solid #dfe4eb;
+  font-size:14px;
+}
+.info-box p{margin:0 0 8px}
+.info-box p:last-child{margin-bottom:0}
+.info-box.blue{background:#f7f9fc;border-left:4px solid #8d9ab0}
+.info-box.green{background:#f3faf7;border-left:4px solid #5d9a7e}
+.info-box.amber{background:#fbf8ef;border-left:4px solid #b79a58}
+.info-box.rose{background:#fbf4f6;border-left:4px solid #b57585}
+.info-box.plain{background:#fff}
+.score-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+.score{
+  min-height:88px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #e1e5eb;
+  border-radius:12px;
+  text-align:center;
+  background:#f8f9fb;
+}
+.score strong{font-size:18px;margin-bottom:3px}
+.score span{font-weight:800}
+.score small{font-size:10px;color:#667085}
+.score.green{background:#f1f8f5}
+.score.amber{background:#fbf7ee}
+.score.rose{background:#fbf1f4}
+.table-card{
+  margin:0 0 16px;
+  border:1px solid #dfe4eb;
+  border-radius:14px;
+  overflow:hidden;
+  background:#fff;
+}
+.table-title{
+  min-height:44px;
+  padding:11px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  background:#f5f6f8;
+  border-bottom:1px solid #dfe4eb;
+}
+.table-title h2{
+  margin:0;
+  color:#222a37;
+  font-size:16px;
+  line-height:1.3;
+}
+.table-title span{
+  color:#667085;
+  font-size:10.5px;
+  font-weight:700;
+  text-align:right;
+}
+.table-card.green .table-title{background:#eff7f3}
+.table-card.amber .table-title{background:#f8f5eb}
+.table-card.rose .table-title{background:#faf1f4}
+.table-card.blue .table-title{background:#f2f5f9}
+.table-wrap{overflow:hidden}
+table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+th,td{
+  padding:11px 14px;
+  border-bottom:1px solid #e7eaf0;
+  text-align:left;
+  vertical-align:middle;
+}
+th{
+  background:#f8f9fb;
+  color:#6b7280;
+  font-size:10.5px;
+  font-weight:800;
+}
+td{
+  color:#344054;
+  font-size:11px;
+  line-height:1.35;
+}
+tr:last-child td{border-bottom:none}
+td b{color:#1f2937}
+td small{
+  display:block;
+  margin-top:2px;
+  color:#98a2b3;
+  font-size:9px;
+  line-height:1.2;
+}
+td em{
+  font-style:normal;
+  font-weight:900;
+}
+.good{color:#3c8768}
+.mid{color:#a17b2c}
+.bad{color:#a95365}
+.compact th,.compact td{padding-top:8px;padding-bottom:8px}
+.compact td{font-size:10.6px}
+.reference-block{
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid #e1e5eb;
+  border-radius:9px;
+  background:#fff;
+  font-size:10.5px;
+  line-height:1.55;
+}
+.reference-block ul{margin:6px 0 0;padding-left:17px}
+.notice{
+  margin-top:10px;
+  padding:9px 11px;
+  border-radius:9px;
+  background:#faf1f4;
+  color:#a24e62;
+  font-size:10px;
+  font-weight:700;
+}
+.ref-list{
+  margin:8px 0 0;
+  padding-left:18px;
+}
+.ref-list li{
+  margin-bottom:7px;
+  font-size:10.5px;
+  line-height:1.5;
+}
+.plain-list{
+  margin:0;
+  padding-left:18px;
+}
+.plain-list li{margin-bottom:6px}
+.benefit-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px 22px;
+}
+.benefit-grid span{
+  position:relative;
+  padding-left:14px;
+}
+.benefit-grid span:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.65em;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#5d9a7e;
+}
+@media print{
+  body{background:#fff}
+  .report-page{
+    margin:0;
+    border:none;
+    box-shadow:none;
+    width:210mm;
+    min-height:297mm;
+  }
+}
+@media(max-width:820px){
+  .report-page{width:100%;margin:0 0 12px}
+}
+</style>
+</head>
+<body>
+
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="title-block">
+      <div>
+        <div class="eyebrow">ITEM REPORT</div>
+        <h1>蛋白質食物範例表</h1>
+        <p>Sample Protein Sources</p>
+      </div>
+    </section>
+    
+    <section class="info-box plain">
+      <h3></h3>
+      <div>
+<p><b>關於 DIAAS 評分（可消化必需胺基酸評分）：</b></p>
+<p>此表格以「一份蛋白質」（約 7 克）為基準，並列出相對應的營養資訊。DIAAS 是目前 FAO（聯合國糧農組織）推薦的最先進蛋白質品質評估標準。它衡量人體在小腸末端實際能吸收利用的必需胺基酸。</p>
+<div class="score-grid">
+  <div class="score green"><strong>&gt; 1.0 <small>（或 100%）</small></strong><span>優良／高品質</span><small>如奶、蛋、肉類</small></div>
+  <div class="score amber"><strong>0.75 - 0.99</strong><span>良好／中高品質</span><small>如多數豆類</small></div>
+  <div class="score rose"><strong>&lt; 0.75</strong><span>低品質</span><small>部分植物與穀物</small></div>
+</div>
+</div>
+    </section>
+    
+    <section class="table-card amber compact">
+      <div class="table-title">
+        <h2>動物性蛋白質範例</h2>
+        <span>普遍具有極高的 DIAAS 評分，提供完整的必需胺基酸。</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>蛋白質食物</th><th>DIAAS 評分</th><th>7克蛋白質份量（約）</th><th>碳水（約）</th><th>脂肪（約）</th></tr></thead>
+          <tbody><tr><td><b>雞蛋（全蛋）</b><small>Whole Egg</small></td><td><em class='good'>1.13 - 1.18</em></td><td>1 顆 <small>（中型, 55克）</small></td><td>0.6 克</td><td>5 克</td></tr><tr><td><b>乳清蛋白粉</b><small>Whey Protein Powder</small></td><td><em class='good'>1.18 - 1.25+</em></td><td>9-10 克 <small>（依品牌）</small></td><td>&lt; 1 克</td><td>&lt; 1 克</td></tr><tr><td><b>希臘優格（無糖）</b><small>Greek Yogurt<br>(Unsweetened)</small></td><td><em class='good'>1.18+</em></td><td>70-80 克</td><td>3 克</td><td>0-4 克 <small>（視脂肪）</small></td></tr><tr><td><b>茅屋起司</b><small>Cottage Cheese</small></td><td><em class='good'>1.18+</em></td><td>60 克</td><td>2 克</td><td>1-2 克 <small>（低脂）</small></td></tr><tr><td><b>鮭魚（熟）</b><small>Salmon (Cooked)</small></td><td><em class='good'>1.22</em></td><td>35 克</td><td>0 克</td><td>4-5 克</td></tr><tr><td><b>鯖魚（熟）</b><small>Mackerel (Cooked)</small></td><td><em class='good'>1.20+</em></td><td>35-40 克</td><td>0 克</td><td>5-6 克</td></tr><tr><td><b>蝦仁（熟）</b><small>Shrimp (Cooked)</small></td><td><em class='good'>1.16 - 1.20</em></td><td>40-45 克</td><td>0 克</td><td>&lt; 1 克</td></tr><tr><td><b>台灣鯛（熟）</b><small>Tilapia (Cooked)</small></td><td><em class='good'>1.15+</em></td><td>35-40 克</td><td>0 克</td><td>2 克</td></tr><tr><td><b>雞胸肉（熟）</b><small>Chicken Breast (Cooked)</small></td><td><em class='good'>1.08 - 1.17</em></td><td>35 克 <small>（約三指幅）</small></td><td>0 克</td><td>1 克</td></tr><tr><td><b>牛肉（瘦肉, 熟）</b><small>Beef (Lean, Cooked)</small></td><td><em class='good'>1.10 - 1.15</em></td><td>30-35 克</td><td>0 克</td><td>2-4 克</td></tr><tr><td><b>里肌肉（豬, 熟）</b><small>Pork Loin (Cooked)</small></td><td><em class='good'>1.12</em></td><td>30-35 克</td><td>0 克</td><td>2-3 克</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>PAGE 2</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="table-card green compact">
+      <div class="table-title">
+        <h2>植物性蛋白質範例</h2>
+        <span>植物性來源，通常富含膳食纖維與植化素，是構成健康飲食的重要部分。</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>蛋白質食物</th><th>DIAAS 評分</th><th>7克蛋白質份量（約）</th><th>碳水（約）</th><th>脂肪（約）</th></tr></thead>
+          <tbody><tr><td><b>大豆分離蛋白</b><small>Soy Protein Isolate</small></td><td><em class='mid'>0.91 - 1.00</em></td><td>8-9 克 <small>（依品牌）</small></td><td>&lt; 1 克</td><td>&lt; 1 克</td></tr><tr><td><b>豌豆分離蛋白</b><small>Pea Protein Isolate</small></td><td><em class='mid'>0.82 - 0.95</em></td><td>9-10 克 <small>（依品牌）</small></td><td>&lt; 1 克</td><td>1 克</td></tr><tr><td><b>板豆腐（傳統）</b><small>Firm Tofu</small></td><td><em class='mid'>0.91</em></td><td>85 克 <small>（約 1/4 盒）</small></td><td>2.5 克</td><td>4 克</td></tr><tr><td><b>天貝（Tempeh）</b></td><td><em class='mid'>0.90</em></td><td>35-40 克</td><td>3.5 克</td><td>4 克</td></tr><tr><td><b>無糖豆漿</b><small>Unsweetened Soy Milk</small></td><td><em class='mid'>0.91</em></td><td>200 cc <small>（約一小杯）</small></td><td>3 克</td><td>3.5 克</td></tr><tr><td><b>豆皮（生）</b><small>Tofu Skin / Yuba (Raw)</small></td><td><em class='mid'>0.91</em></td><td>35 克</td><td>2 克</td><td>6 克</td></tr><tr><td><b>毛豆（仁）</b><small>Edamame</small></td><td><em class='mid'>0.82 - 0.88</em></td><td>55 克 <small>（約半碗）</small></td><td>5.5 克</td><td>3 克</td></tr><tr><td><b>鷹嘴豆（熟）</b><small>Chickpeas (Cooked)</small></td><td><em class='mid'>0.83</em></td><td>85-90 克</td><td>17 克</td><td>2.5 克</td></tr><tr><td><b>花生（烤）</b><small>Peanuts (Roasted)</small></td><td><em class='bad'>0.60 - 0.70</em></td><td>28 克 <small>（約兩湯匙）</small></td><td>4.5 克</td><td>14 克</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    <section class="info-box blue">
+      <h3>關於 DIAAS 評分的參考資料</h3>
+      <div>
+<p>本表中的 DIAAS 評分是根據科學文獻提供的近似值。DIAAS 的評分方法論主要基於聯合國糧農組織（FAO）的建議。</p>
+<div class="reference-block"><b>主要方法論來源：</b><br>
+FAO (2013). Dietary protein quality evaluation in human nutrition. Report of an FAO Expert Consultation. FAO Food and Nutrition Paper No. 92. <i>（這是確立 DIAAS 方法的關鍵報告）</i>。</div>
+<div class="reference-block"><b>學術研究範例（提供具體評分）：</b>
+<ul>
+<li>Mathai, J. K., Liu, Y., &amp; Stein, H. H. (2017). Values for digestible indispensable amino acid scores (DIAAS) for some dairy and plant proteins... <i>British Journal of Nutrition, 117(4), 490-499.</i></li>
+<li>Rutherfurd, S. M., &amp; Moughan, P. J. (2021). The digestible indispensable amino acid score (DIAAS) – A new way to determine protein quality. <i>New Zealand Institute for Plant &amp; Food Research.</i></li>
+</ul></div>
+<div class="notice">請注意：具體食物的 DIAAS 評分會因品種、加工方式（例如：生食 vs 熟食、發酵）和測量方法而有差異。因此，表中的數值僅為參考平均值。</div>
+</div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="title-block">
+      <div>
+        <div class="eyebrow">ITEM REPORT</div>
+        <h1>碳水化合物食物範例表</h1>
+        <p>Sample Carbohydrate Sources</p>
+      </div>
+    </section>
+    
+    <section class="info-box plain">
+      <h3></h3>
+      <div>
+這份資料表專注於提供優質、健康的碳水化合物來源，並以 <b>「一份含 15 克碳水化合物」</b> 為基準，列出常見食物的份量與營養資訊。優質的碳水化合物通常保留了較多的膳食纖維與微量營養素，有助於穩定血糖與提供長效能量。
+</div>
+    </section>
+    
+    <section class="table-card amber compact">
+      <div class="table-title">
+        <h2>非水果類範例</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物名稱</th><th>含15克碳水之份量（約）</th><th>膳食纖維</th><th>蛋白質</th><th>脂肪</th></tr></thead>
+          <tbody><tr><td><b>燕麥片</b> <small>(Oats)</small></td><td>3 湯匙 <small>（約 20 克乾重）</small></td><td><em class='good'>高</em> <small>（約 2 克）</small></td><td><em class='mid'>中</em> <small>（約 2.5 克）</small></td><td>低 <small>（約 1.5 克）</small></td></tr><tr><td><b>紅豆</b> <small>(Red Bean)</small></td><td>2 湯匙 <small>（約 20 克乾重）</small></td><td><em class='good'>高</em> <small>（約 3 克）</small></td><td><em class='good'>高</em> <small>（約 3.5 克）</small></td><td>極低</td></tr><tr><td><b>綠豆</b> <small>(Mung Bean)</small></td><td>2 湯匙 <small>（約 20 克乾重）</small></td><td><em class='good'>高</em> <small>（約 3 克）</small></td><td><em class='good'>高</em> <small>（約 3 克）</small></td><td>極低</td></tr><tr><td><b>薏仁</b> <small>(Job's Tears)</small></td><td>2 湯匙 <small>（約 20 克乾重）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td><em class='mid'>中</em> <small>（約 3 克）</small></td><td>低 <small>（約 1 克）</small></td></tr><tr><td><b>蕎麥</b> <small>(Buckwheat)</small></td><td>2 湯匙 <small>（約 20 克乾重）</small></td><td><em class='good'>高</em> <small>（約 2 克）</small></td><td><em class='mid'>中</em> <small>（約 2.5 克）</small></td><td>低 <small>（約 0.5 克）</small></td></tr><tr><td><b>小米</b> <small>(Millet)</small></td><td>2 湯匙 <small>（約 20 克乾重）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td><em class='mid'>中</em> <small>（約 2 克）</small></td><td>低 <small>（約 0.5 克）</small></td></tr><tr><td><b>黑豆</b> <small>(Black Soy)</small></td><td>2 湯匙 <small>（約 20 克乾重）</small></td><td><em class='good'>非常高</em> <small>（約 4 克）</small></td><td><em class='good'>高</em> <small>（約 7 克）</small></td><td><em class='mid'>中</em> <small>（約 3 克）</small></td></tr><tr><td><b>全麥麵包</b> <small>(Wheat)</small></td><td>1 片 <small>（約 30 克）</small></td><td><em class='mid'>中</em> <small>（約 2 克）</small></td><td><em class='mid'>中</em> <small>（約 3 克）</small></td><td>低 <small>（約 1 克）</small></td></tr><tr><td><b>鷹嘴豆</b> <small>(Chickpea)</small></td><td>1/4 杯 <small>（約 40 克熟重）</small></td><td><em class='good'>高</em> <small>（約 3 克）</small></td><td><em class='mid'>中</em> <small>（約 2.5 克）</small></td><td>低 <small>（約 1 克）</small></td></tr><tr><td><b>藜麥</b> <small>(Quinoa)</small></td><td>1/4 杯 <small>（約 45 克熟重）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td><em class='good'>高</em> <small>（約 2 克）</small></td><td>低 <small>（約 1 克）</small></td></tr><tr><td><b>糙米飯</b> <small>(Brown Rice)</small></td><td>1/4 碗 <small>（約 50 克熟重）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td>低 <small>（約 1.3 克）</small></td><td>低 <small>（約 0.5 克）</small></td></tr><tr><td><b>紫／黑米</b> <small>(Black Rice)</small></td><td>1/4 碗 <small>（約 50 克熟重）</small></td><td><em class='good'>高</em> <small>（約 2 克）</small></td><td><em class='mid'>中</em> <small>（約 2 克）</small></td><td>低 <small>（約 0.5 克）</small></td></tr><tr><td><b>扁豆</b> <small>(Lentils)</small></td><td>1/4 杯 <small>（約 50 克熟重）</small></td><td><em class='good'>高</em> <small>（約 4 克）</small></td><td><em class='good'>高</em> <small>（約 4.5 克）</small></td><td>極低</td></tr><tr><td><b>地瓜</b> <small>(Sweet Potato)</small></td><td>1/2 小條 <small>（約 55 克）</small></td><td><em class='good'>高</em> <small>（約 2 克）</small></td><td>低 <small>（約 1 克）</small></td><td>極低</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>PAGE 2</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="table-card amber compact">
+      <div class="table-title">
+        <h2>非水果類範例（續）</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物名稱</th><th>含15克碳水之份量（約）</th><th>膳食纖維</th><th>蛋白質</th><th>脂肪</th></tr></thead>
+          <tbody><tr><td><b>芋頭</b> <small>(Taro)</small></td><td>1/4 碗 <small>（約 60 克）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td>低 <small>（約 1 克）</small></td><td>極低</td></tr><tr><td><b>山藥</b> <small>(Yam)</small></td><td>1/2 碗 <small>（約 80 克）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td>低 <small>（約 1 克）</small></td><td>極低</td></tr><tr><td><b>蓮藕</b> <small>(Lotus Root)</small></td><td>1/2 碗 <small>（約 80 克）</small></td><td><em class='good'>高</em> <small>（約 2.5 克）</small></td><td>低 <small>（約 1.5 克）</small></td><td>極低</td></tr><tr><td><b>馬鈴薯</b> <small>(Potato)</small></td><td>1/2 個中型 <small>（約 90 克）</small></td><td><em class='mid'>中</em> <small>（約 1.8 克）</small></td><td>低 <small>（約 1.5 克）</small></td><td>極低</td></tr><tr><td><b>玉米</b> <small>(Corn)</small></td><td>1/2 根 <small>（約 100 克）</small></td><td><em class='good'>高</em> <small>（約 2.5 克）</small></td><td><em class='mid'>中</em> <small>（約 3 克）</small></td><td>低 <small>（約 1 克）</small></td></tr><tr><td><b>南瓜</b> <small>(Pumpkin)</small></td><td>1 碗 <small>（約 100 克）</small></td><td><em class='good'>高</em> <small>（約 2 克）</small></td><td>低 <small>（約 1 克）</small></td><td>極低</td></tr><tr><td><b>毛豆</b> <small>(Edamame)</small></td><td>1 碗 <small>（約 120 克帶莢）</small></td><td><em class='good'>高</em> <small>（約 4 克）</small></td><td><em class='good'>高</em> <small>（約 8 克）</small></td><td><em class='mid'>中</em> <small>（約 3.5 克）</small></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    <section class="table-card rose compact">
+      <div class="table-title">
+        <h2>水果類範例</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物名稱</th><th>含15克碳水之份量（約）</th><th>膳食纖維</th><th>蛋白質</th><th>脂肪</th></tr></thead>
+          <tbody><tr><td><b>香蕉</b> <small>(Banana)</small></td><td>1/2 根 <small>（約 70 克）</small></td><td><em class='mid'>中</em> <small>（約 1.8 克）</small></td><td>低 <small>（約 1 克）</small></td><td>極低</td></tr><tr><td><b>葡萄</b> <small>(Grapes)</small></td><td>15 顆 <small>（約 90 克）</small></td><td>低 <small>（約 1 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>蘋果</b> <small>(Apple)</small></td><td>1 小顆 <small>（約 100 克）</small></td><td><em class='mid'>中</em> <small>（約 2.4 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>火龍果</b> <small>(Dragon Fruit)</small></td><td>1/2 碗 <small>（約 100 克）</small></td><td><em class='good'>高</em> <small>（約 2 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>木瓜</b> <small>(Papaya)</small></td><td>1/2 碗 <small>（約 100 克）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>藍莓</b> <small>(Blueberry)</small></td><td>3/4 杯 <small>（約 100 克）</small></td><td><em class='good'>高</em> <small>（約 2.5 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>奇異果</b> <small>(Kiwi)</small></td><td>1 顆 <small>（約 100 克）</small></td><td><em class='good'>高</em> <small>（約 3 克）</small></td><td>低 <small>（約 1 克）</small></td><td>極低</td></tr><tr><td><b>芒果</b> <small>(Mango)</small></td><td>1/2 碗 <small>（約 100 克）</small></td><td><em class='mid'>中</em> <small>（約 1.6 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>百香果</b> <small>(Passion Fruit)</small></td><td>2 顆 <small>（約 100 克）</small></td><td><em class='good'>非常高</em> <small>（約 7 克）</small></td><td><em class='mid'>中</em> <small>（約 2 克）</small></td><td>低</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>PAGE 3</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="table-card rose compact">
+      <div class="table-title">
+        <h2>水果類範例（續）</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物名稱</th><th>含15克碳水之份量（約）</th><th>膳食纖維</th><th>蛋白質</th><th>脂肪</th></tr></thead>
+          <tbody><tr><td><b>釋迦</b> <small>(Sugar Apple)</small></td><td>1/2 顆 <small>（約 100 克果肉）</small></td><td><em class='good'>高</em> <small>（約 2.5 克）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td>低</td></tr><tr><td><b>荔枝</b> <small>(Lychee)</small></td><td>8-9 顆 <small>（約 100 克）</small></td><td><em class='mid'>中</em> <small>（約 1.3 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>鳳梨</b> <small>(Pineapple)</small></td><td>1/2 碗 <small>（約 110 克）</small></td><td><em class='mid'>中</em> <small>（約 1.5 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>水梨</b> <small>(Pear)</small></td><td>1/2 顆 <small>（約 130 克）</small></td><td><em class='good'>高</em> <small>（約 3.5 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>芭樂</b> <small>(Guava)</small></td><td>1 顆 <small>（約 150 克）</small></td><td><em class='good'>非常高</em> <small>（約 5 克）</small></td><td>低 <small>（約 1 克）</small></td><td>極低</td></tr><tr><td><b>橘子</b> <small>(Tangerine)</small></td><td>1 顆中型 <small>（約 150 克）</small></td><td><em class='mid'>中</em> <small>（約 2 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>草莓</b> <small>(Strawberry)</small></td><td>1 碗 <small>（約 150 克）</small></td><td><em class='mid'>中</em> <small>（約 3 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>葡萄柚</b> <small>(Grapefruit)</small></td><td>1/2 顆 <small>（約 150 克）</small></td><td><em class='mid'>中</em> <small>（約 2 克）</small></td><td>低</td><td>極低</td></tr><tr><td><b>西瓜</b> <small>(Watermelon)</small></td><td>1 碗 <small>（約 150 克）</small></td><td>低 <small>（約 0.5 克）</small></td><td>低</td><td>極低</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    <section class="info-box amber">
+      <h3>健康小叮嚀</h3>
+      <div>選擇健康的碳水化合物，不僅能提供身體穩定且持久的能量，其豐富的膳食纖維更是維持腸道健康、穩定血糖的關鍵。建議在日常飲食中，優先挑選未經加工的原型食物，並搭配優質蛋白質與健康脂肪，以達到最佳的營養協同效應與飽足感。</div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="title-block">
+      <div>
+        <div class="eyebrow">ITEM REPORT</div>
+        <h1>脂肪與油品範例表</h1>
+        <p>Sample Fats and Oils</p>
+      </div>
+    </section>
+    
+    <section class="info-box plain">
+      <h3></h3>
+      <div>
+攝取結構相對完整且烹調穩定的脂肪來源，可作為飲食規劃中支持細胞膜、荷爾蒙與日常能量利用的參考方向。此表列出了推薦的健康脂肪來源，並估算了攝取 <b>「10克脂肪」</b> 所需的大約份量。<u>重點在於優先選擇天然食物來源的脂肪，並使用穩定的油脂進行烹飪。</u>
+</div>
+    </section>
+    
+    <section class="table-card green compact">
+      <div class="table-title">
+        <h2>天然食物來源範例</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物品項</th><th>含10克脂肪的份量（約）</th></tr></thead>
+          <tbody><tr><td><b>酪梨</b> <small>(Avocado)</small></td><td>約 60 - 70 克 <small>（約 1/3 顆）</small></td></tr><tr><td><b>野生鮭魚</b> <small>(Wild Salmon)</small></td><td>約 70 - 80 克 <small>（約 1/3 掌心大）</small></td></tr><tr><td><b>鯖魚</b> <small>(Mackerel)</small></td><td>約 50 - 60 克 <small>（約 1/2 條）</small></td></tr><tr><td><b>沙丁魚</b> <small>(Sardines)</small></td><td>約 100 克 <small>（約 1 小罐）</small></td></tr><tr><td><b>放牧雞蛋</b> <small>(Pasture-raised Eggs)</small></td><td>約 2 顆 <small>（含蛋黃）</small></td></tr><tr><td><b>夏威夷豆</b> <small>(Macadamia Nuts)</small></td><td>約 13 - 15 克 <small>（約 7-8 顆）</small></td></tr><tr><td><b>核桃</b> <small>(Walnuts)</small></td><td>約 15 克 <small>（約 6-7 顆）</small></td></tr><tr><td><b>杏仁</b> <small>(Almonds)</small></td><td>約 20 克 <small>（約 15-18 顆）</small></td></tr><tr><td><b>巴西堅果</b> <small>(Brazil Nuts)</small></td><td>約 15 克 <small>（約 3-4 顆）</small></td></tr><tr><td><b>奇亞籽</b> <small>(Chia Seeds)</small></td><td>約 30 - 35 克 <small>（約 3 湯匙）</small></td></tr><tr><td><b>亞麻籽</b> <small>(Flaxseeds, 需研磨)</small></td><td>約 25 克 <small>（約 3 湯匙）</small></td></tr><tr><td><b>黑芝麻</b> <small>(Black Sesame)</small></td><td>約 20 克 <small>（約 2 湯匙）</small></td></tr><tr><td><b>南瓜籽</b> <small>(Pumpkin Seeds)</small></td><td>約 20 克 <small>（約 2 湯匙）</small></td></tr><tr><td><b>橄欖</b> <small>(Olives)</small></td><td>約 80 - 100 克 <small>（約 15-20 顆）</small></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>PAGE 2</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="table-card amber compact">
+      <div class="table-title">
+        <h2>烹飪與調味油脂範例</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>油品品項</th><th>含10克脂肪的份量（約）</th></tr></thead>
+          <tbody><tr><td><b>冷壓初榨橄欖油</b> <small>(EVOO)</small></td><td>約 11 克 <small>（約 2 茶匙）</small></td></tr><tr><td><b>酪梨油</b> <small>(Avocado Oil)</small></td><td>約 11 克 <small>（約 2 茶匙）</small></td></tr><tr><td><b>牧草飼育酥油</b> <small>(Grass-fed Ghee)</small></td><td>約 11 克 <small>（約 2 茶匙）</small></td></tr><tr><td><b>牧草飼育奶油</b> <small>(Grass-fed Butter)</small></td><td>約 12 克 <small>（約 2.5 茶匙）</small></td></tr><tr><td><b>牛油</b> <small>(Tallow, 牧草飼育)</small></td><td>約 11 克 <small>（約 2 茶匙）</small></td></tr><tr><td><b>豬油</b> <small>(Lard, 放牧飼養)</small></td><td>約 11 克 <small>（約 2 茶匙）</small></td></tr><tr><td><b>鴨油</b> <small>(Duck Fat)</small></td><td>約 11 克 <small>（約 2 茶匙）</small></td></tr><tr><td><b>苦茶油</b> <small>(Camellia Oil)</small></td><td>約 11 克 <small>（約 2 茶匙）</small></td></tr><tr><td><b>MCT 油</b> <small>(MCT Oil)</small></td><td>約 10 克 <small>（約 2 茶匙）</small></td></tr><tr><td><b>高品質魚油</b> <small>(Fish Oil)</small></td><td>約 10 克 <small>（依濃度）</small></td></tr><tr><td><b>亞麻籽油</b> <small>(Flaxseed Oil)</small></td><td>約 11 克 <small>（約 2 茶匙）</small></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    <section class="info-box rose">
+      <h3>應極力避免的脂肪</h3>
+      <div>
+<p><b>氧化脂肪：</b>人造奶油 (Margarine)、酥油 (Shortening)。</p>
+<div class="reference-block"><b>避免理由：</b>此類油脂多經高度加工處理，可能提高整體飲食中精製油脂比例。若您正以「代謝管理」或「體組成調整」為健康逆齡目標，此類油脂應作為優先減少與剔除的來源之一。</div>
+</div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>PAGE 3</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="info-box blue">
+      <h3>參考資料與延伸閱讀 <small>(Research and References)</small></h3>
+      <div>
+<p>本文中關於脂肪選擇、細胞健康與慢性發炎的觀點，主要源自功能醫學領域專家的研究，特別是針對工業種子油 (PUFA) 對健康的影響，以及傳統天然脂肪（飽和脂肪與單元不飽和脂肪）的重新評估。</p>
+<h4>1. 書籍 (Books)</h4>
+<ul class="ref-list">
+<li>Shanahan, Catherine, M.D. <i>Dark Calories: How Vegetable Oils Destroy Our Health and How We Can Get It Back.</i> Flatiron Books, 2024.</li>
+<li>Hyman, Mark, M.D. <i>Eat Fat, Get Thin: Why the Fat We Eat Is the Key to Sustained Weight Loss and Vibrant Health.</i> Little, Brown and Company, 2016.</li>
+<li>Mercola, Joseph, D.O. <i>Fat for Fuel: A Revolutionary Diet to Combat Cancer, Boost Brain Power, and Increase Your Energy.</i> Hay House, 2017.</li>
+<li>Hyman, Mark, M.D. <i>Food: What the Heck Should I Eat?</i> Little, Brown and Company, 2018.</li>
+<li>Greenfield, Ben. <i>Boundless: Upgrade Your Brain, Optimize Your Body &amp; Defy Aging.</i> Victory Belt Publishing, 2020.</li>
+</ul>
+<h4>2. 研究論文 (Research)</h4>
+<ul class="ref-list">
+<li>Estruch, Ramón, et al. “Primary Prevention of Cardiovascular Disease with a Mediterranean Diet Supplemented with Extra-Virgin Olive Oil or Nuts.” <i>New England Journal of Medicine</i>, vol. 378, no. 25, 2018, pp. e34.</li>
+<li>Ramsden, Christopher E., et al. “Re-evaluation of the traditional diet-heart hypothesis: analysis of recovered data from the Minnesota Coronary Experiment (1968-73).” <i>The BMJ</i>, vol. 353, 2016, p. i1246.</li>
+<li>DiNicolantonio, James J., and James H. O'Keefe. “Omega-6 vegetable oils as a driver of coronary heart disease: the oxidized linoleic acid hypothesis.” <i>Open Heart</i>, vol. 5, no. 2, 2018, p. E000898.</li>
+<li>Siri-Tarino, Patty W., et al. “Meta-analysis of prospective cohort studies evaluating the association of saturated fat with cardiovascular disease.” <i>The American Journal of Clinical Nutrition</i>, vol. 91, no. 3, 2010, pp. 535-46.</li>
+</ul>
+</div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="title-block">
+      <div>
+        <div class="eyebrow">ITEM REPORT</div>
+        <h1>膳食纖維範例表</h1>
+        <p>Sample Dietary Fiber Sources</p>
+      </div>
+    </section>
+    
+    <section class="info-box plain">
+      <h3></h3>
+      <div>
+這份表格列出了一些台灣常見的高纖維食物，以及要攝取到 <b>「10克膳食纖維」</b> 所需的大約份量。表格同時列出了在該份量下，您可以攝取到的「蛋白質」、「碳水化合物」和「脂肪」估計值，幫助您精準掌握巨量營養素的攝取。
+</div>
+    </section>
+    
+    <section class="table-card green compact">
+      <div class="table-title">
+        <h2>蔬菜類（Vegetables）</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物品項</th><th>達10克纖維所需份量（約）</th><th>蛋白質（克）</th><th>碳水（克）</th><th>脂肪（克）</th></tr></thead>
+          <tbody><tr><td><b>黑木耳</b> <small>(Black Fungus)</small></td><td>95 克 <small>（濕重）</small></td><td>0.8</td><td>9</td><td>0.1</td></tr><tr><td><b>牛蒡</b> <small>(Burdock)</small></td><td>200 克 <small>（約 1.5 根）</small></td><td>3.4</td><td>35</td><td>0.4</td></tr><tr><td><b>地瓜葉</b> <small>(Sweet Potato Lvs)</small></td><td>310 克 <small>（約 3 碟熟菜）</small></td><td>8.4</td><td>18</td><td>1</td></tr><tr><td><b>綠花椰菜</b> <small>(Broccoli)</small></td><td>330 克 <small>（約 2.5 大朵）</small></td><td>9.2</td><td>22</td><td>1.2</td></tr><tr><td><b>秋葵</b> <small>(Okra)</small></td><td>310 克 <small>（約 30 根）</small></td><td>6</td><td>22</td><td>0.6</td></tr><tr><td><b>海帶</b> <small>(Kelp)</small></td><td>270 克 <small>（約 2 碗熟海帶）</small></td><td>3</td><td>16</td><td>0.3</td></tr><tr><td><b>香菇</b> <small>(Shiitake, 熟)</small></td><td>260 克 <small>（約 15-20 朵）</small></td><td>5.7</td><td>24</td><td>0.3</td></tr><tr><td><b>杏鮑菇</b> <small>(King Oyster)</small></td><td>320 克 <small>（約 3-4 根大）</small></td><td>5.4</td><td>18</td><td>0.3</td></tr><tr><td><b>芥藍</b> <small>(Chinese Kale)</small></td><td>455 克 <small>（約 4-5 碟熟菜）</small></td><td>12.7</td><td>23.2</td><td>1.8</td></tr><tr><td><b>菠菜</b> <small>(Spinach)</small></td><td>476 克 <small>（約 4-5 碟熟菜）</small></td><td>12.4</td><td>16.7</td><td>2.4</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    <section class="table-card amber compact">
+      <div class="table-title">
+        <h2>豆類與種子（Legumes & Seeds）</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物品項</th><th>達10克纖維所需份量（約）</th><th>蛋白質（克）</th><th>碳水（克）</th><th>脂肪（克）</th></tr></thead>
+          <tbody><tr><td><b>奇亞籽</b> <small>(Chia Seeds)</small></td><td>30 克 <small>（約 2 湯匙）</small></td><td>5</td><td>12.5</td><td>9</td></tr><tr><td><b>亞麻籽粉</b> <small>(Flaxseed)</small></td><td>38 克 <small>（約 3 湯匙）</small></td><td>7</td><td>11</td><td>16</td></tr><tr><td><b>黑豆</b> <small>(Black Beans, 熟)</small></td><td>120 克 <small>（約 1 碗熟豆）</small></td><td>10</td><td>28</td><td>0.6</td></tr><tr><td><b>毛豆</b> <small>(Edamame, 熟)</small></td><td>200 克 <small>（約 1.5 碗豆仁）</small></td><td>24</td><td>20</td><td>10</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    </main>
+</section>
+    
+  <section class="report-page">
+    
+    <header class="page-header">
+      <div>逆齡方案報告 - 項目報告與附件</div>
+      <div>PAGE 2</div>
+    </header>
+    
+    <main class="content">
+      
+    <section class="table-card amber compact">
+      <div class="table-title">
+        <h2>全穀雜糧類（Grains）</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物品項</th><th>達10克纖維所需份量（約）</th><th>蛋白質（克）</th><th>碳水（克）</th><th>脂肪（克）</th></tr></thead>
+          <tbody><tr><td><b>燕麥片</b> <small>(Oatmeal)</small></td><td>100 克 <small>（約 1.5 碗）</small></td><td>14</td><td>66</td><td>8</td></tr><tr><td><b>糙米飯</b> <small>(Brown Rice, 熟)</small></td><td>290 克 <small>（約 1.5 碗熟飯）</small></td><td>7.5</td><td>85</td><td>2</td></tr><tr><td><b>藜麥</b> <small>(Quinoa, 熟)</small></td><td>350 克 <small>（約 2 碗熟藜麥）</small></td><td>14</td><td>70</td><td>6</td></tr><tr><td><b>地瓜</b> <small>(Sweet Potato, 熟)</small></td><td>300 克 <small>（約 2 個中型）</small></td><td>4.5</td><td>60</td><td>0.3</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    <section class="table-card rose compact">
+      <div class="table-title">
+        <h2>水果類（Fruits）</h2>
+        
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>食物品項</th><th>達10克纖維所需份量（約）</th><th>蛋白質（克）</th><th>碳水（克）</th><th>脂肪（克）</th></tr></thead>
+          <tbody><tr><td><b>芭樂</b> <small>(Guava)</small></td><td>190 克 <small>（約 1 顆中型）</small></td><td>4.8</td><td>27</td><td>1.8</td></tr><tr><td><b>百香果</b> <small>(Passion Fruit)</small></td><td>100 克 <small>（約 2-3 顆）</small></td><td>2.2</td><td>23</td><td>0.7</td></tr><tr><td><b>酪梨</b> <small>(Avocado)</small></td><td>150 克 <small>（約 1 顆中型）</small></td><td>3</td><td>13</td><td>22</td></tr><tr><td><b>奇異果</b> <small>(Kiwi)</small></td><td>330 克 <small>（約 3.5 顆）</small></td><td>3.8</td><td>48</td><td>1.7</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+    <section class="info-box blue">
+      <h3></h3>
+      <div>
+<ul class="plain-list">
+<li>「所需份量」與「營養素含量」均為估計值，會因品種、烹飪方式、測量來源而略有差異。</li>
+<li>葉菜類要達到 10 克纖維所需的份量通常非常大，這突顯了從多樣化食物來源攝取纖維的重要性。</li>
+<li>「碗」的容量約為 240 毫升，「湯匙」約為 15 毫升。</li>
+</ul>
+</div>
+    </section>
+    
+    <section class="info-box green">
+      <h3>膳食纖維的健康益處</h3>
+      <div>
+<div class="benefit-grid">
+<span>促進腸道蠕動、預防便祕</span>
+<span>增加飽足感以利體重控制</span>
+<span>穩定血糖、延緩吸收</span>
+<span>降低血脂與膽固醇水平</span>
+<span>作為腸道益生菌的食物來源，維護腸道與免疫健康</span>
+</div>
+</div>
+    </section>
+    
+    </main>
+</section>
+   		<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+</script> 
+</body>
+</html>

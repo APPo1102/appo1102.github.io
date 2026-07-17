@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>90天行動計劃總表｜分區行動版</title>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:#f3f4f6;
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    color:#111827;
+  }
+  .page{
+    width:794px;
+    min-height:1123px;
+    margin:10px auto;
+    background:#fff;
+    border:1px solid #d9dde4;
+    overflow:hidden;
+  }
+  .header{
+    background:#582DBE;
+    color:#fff;
+    padding:16px 28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1px;
+  }
+  .header .right{letter-spacing:2px; opacity:.95;}
+  .content{padding:28px 34px 24px 34px;}
+  .title-row{
+    display:flex;
+    justify-content:flex-start;
+    align-items:flex-end;
+    margin-bottom:18px;
+    text-align:left;
+  }
+  h1{margin:0; font-size:30px; line-height:1.08; font-weight:900; color:#0f172a;}
+  .sub{margin-top:6px; font-size:14px; color:#94a3b8; font-weight:800;}
+  .section{
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    overflow:hidden;
+    margin-bottom:14px;
+  }
+  .section:last-of-type{margin-bottom:0;}
+  .section-inner{
+    display:grid;
+    grid-template-columns:190px 1fr;
+    min-height:180px;
+  }
+  .left{
+    padding:20px 18px;
+    border-right:1px solid #eceff4;
+    background:#fcfcfd;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .left .domain{
+    width:100%;
+    margin:0;
+    font-size:30px;
+    font-weight:900;
+    color:#111827;
+    line-height:1.2;
+    text-align:center;
+  }
+  .right{padding:0;}
+  .item{
+    display:grid;
+    grid-template-columns:30px 1fr 28px;
+    gap:12px;
+    align-items:flex-start;
+    padding:14px 18px;
+    border-bottom:1px solid #eceff4;
+  }
+  .item:last-child{border-bottom:none;}
+  .num{
+    font-size:16px;
+    font-weight:900;
+    color:#d6c189;
+    line-height:1.2;
+    padding-top:1px;
+  }
+  .txt{
+    font-size:12.2px;
+    line-height:1.72;
+    color:#4b5563;
+  }
+  .txt b{color:#111827;}
+  .check{
+    width:18px;
+    height:18px;
+    border-radius:5px;
+    border:2px solid #cfd6df;
+    margin-top:1px;
+  }
+  .footer-note{
+    margin-top:12px;
+    color:#9ca3af;
+    font-size:10.5px;
+    font-weight:700;
+    line-height:1.6;
+  }
+  @media print{
+    body{background:#fff; margin:0}
+    .page{margin:0; border:none; width:794px; min-height:1123px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div>逆齡方案報告 - 九十天行動計畫</div>
+    <div class="right">NOT JUST LIFESPAN, BUT HEALTHSPAN</div>
+  </div>
+  <div class="content">
+    <div class="title-row">
+      <div>
+        <h1>九十天行動計劃總表</h1>
+        <div class="sub">90 Day Action Plan Master Check-List</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-inner">
+        <div class="left">
+          <div class="domain">飲食</div>
+        </div>
+        <div class="right">
+          <div class="item"><div class="num">1</div><div class="txt"><b>蛋白質優先：</b>確保每日攝取足量優質蛋白質，以支持肌肉合成與組織修復。</div><div class="check"></div></div>
+          <div class="item"><div class="num">2</div><div class="txt"><b>控制碳水與高纖：</b>每日攝取高膳食纖維之原型食物，穩定能量波動並提升飽足感。</div><div class="check"></div></div>
+          <div class="item"><div class="num">3</div><div class="txt"><b>優質油脂攝取：</b>選用單元不飽和脂肪酸與Omega-3作為主要能量來源，剔除精製糖與加工食品。</div><div class="check"></div></div>
+          <div class="item"><div class="num">4</div><div class="txt"><b>水分與時機：</b>保持充足水分攝取，並透過適當的進食窗口讓消化系統獲得充分休息。</div><div class="check"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-inner">
+        <div class="left">
+          <div class="domain">運動</div>
+        </div>
+        <div class="right">
+          <div class="item"><div class="num">1</div><div class="txt"><b>有氧基礎：</b>每週累積中強度（Zone 2）有氧活動，提升細胞攝氧與燃脂效率。</div><div class="check"></div></div>
+          <div class="item"><div class="num">2</div><div class="txt"><b>阻力強化：</b>每週進行全身性肌力訓練，針對大肌群進行漸進式負荷，鞏固代謝引擎。</div><div class="check"></div></div>
+          <div class="item"><div class="num">3</div><div class="txt"><b>活動度保養：</b>每日或運動前後執行功能性伸展，優化關節活動範圍，預防代償與傷害。</div><div class="check"></div></div>
+          <div class="item"><div class="num">4</div><div class="txt"><b>日常動能：</b>增加非運動性日常活動，維持整日活躍度以輔助能量消耗。</div><div class="check"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-inner">
+        <div class="left">
+          <div class="domain">心靈和諧</div>
+        </div>
+        <div class="right">
+          <div class="item"><div class="num">1</div><div class="txt"><b>優化睡眠：</b>建立規律作息並打造黑暗涼爽的睡眠環境，提升深層睡眠比例以促進大腦修復。</div><div class="check"></div></div>
+          <div class="item"><div class="num">2</div><div class="txt"><b>呼吸調節：</b>運用箱式呼吸等技巧啟動副交感神經，即時緩解壓力反應並平衡自律神經。</div><div class="check"></div></div>
+          <div class="item"><div class="num">3</div><div class="txt"><b>正念覺察：</b>透過感恩書寫或冥想練習，重塑大腦對正向事物的感知，增強心理韌性。</div><div class="check"></div></div>
+          <div class="item"><div class="num">4</div><div class="txt"><b>連結與自然：</b>定期接觸自然環境並維繫高品質社會連結，降低背景壓力負荷並滋養心靈。</div><div class="check"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-inner">
+        <div class="left">
+          <div class="domain">追蹤</div>
+        </div>
+        <div class="right">
+          <div class="item"><div class="num">1</div><div class="txt"><b>每日追蹤：</b>使用 App 記錄飲食與運動，建立行動責任感與即時調整依據。</div><div class="check"></div></div>
+          <div class="item"><div class="num">2</div><div class="txt"><b>每月監控：</b>定期進行身體組成測量（如InBody），客觀檢視組成變化（肌肉上升／脂肪下降）。</div><div class="check"></div></div>
+          <div class="item"><div class="num">3</div><div class="txt"><b>第 45 天檢核：</b>安排體適能評估，以數字化進展激勵持續投入（如力量、耐力估算）。</div><div class="check"></div></div>
+          <div class="item"><div class="num">4</div><div class="txt"><b>第 90 天驗收：</b>進行完整複測（包含追蹤實驗室抽血），以科學數據全面驗證逆齡成果。</div><div class="check"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">＊ 建議在專業人員協助下，依個人狀況調整動作內容、訓練量與執行節奏，讓計畫更容易落地且更安全。</div>
+  </div>
+</div>
+		<script>
+function sendHeight() {
+    const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    );
+
+    window.parent.postMessage({
+        type: "setHeight",
+        height: height
+    }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+
+// 再延遲一次，避免圖片、字體載入後高度改變
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
+</script>
+</body>
+</html>
