@@ -44,7 +44,8 @@ iframe{
 </style>
 
 </head>
-<body><div id="content">
+<body>
+<div id="content">
 <iframe src="p1.html" type="application/pdf" scrolling="no"></iframe>
 
 <iframe src="p2.html" scrolling="no"></iframe>
@@ -105,6 +106,81 @@ iframe{
 </div>
 <div style="position: fixed;width: 100%;height:50px;bottom:0;">
     <button onclick="print_html()">匯出PDF</button>
-</div></body>
+</div>
+<script>
+window.addEventListener("message", function(event) {
+
+    if (event.data.type == "setHeight") {
+    document.querySelectorAll("iframe").forEach(function(frame) {
+
+        if (frame.contentWindow === event.source) {
+            frame.style.height = event.data.height + "px";
+        }
+
+    });
+	}
+});
+
+async function print_html(){     
+  const pdf = new jsPDF('p', 'pt', 'a4');
+  const pdfWidth = pdf.internal.pageSize.width;
+  const pdfHeight = pdf.internal.pageSize.height;
+
+  const iframes = document.querySelectorAll('iframe');
+
+  for (let i = 0; i < iframes.length; i++) {
+    const iframe = iframes[i];
+
+    // 1. Make sure the iframe is actually loaded
+    await new Promise((resolve) => {
+      const doc = iframe.contentDocument;
+      if (doc && doc.readyState === 'complete') {
+        resolve();
+      } else {
+        iframe.addEventListener('load', resolve, { once: true });
+      }
+    });
+
+    const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+    // 2. Wait for images inside the iframe to finish loading too
+    const imgs = Array.from(doc.images);
+    await Promise.all(
+      imgs.map(img =>
+        img.complete
+          ? Promise.resolve()
+          : new Promise(res => { img.onload = img.onerror = res; })
+      )
+    );
+
+    // 3. Capture the iframe's own document (not the parent page)
+    const target = doc.querySelector('.lr-stage') || doc.body;
+
+    const canvas = await html2canvas(target, {
+      useCORS: true,
+      allowTaint: false,
+      scale: 2,
+      backgroundColor: '#ffffff',
+      windowWidth: target.scrollWidth,
+      windowHeight: target.scrollHeight,
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+    // 4. Fit image to page, preserving aspect ratio
+    const ratio = Math.min(pdfWidth / canvas.width, pdfHeight / canvas.height);
+    const renderW = canvas.width * ratio;
+    const renderH = canvas.height * ratio;
+
+    if (i > 0) pdf.addPage();
+    pdf.addImage(imgData, 'JPEG', 0, 0, renderW, renderH);
+  }
+
+  pdf.save('report.pdf');
+
+}
+</script>
+
+</body>
 
 </html>
