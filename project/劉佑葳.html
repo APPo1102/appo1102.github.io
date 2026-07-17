@@ -2,6 +2,9 @@
 <html lang="zh-TW">
 <head>
 <script src="./includes/jquery-4.0.0.min.js"></script>
+<script src="./includes/jspdf.umd.min.js"></script>
+<script src="./includes/jspdf.debug.js"></script>
+<script src="./includes/html2canvas.min.js"></script>
 <script src="./user/user1.js"></script>
 <meta charset="UTF-8">
 <title>AI 網頁預覽</title>
@@ -42,8 +45,8 @@ iframe{
 
 </head>
 <body>
-
-<iframe src="p1.html" scrolling="no"></iframe>
+<div id="content">
+<iframe src="p1.html" type="application/pdf" scrolling="no"></iframe>
 
 <iframe src="p2.html" scrolling="no"></iframe>
 
@@ -100,7 +103,10 @@ iframe{
 <iframe src="p56-65.html" scrolling="no"></iframe>
 	
 <iframe src="p66-71.html" scrolling="no"></iframe>
-	
+</div>
+<div style="position: fixed;width: 100%;height:50px;bottom:0;">
+    <button onclick="print_html()">匯出PDF</button>
+</div>
 <script>
 window.addEventListener("message", function(event) {
 
@@ -114,6 +120,65 @@ window.addEventListener("message", function(event) {
     });
 	}
 });
+
+async function print_html(){     
+  const pdf = new jsPDF('p', 'pt', 'a4');
+  const pdfWidth = pdf.internal.pageSize.width;
+  const pdfHeight = pdf.internal.pageSize.height;
+
+  const iframes = document.querySelectorAll('iframe');
+
+  for (let i = 0; i < iframes.length; i++) {
+    const iframe = iframes[i];
+
+    // 1. Make sure the iframe is actually loaded
+    await new Promise((resolve) => {
+      const doc = iframe.contentDocument;
+      if (doc && doc.readyState === 'complete') {
+        resolve();
+      } else {
+        iframe.addEventListener('load', resolve, { once: true });
+      }
+    });
+
+    const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+    // 2. Wait for images inside the iframe to finish loading too
+    const imgs = Array.from(doc.images);
+    await Promise.all(
+      imgs.map(img =>
+        img.complete
+          ? Promise.resolve()
+          : new Promise(res => { img.onload = img.onerror = res; })
+      )
+    );
+
+    // 3. Capture the iframe's own document (not the parent page)
+    const target = doc.querySelector('.lr-stage') || doc.body;
+
+    const canvas = await html2canvas(target, {
+      useCORS: true,
+      allowTaint: false,
+      scale: 2,
+      backgroundColor: '#ffffff',
+      windowWidth: target.scrollWidth,
+      windowHeight: target.scrollHeight,
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+    // 4. Fit image to page, preserving aspect ratio
+    const ratio = Math.min(pdfWidth / canvas.width, pdfHeight / canvas.height);
+    const renderW = canvas.width * ratio;
+    const renderH = canvas.height * ratio;
+
+    if (i > 0) pdf.addPage();
+    pdf.addImage(imgData, 'JPEG', 0, 0, renderW, renderH);
+  }
+
+  pdf.save('report.pdf');
+
+}
 </script>
 
 </body>
