@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>鈴瑄 網站接案作品集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a printed studio index — numbered project ledger grouped by site type, ink on cool paper with one cobalt accent */
+:root {
+  --paper: #f3f3ef;
+  --card: #fbfbf8;
+  --ink: #17191e;
+  --muted: #5e636d;
+  --line: #d9d9d2;
+  --accent: #2747b8;
+  --accent-soft: #e3e8f8;
+  --display: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121419;
+    --card: #1a1d24;
+    --ink: #ecebe6;
+    --muted: #9aa0ab;
+    --line: #2c3039;
+    --accent: #8ea6ff;
+    --accent-soft: #232b47;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121419;
+  --card: #1a1d24;
+  --ink: #ecebe6;
+  --muted: #9aa0ab;
+  --line: #2c3039;
+  --accent: #8ea6ff;
+  --accent-soft: #232b47;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.75;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+.top {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 22px 0; border-bottom: 1px solid var(--line);
+  font-family: var(--mono); font-size: 13px; color: var(--muted); letter-spacing: .04em;
+}
+.top strong { color: var(--ink); font-weight: 500; }
+
+/* Hero */
+.hero { padding: 72px 0 56px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: end; }
+.hero h1 {
+  font-family: var(--display); font-weight: 900; margin: 0;
+  font-size: clamp(40px, 6.4vw, 76px); line-height: 1.12; letter-spacing: .01em;
+  text-wrap: balance;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede { margin: 24px 0 0; font-size: 18px; color: var(--muted); max-width: 34em; }
+.hero .lede b { color: var(--ink); font-weight: 500; }
+.contact-box {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 24px;
+  display: grid; gap: 14px;
+}
+.contact-box .label { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+.contact-box .id { font-family: var(--mono); font-size: 24px; font-weight: 500; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  appearance: none; cursor: pointer; text-decoration: none;
+  font: 500 15px/1 var(--body); padding: 12px 18px; border-radius: 999px;
+  border: 1px solid var(--accent); background: var(--accent); color: var(--paper);
+}
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn:hover { filter: brightness(1.08); }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.stat { padding: 22px 0; display: grid; gap: 2px; }
+.stat + .stat { border-left: 1px solid var(--line); padding-left: 24px; }
+.stat .n { font-family: var(--display); font-weight: 700; font-size: 40px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat .t { color: var(--muted); font-size: 14px; }
+
+/* Sections */
+section { padding: 72px 0 0; }
+.sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+.sec-head h2 { font-family: var(--display); font-weight: 700; font-size: 32px; margin: 0; line-height: 1.3; }
+.sec-head p { margin: 0; color: var(--muted); }
+
+/* Services */
+.services { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.svc { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px 18px; display: grid; gap: 8px; align-content: start; }
+.svc .k { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+.svc h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.svc p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+/* Works ledger */
+.group { margin-bottom: 40px; }
+.group-title {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--ink);
+}
+.group-title h3 { margin: 0; font-size: 20px; font-weight: 700; }
+.group-title span { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.work {
+  display: grid; grid-template-columns: 56px 1fr 1.5fr 220px; gap: 20px; align-items: start;
+  padding: 22px 0; border-bottom: 1px solid var(--line);
+}
+.work .no { font-family: var(--mono); font-size: 14px; color: var(--muted); padding-top: 3px; font-variant-numeric: tabular-nums; }
+.work .name { display: grid; gap: 6px; }
+.work .name strong { font-size: 18px; font-weight: 700; line-height: 1.4; }
+.tag { justify-self: start; font-size: 12.5px; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+.work .desc { margin: 0; color: var(--muted); font-size: 15px; }
+.work .link {
+  justify-self: end;
+  font-family: var(--mono); font-size: 13px; color: var(--accent); text-decoration: none; white-space: nowrap;
+  border-bottom: 1px solid currentColor; padding-top: 3px;
+}
+.work .link:hover { border-bottom-width: 2px; }
+
+/* Process */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: s; border-top: 1px solid var(--line); }
+.step { padding: 22px 20px 4px 0; display: grid; gap: 6px; align-content: start; }
+.step + .step { padding-left: 20px; border-left: 1px solid var(--line); }
+.step .k { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+.step h3 { margin: 0; font-size: 17px; }
+.step p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+/* Closing */
+.closing {
+  margin: 80px 0 0; padding: 48px; border-radius: 14px; background: var(--ink); color: var(--paper);
+  display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: center;
+}
+.closing h2 { font-family: var(--display); font-weight: 900; font-size: clamp(28px, 4vw, 40px); margin: 0; line-height: 1.3; text-wrap: balance; }
+.closing p { margin: 12px 0 0; opacity: .75; }
+.closing .contact-box { background: transparent; border-color: color-mix(in srgb, var(--paper) 25%, transparent); }
+.closing .contact-box .label { color: color-mix(in srgb, var(--paper) 65%, transparent); }
+.closing .btn { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.closing .btn.ghost { background: transparent; color: var(--paper); }
+
+footer { padding: 32px 0 48px; font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+.toast { font-size: 13px; min-height: 1.4em; color: inherit; opacity: .8; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding-top: 48px; gap: 32px; }
+  .services { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .step:nth-child(3) { border-left: 0; padding-left: 0; }
+  .closing { grid-template-columns: 1fr; padding: 32px 24px; }
+}
+@media (max-width: 680px) {
+  .work { grid-template-columns: 40px 1fr; gap: 6px 14px; }
+  .work .desc, .work .link { grid-column: 2; }
+  .work .link { justify-self: start; }
+  .stats { grid-template-columns: 1fr; }
+  .stat + .stat { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+}
+@media (max-width: 440px) {
+  .wrap { padding: 0 16px; }
+  .services, .steps { grid-template-columns: 1fr; }
+  .step + .step { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+  .top span:last-child { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <span><strong>鈴瑄</strong> ／ 個人網站工作室</span>
+    <span>PORTFOLIO · 2026</span>
+  </header>
+
+  <div class="hero">
+    <div>
+      <h1>把品牌的想法，<br>做成<em>能營運</em>的網站。</h1>
+      <p class="lede">您好，我是鈴瑄，目前以個人工作室接案。近期完成的作品涵蓋<b>形象官網、線上課程平台、電商購物車、品牌活動網站與數位商品銷售網站</b>，客戶橫跨咖啡、醫美、會計、軟體、寵物、甜點與酒品等產業。從需求討論到上線，都由我親自處理。</p>
+    </div>
+    <div class="contact-box">
+      <span class="label">LINE 聯絡</span>
+      <span class="id">magic_air12</span>
+      <div class="btns">
+        <a class="btn" href="https://line.me/ti/p/~magic_air12" target="_blank" rel="noopener">加 LINE 洽詢</a>
+        <button class="btn ghost" type="button" data-copy="magic_air12">複製 ID</button>
+      </div>
+      <span class="toast" aria-live="polite"></span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="n">9</span><span class="t">件近期上線作品</span></div>
+    <div class="stat"><span class="n">5</span><span class="t">種網站類型</span></div>
+    <div class="stat"><span class="n">9</span><span class="t">個不同產業的客戶</span></div>
+  </div>
+
+  <section id="services">
+    <div class="sec-head"><h2>服務項目</h2><p>依您的營運目標選擇網站類型</p></div>
+    <div class="services">
+      <div class="svc"><span class="k">A</span><h3>形象網站</h3><p>品牌故事、服務介紹、據點與聯絡管道，建立第一印象與信任感。</p></div>
+      <div class="svc"><span class="k">B</span><h3>線上課程</h3><p>課程展示與學員入口，把專業知識整理成可販售的線上內容。</p></div>
+      <div class="svc"><span class="k">C</span><h3>電商購物車</h3><p>商品上架、購物車結帳與會員登入，讓品牌直接線上銷售。</p></div>
+      <div class="svc"><span class="k">D</span><h3>商家活動網站</h3><p>活動辦法、獎項說明與線上登錄表單，支援行銷檔期與抽獎活動。</p></div>
+      <div class="svc"><span class="k">E</span><h3>數位商品販售</h3><p>軟體外掛的方案比較、授權訂閱與金鑰發放流程。</p></div>
+    </div>
+  </section>
+
+  <section id="works">
+    <div class="sec-head"><h2>近期作品</h2><p>點擊網址即可瀏覽實際上線網站</p></div>
+
+    <div class="group">
+      <div class="group-title"><h3>形象網站</h3><span>4 件</span></div>
+      <article class="work">
+        <span class="no">01</span>
+        <div class="name"><strong>莊園26 Chateau 26</strong><span class="tag">精品咖啡</span></div>
+        <p class="desc">深耕咖啡產業的台灣品牌官網。呈現品牌故事與烘焙理念，並整合冠軍烘焙豆、莊園豆、濾掛咖啡等商品介紹、最新消息與會員專區。</p>
+        <a class="link" href="https://www.chateau26.com.tw/" target="_blank" rel="noopener">chateau26.com.tw ↗</a>
+      </article>
+      <article class="work">
+        <span class="no">02</span>
+        <div class="name"><strong>晶緻美學診所</strong><span class="tag">醫美診所</span></div>
+        <p class="desc">多據點醫美診所網站。整理微整、雷射、拉提、體雕等療程項目，搭配門診時間表、案例分享、影片專區與 LINE 線上預約。</p>
+        <a class="link" href="https://meixue.cbeauteclinic.com/" target="_blank" rel="noopener">meixue.cbeauteclinic.com ↗</a>
+      </article>
+      <article class="work">
+        <span class="no">03</span>
+        <div class="name"><strong>崇實聯合會計師事務所</strong><span class="tag">會計專業服務</span></div>
+        <p class="desc">總所加四間分所的事務所官網。涵蓋簽證、稅務、工商登記等服務說明，並設有稅務法規公告、常見問題與下載專區。</p>
+        <a class="link" href="https://cscpas.com.tw/" target="_blank" rel="noopener">cscpas.com.tw ↗</a>
+      </article>
+      <article class="work">
+        <span class="no">04</span>
+        <div class="name"><strong>威煦軟體 WishingSoft</strong><span class="tag">B2B SaaS · ESG</span></div>
+        <p class="desc">環安衛與 ESG 軟體公司官網。清楚呈現「環安雲」平台的法規、化學品、碳盤查等模組，並串接顧問諮詢與教育訓練服務。</p>
+        <a class="link" href="https://wishingsoft.com/" target="_blank" rel="noopener">wishingsoft.com ↗</a>
+      </article>
+    </div>
+
+    <div class="group">
+      <div class="group-title"><h3>線上課程</h3><span>1 件</span></div>
+      <article class="work">
+        <span class="no">05</span>
+        <div class="name"><strong>Talent Bank</strong><span class="tag">線上教育</span></div>
+        <p class="desc">線上課程平台，提供課程展示與學習入口，讓講師的專業內容能在線上推廣與銷售。</p>
+        <a class="link" href="https://talentbank.pro/" target="_blank" rel="noopener">talentbank.pro ↗</a>
+      </article>
+    </div>
+
+    <div class="group">
+      <div class="group-title"><h3>電商購物車</h3><span>2 件</span></div>
+      <article class="work">
+        <span class="no">06</span>
+        <div class="name"><strong>喵羽森林</strong><span class="tag">寵物用品</span></div>
+        <p class="desc">以「領養代替購買」為理念的寵物品牌商城。上千種貓、狗、鳥類用品分類上架，支援 24 小時線上購物與轉帳付款。</p>
+        <a class="link" href="https://www.meowingforest.com/" target="_blank" rel="noopener">meowingforest.com ↗</a>
+      </article>
+      <article class="work">
+        <span class="no">07</span>
+        <div class="name"><strong>月光森嶼甜室</strong><span class="tag">甜點品牌</span></div>
+        <p class="desc">甜點品牌購物網站。生甜甜圈、菠蘿泡芙等商品線上選購，提供購物車、LINE 登入與企業團購洽詢管道。</p>
+        <a class="link" href="https://www.moonlitforest-sweet.com/" target="_blank" rel="noopener">moonlitforest-sweet.com ↗</a>
+      </article>
+    </div>
+
+    <div class="group">
+      <div class="group-title"><h3>商家活動網站</h3><span>1 件</span></div>
+      <article class="work">
+        <span class="no">08</span>
+        <div class="name"><strong>台酒 TTL 玉尊威士忌 黃金抽獎活動</strong><span class="tag">品牌行銷活動</span></div>
+        <p class="desc">購酒刮刮卡抽獎活動官網。包含活動辦法、獎項與領獎說明，以及中獎者資料登錄與刮刮卡照片上傳審核流程。</p>
+        <a class="link" href="https://ttl-gold2026.com/" target="_blank" rel="noopener">ttl-gold2026.com ↗</a>
+      </article>
+    </div>
+
+    <div class="group">
+      <div class="group-title"><h3>外掛販售網站</h3><span>1 件</span></div>
+      <article class="work">
+        <span class="no">09</span>
+        <div class="name"><strong>空格 KONGEE</strong><span class="tag">軟體 · 數位授權</span></div>
+        <p class="desc">WordPress 與 WooCommerce 外掛販售平台。60 多款外掛提供月繳、年繳授權，結帳時自動比較單買與組合方案並推薦最划算選項，發放授權金鑰。</p>
+        <a class="link" href="https://kongee.tw/" target="_blank" rel="noopener">kongee.tw ↗</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="sec-head"><h2>合作流程</h2><p>個人工作室，全程單一窗口</p></div>
+    <div class="steps">
+      <div class="step"><span class="k">STEP 1</span><h3>需求討論</h3><p>了解品牌、目標客群與網站要達成的事，確認類型與功能範圍。</p></div>
+      <div class="step"><span class="k">STEP 2</span><h3>規劃與報價</h3><p>整理頁面架構與功能清單，提供時程與報價。</p></div>
+      <div class="step"><span class="k">STEP 3</span><h3>設計與開發</h3><p>依確認的方向製作，過程中隨時同步進度與調整。</p></div>
+      <div class="step"><span class="k">STEP 4</span><h3>測試上線</h3><p>跨裝置測試後正式上線，並說明後台操作方式。</p></div>
+    </div>
+  </section>
+
+  <div class="closing">
+    <div>
+      <h2>希望能有合作的機會。</h2>
+      <p>無論是新品牌建站、舊網站改版或需要線上銷售功能，都歡迎直接 LINE 聊聊您的想法。感謝您撥空瀏覽。</p>
+    </div>
+    <div class="contact-box">
+      <span class="label">LINE ID</span>
+      <span class="id">magic_air12</span>
+      <div class="btns">
+        <a class="btn" href="https://line.me/ti/p/~magic_air12" target="_blank" rel="noopener">加 LINE 洽詢</a>
+        <button class="btn ghost" type="button" data-copy="magic_air12">複製 ID</button>
+      </div>
+      <span class="toast" aria-live="polite"></span>
+    </div>
+  </div>
+
+  <footer>
+    <span>鈴瑄 · 個人網站工作室</span>
+    <span>LINE：magic_air12</span>
+  </footer>
+</div>
+<script>
+document.querySelectorAll("[data-copy]").forEach(function (b) {
+  b.addEventListener("click", function () {
+    var toast = b.closest(".contact-box").querySelector(".toast");
+    var text = b.getAttribute("data-copy");
+    function done(msg) { toast.textContent = msg; setTimeout(function () { toast.textContent = ""; }, 2500); }
+    try {
+      navigator.clipboard.writeText(text).then(function () { done("已複製 LINE ID"); }, function () { done("無法自動複製，請手動輸入 " + text); });
+    } catch (e) { done("無法自動複製，請手動輸入 " + text); }
+  });
+});
+</script>
+</body>
+</html>
